@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
 {% block head %}
-  {# Leaflet's own stylesheet. It positions the tiles, zoom buttons and
-     attribution -- without it the map renders as a pile of broken images.
-     Version 1.9.4 is the current stable release (2.0 is still alpha).
-     The integrity hash is from https://leafletjs.com/download.html and makes
-     the browser reject the file if it was tampered with in transit. #}
+  {# MapLibre's stylesheet. It positions the canvas, zoom controls, popups and
+     attribution -- without it the map renders as an unstyled mess.
+     Version pinned deliberately: an unpinned CDN URL can change under you.
+     https://maplibre.org/maplibre-gl-js/docs/ #}
   <link
     rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    href="https://unpkg.com/maplibre-gl@6.14.0/dist/maplibre-gl.css"
     crossorigin=""
   />
 {% endblock %}
@@ -20,8 +18,8 @@
     <p class="tagline">Because you deserve to poop in peace.</p>
   </section>
 
-  {# Leaflet needs a container element to draw into. It must have a height in
-     CSS -- see style.css. An empty grey box means the height is missing. #}
+  {# MapLibre needs a container element to draw into. It must have a height in
+     CSS -- see style.css. An empty box means the height is missing. #}
   <div id="map" role="region" aria-label="Map of campus bathrooms"></div>
 
   {# How the Python data reaches the JavaScript.
@@ -37,12 +35,9 @@
 {% endblock %}
 
 {% block scripts %}
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
-
-  {# Our map code. Must come after Leaflet, since it uses Leaflet's `L`. #}
-  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+  {# type="module" is required: MapLibre v6 is distributed only as an ES
+     module, so map.js uses `import` rather than relying on a global the way
+     Leaflet's `L` worked. Module scripts are deferred automatically, so the
+     page's elements already exist by the time this runs. #}
+  <script type="module" src="{{ url_for('static', filename='js/map.js') }}"></script>
 {% endblock %}

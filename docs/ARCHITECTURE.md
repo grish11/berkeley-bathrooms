@@ -26,7 +26,7 @@ berkeley_bathrooms/
 ├── public/                  # Served directly by Vercel's CDN at the URL root.
 │   └── static/              #   -> so this is reachable at /static/...
 │       ├── css/style.css
-│       ├── js/map.js        #   Leaflet setup -- the only JavaScript here
+│       ├── js/map.js        #   MapLibre setup -- the only JavaScript here
 │       └── photos/          #   Compressed, EXIF-stripped bathroom photos
 │
 ├── scripts/
@@ -146,7 +146,7 @@ data/buildings.json ──→ data.load_buildings()
                         {{ buildings|tojson }} embedded in a
                         <script type="application/json"> block
                           ↓
-                        map.js: JSON.parse → one Leaflet marker per building
+                        map.js: JSON.parse → one MapLibre marker per building
 ```
 
 Loading at import time rather than per request means a typo stops the server
@@ -166,6 +166,49 @@ Flask's `tojson` filter escapes the output so it is safe inside a script tag.
 If the data ever grows large enough that the HTML gets heavy, switching to a
 `/api/buildings` route is a small, contained change.
 
+### Why MapLibre GL JS and OpenFreeMap
+
+The map started on Leaflet with OpenStreetMap's raster tiles and was switched
+because it looked dated. The difference is raster vs vector tiles:
+
+- **Raster tiles** (Leaflet + OSM) are pre-rendered PNG images. Labels are
+  baked into the image, so they blur between zoom levels, the map cannot
+  rotate or tilt, and the cartography is fixed at whatever the tile server
+  rendered.
+- **Vector tiles** (MapLibre + OpenFreeMap) ship the underlying geometry and
+  the browser draws it with WebGL. Text stays sharp at any zoom, zooming is
+  continuous rather than stepped, and the map can rotate and tilt.
+
+**MapLibre rather than Mapbox GL JS.** MapLibre is the open-source (BSD-3)
+fork of Mapbox GL JS with a near-identical API. Mapbox GL JS requires an
+account and an access token, is free only up to 50,000 map loads a month, and
+then costs $5 per 1,000. MapLibre has no account, no token, and no billing
+relationship to manage — one less credential to keep out of a public repo.
+
+**OpenFreeMap for the tiles.** It serves OpenStreetMap-derived vector tiles
+with no API key and no registration. The `dark` style is used because the site
+is dark, and because from Phase 5 the pin color carries real information (the
+building's tier) — a muted basemap keeps those colors readable.
+
+Two consequences worth knowing:
+
+1. **Coordinate order flips.** MapLibre takes `[longitude, latitude]`, the
+   reverse of Leaflet. The JSON files still store `lat` and `lng` as named
+   fields, so only `map.js` has to care, and it does so in two clearly
+   commented places.
+2. **MapLibre v6 is ESM-only.** There is no UMD build and therefore no global
+   like Leaflet's `L`, so `map.js` is loaded with `<script type="module">` and
+   imports MapLibre by URL. A side effect is that Subresource Integrity does
+   not apply to `import` statements the way it did to Leaflet's `<script
+   integrity=...>`, so the version is pinned explicitly instead. If that
+   tradeoff ever matters, the fix is to vendor `maplibre-gl.mjs` into
+   `public/static/js/vendor/` and import it locally.
+
+OpenFreeMap requires visible attribution, and its style JSON does **not**
+carry an attribution string — so MapLibre cannot add one automatically. The
+credit is set explicitly in `map.js` via `AttributionControl`. Do not remove
+it.
+
 ### The read-only constraint
 
 A deployed Vercel Function has a read-only filesystem, so the app can never
@@ -180,5 +223,6 @@ of scope for v1) will require a real database.
 - Vercel + Flask — https://vercel.com/docs/frameworks/backend/flask
 - Vercel Python runtime — https://vercel.com/docs/functions/runtimes/python
 - uv projects — https://docs.astral.sh/uv/guides/projects/
-- Leaflet API reference — https://leafletjs.com/reference.html
-- OSM tile usage policy — https://operations.osmfoundation.org/policies/tiles/
+- MapLibre GL JS — https://maplibre.org/maplibre-gl-js/docs/
+- OpenFreeMap — https://openfreemap.org/
+- OpenStreetMap copyright — https://www.openstreetmap.org/copyright

@@ -48,6 +48,6 @@ def index():
     """The map page.
 
     Passes the buildings to the template, which embeds them in the page for
-    the Leaflet code in public/static/js/map.js to read.
+    the MapLibre code in public/static/js/map.js to read.
     """
     return render_template("index.html", buildings=BUILDINGS)

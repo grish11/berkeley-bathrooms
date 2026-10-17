@@ -96,29 +96,38 @@ code {
   font-size: 0.9em;
 }
 
-/* ---- the map (Phase 2) ----
+/* ---- the map ----
  *
- * Leaflet draws into #map but does not give it a size. If this height rule is
+ * MapLibre draws into #map but does not give it a size. If this height rule is
  * missing the element collapses to zero pixels and the map is invisible --
- * that is the single most common Leaflet mistake, and it looks like a bug in
- * the JavaScript when it is really just CSS.
+ * that is the single most common mistake with any JS map library, and it looks
+ * like a bug in the JavaScript when it is really just CSS.
  *
  * min() keeps the map tall on a laptop but never taller than most of the
  * viewport on a phone.
  */
 #map {
-  height: min(60vh, 32rem);
+  height: min(65vh, 36rem);
   margin-top: 1.5rem;
   border: 2px solid var(--california-gold);
   border-radius: 10px;
-  /* Leaflet's own panes are positioned; this keeps the rounded corners from
-     being overdrawn by square tiles. */
+  /* MapLibre's canvas is square; this keeps it inside the rounded corners. */
   overflow: hidden;
+  /* Shown while the vector tiles load, so there is no white flash against the
+     dark basemap. */
+  background: #11171f;
 }
 
-/* The map tiles are light, so Leaflet's default dark-on-light popup and
-   attribution text stay readable. Only the link color needs nudging to match
-   the site rather than Leaflet's default blue. */
-.leaflet-container a {
-  color: #0b4f8a;
+/* MapLibre's default popup is white with dark text, which reads fine against
+   the dark basemap. These rules only soften the corners to match the site. */
+.maplibregl-popup-content {
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  color: #16202b;
+}
+
+/* Keep the attribution legible but unobtrusive. Required by OpenFreeMap, so
+   it must stay visible -- do not hide this. */
+.maplibregl-ctrl-attrib {
+  font-size: 0.7rem;
 }

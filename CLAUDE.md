@@ -10,7 +10,8 @@ documentation:
    sentences. Use only official sources, such as:
    - Flask: https://flask.palletsprojects.com
    - Jinja templates: https://jinja.palletsprojects.com
-   - Leaflet: https://leafletjs.com/reference.html
+   - MapLibre GL JS: https://maplibre.org/maplibre-gl-js/docs/
+   - OpenFreeMap (tiles): https://openfreemap.org/
    - Pillow: https://pillow.readthedocs.io
    - Python standard library (json, datetime, zoneinfo):
      https://docs.python.org/3/
@@ -95,8 +96,11 @@ added later without a rewrite:
 <tech_stack>
 
 - Python as much as possible. Backend: Flask with Jinja templates.
-- Map: Leaflet.js with OpenStreetMap tiles. Keep JavaScript minimal, in its own
-  commented file, and explain what it does.
+- Map: MapLibre GL JS with OpenFreeMap vector tiles, dark style. (Changed from
+  Leaflet + OSM raster tiles, which looked dated; MapLibre is the open-source
+  fork of Mapbox GL JS and needs no account or access token.) Keep JavaScript
+  minimal, in its own commented file, and explain what it does. Note MapLibre
+  v6 is ESM-only and takes coordinates as [lng, lat].
 - Data: plain JSON files in the repo that I edit by hand on my laptop. No
   database in v1. Validate the JSON at startup and show clear error messages if
   I make a typo.
@@ -130,7 +134,7 @@ hero_photo, extra_photos (list), ratings (category -> 1-10), review, date_rated
 <build_plan> Work in phases. Stop after each one so I can test it and ask
 questions. Phase 1: Project setup (folders, virtual environment,
 requirements.txt, git, README) and a Flask "hello world" laid out the way Vercel
-expects. Phase 2: Leaflet map of campus with 3 sample building pins from
+expects. Phase 2: MapLibre map of campus with 3 sample building pins from
 buildings.json. Phase 3: Building popup (hero photos, score, tier, access state
 with colored dot). Phase 4: Bathroom detail view. Phase 5: Tier calculation and
 tier colors. Phase 6: Time-based access logic. Phase 7: Hall of Fame / Hall of

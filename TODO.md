@@ -5,8 +5,9 @@ High-level only. Details live in the phase discussions.
 ## Phases
 
 - [x] **Phase 1 — Setup.** Folders, uv, Flask hello world, public GitHub repo.
-- [x] **Phase 2 — Map.** Leaflet map of campus, 3 sample building pins read from
-      `buildings.json`, with startup validation of the JSON.
+- [x] **Phase 2 — Map.** Vector map of campus (MapLibre GL JS + OpenFreeMap),
+      3 sample building pins read from `buildings.json`, with startup
+      validation of the JSON.
 - [ ] **Phase 3 — Building popup.** Name, access state + colored dot, bathroom
       count, and each bathroom's hero photo / score / tier. Nothing else.
 - [ ] **Phase 4 — Bathroom detail view.** All photos, location, directions,
