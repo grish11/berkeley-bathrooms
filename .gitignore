@@ -1,0 +1,27 @@
+# Python virtual environment (uv creates .venv/ and manages it for you)
+.venv/
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Original, full-resolution photos straight off the phone.
+# These stay on your laptop ONLY. They are large and they carry EXIF metadata
+# including GPS coordinates and timestamps. The Phase 8 Pillow script reads
+# from here and writes stripped, resized copies into public/static/photos/,
+# which IS committed. Never commit this folder -- the repo is public.
+photos_raw/
+
+# Secrets / local config
+.env
+.env.local
+
+# Vercel CLI local state
+.vercel/
+
+# Editor + OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/

@@ -1,0 +1,35 @@
+{# Base layout. Every other template {% extends %} this one, so the header,
+   footer and <head> live in exactly one place.
+   Jinja template inheritance:
+   https://jinja.palletsprojects.com/en/stable/templates/#template-inheritance #}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Berkeley Bathrooms{% endblock %}</title>
+
+    {# url_for('static', ...) builds /static/css/style.css. See the comment in
+       app.py for why that one URL works both locally and on Vercel. #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="brand" href="{{ url_for('index') }}">
+        Berkeley Bathrooms
+      </a>
+      <nav class="site-nav">
+        {# Phase 7 adds the Hall of Fame link here. #}
+      </nav>
+    </header>
+
+    <main class="site-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      Personally visited, photographed, and rated. Never any people in the photos.
+    </footer>
+  </body>
+</html>
