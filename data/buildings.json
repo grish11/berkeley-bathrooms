@@ -1,0 +1,38 @@
+[
+  {
+    "id": "doe-library",
+    "name": "Doe Memorial Library",
+    "lat": 37.8721871,
+    "lng": -122.2595133,
+    "access_schedule": {
+      "mon-thu": [{ "start": "08:00", "end": "22:00", "access": "open" }],
+      "fri": [{ "start": "08:00", "end": "17:00", "access": "open" }],
+      "sat-sun": [{ "start": "13:00", "end": "17:00", "access": "open" }]
+    }
+  },
+  {
+    "id": "moffitt-library",
+    "name": "Moffitt Undergraduate Library",
+    "lat": 37.8725515,
+    "lng": -122.2608552,
+    "access_schedule": {
+      "mon-fri": [
+        { "start": "08:00", "end": "20:00", "access": "open" },
+        { "start": "20:00", "end": "24:00", "access": "cal_id" }
+      ],
+      "sat-sun": [{ "start": "10:00", "end": "20:00", "access": "cal_id" }]
+    }
+  },
+  {
+    "id": "dwinelle-hall",
+    "name": "Dwinelle Hall",
+    "lat": 37.8707152,
+    "lng": -122.2606301,
+    "access_schedule": {
+      "mon-fri": [
+        { "start": "07:00", "end": "18:00", "access": "open" },
+        { "start": "18:00", "end": "22:00", "access": "card_key" }
+      ]
+    }
+  }
+]

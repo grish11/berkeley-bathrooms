@@ -1,18 +1,48 @@
 {% extends "base.html" %}
 
+{% block head %}
+  {# Leaflet's own stylesheet. It positions the tiles, zoom buttons and
+     attribution -- without it the map renders as a pile of broken images.
+     Version 1.9.4 is the current stable release (2.0 is still alpha).
+     The integrity hash is from https://leafletjs.com/download.html and makes
+     the browser reject the file if it was tampered with in transit. #}
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+{% endblock %}
+
 {% block content %}
   <section class="hero">
     <h1>Berkeley Bathrooms</h1>
     <p class="tagline">Because you deserve to poop in peace.</p>
   </section>
 
-  {# Phase 2 replaces this with the Leaflet map. #}
-  <section class="placeholder">
-    <p><strong>Phase 1 is working.</strong></p>
-    <p>
-      If this box has a gold border and the page background is dark blue, then
-      Flask found <code>public/static/css/style.css</code> and the static file
-      setup is correct.
-    </p>
-  </section>
+  {# Leaflet needs a container element to draw into. It must have a height in
+     CSS -- see style.css. An empty grey box means the height is missing. #}
+  <div id="map" role="region" aria-label="Map of campus bathrooms"></div>
+
+  {# How the Python data reaches the JavaScript.
+     The `tojson` filter serialises the buildings list and escapes it safely
+     for embedding inside a <script> tag. A type of "application/json" means
+     the browser does not execute this -- it is inert text that map.js reads
+     with JSON.parse. Doing it this way keeps map.js a plain static file with
+     no template syntax in it, and avoids a second network request.
+     https://flask.palletsprojects.com/en/stable/templating/#standard-filters #}
+  <script type="application/json" id="buildings-data">
+    {{ buildings|tojson }}
+  </script>
+{% endblock %}
+
+{% block scripts %}
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  {# Our map code. Must come after Leaflet, since it uses Leaflet's `L`. #}
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 {% endblock %}

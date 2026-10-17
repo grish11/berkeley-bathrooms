@@ -13,6 +13,8 @@ Docs:
 
 from flask import Flask, render_template
 
+import data
+
 # Why static files are configured this way:
 #
 # Vercel's docs say Flask's static folder "should not be used for static files
@@ -30,7 +32,22 @@ from flask import Flask, render_template
 app = Flask(__name__, static_folder="public/static", static_url_path="/static")
 
 
+# Load and validate the JSON once, at startup, rather than on every request.
+# If there is a typo in data/buildings.json this raises data.DataError here --
+# the server refuses to start and prints exactly what is wrong, which is much
+# easier to debug than a half-broken map.
+#
+# Loading at import time also suits Vercel: the module is imported once when a
+# function instance starts, so the files are read once and reused across
+# requests rather than re-parsed each time.
+BUILDINGS = data.load_buildings()
+
+
 @app.route("/")
 def index():
-    """The map page. Phase 2 puts an actual Leaflet map here."""
-    return render_template("index.html")
+    """The map page.
+
+    Passes the buildings to the template, which embeds them in the page for
+    the Leaflet code in public/static/js/map.js to read.
+    """
+    return render_template("index.html", buildings=BUILDINGS)

@@ -12,6 +12,10 @@
     {# url_for('static', ...) builds /static/css/style.css. See the comment in
        app.py for why that one URL works both locally and on Vercel. #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    {# Pages that need extra stylesheets (the map page needs Leaflet's) add
+       them here, so only the pages that use them pay for them. #}
+    {% block head %}{% endblock %}
   </head>
 
   <body>
@@ -31,5 +35,9 @@
     <footer class="site-footer">
       Personally visited, photographed, and rated. Never any people in the photos.
     </footer>
+
+    {# Scripts go last so the browser can render the page without waiting on
+       them, and so the elements they touch already exist. #}
+    {% block scripts %}{% endblock %}
   </body>
 </html>
