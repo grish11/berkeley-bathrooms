@@ -19,13 +19,21 @@
  *     --layout-features='' \
  *     --unicodes="U+0020-007E,U+00A0-00FF,U+0100-017F,U+2010-2015,U+2018-201D,U+2022,U+2026,U+20AC,U+2122"
  *
+ * Each face lists woff2 first and a truetype copy second. The browser
+ * downloads only the first format it supports, so woff2 is what virtually
+ * every visitor gets (it is ~60% smaller); the ttf is there as a fallback for
+ * anything that cannot take woff2, and for debugging when a font appears not
+ * to load.
+ *
  * font-display: swap means text is readable in a fallback font immediately
  * and re-renders when the webfont arrives, rather than being invisible while
  * it downloads.
  */
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/static/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src:
+    url("/static/fonts/JetBrainsMono-Regular.woff2") format("woff2"),
+    url("/static/fonts/JetBrainsMono-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -33,7 +41,9 @@
 
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/static/fonts/JetBrainsMono-Italic.woff2") format("woff2");
+  src:
+    url("/static/fonts/JetBrainsMono-Italic.woff2") format("woff2"),
+    url("/static/fonts/JetBrainsMono-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -41,7 +51,9 @@
 
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/static/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  src:
+    url("/static/fonts/JetBrainsMono-Bold.woff2") format("woff2"),
+    url("/static/fonts/JetBrainsMono-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
