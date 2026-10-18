@@ -9,12 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Berkeley Bathrooms{% endblock %}</title>
 
+    {# Third-party stylesheets go FIRST, so our own rules below win whenever
+       the two set the same property on the same selector. MapLibre's CSS sets
+       a font on .maplibregl-map; loading it after ours would hand it the map
+       popups and controls. #}
+    {% block vendor_css %}{% endblock %}
+
     {# url_for('static', ...) builds /static/css/style.css. See the comment in
        app.py for why that one URL works both locally and on Vercel. #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 
-    {# Pages that need extra stylesheets (the map page needs MapLibre's) add
-       them here, so only the pages that use them pay for them. #}
     {% block head %}{% endblock %}
   </head>
 

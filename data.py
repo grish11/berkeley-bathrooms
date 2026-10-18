@@ -154,24 +154,21 @@ def _check_building(i: int, building: object, seen_ids: set[str], problems: list
         return
 
     # Prefer naming the building in later messages, so errors are findable.
-    name = building.get("name")
-    if isinstance(name, str) and name:
+    name = _require_text(where, building, "name", problems)
+    if name:
         where = f"buildings[{i}] ({name})"
-    else:
-        problems.append(f"{where}.name is missing or empty")
 
-    building_id = building.get("id")
-    if not isinstance(building_id, str) or not building_id:
-        problems.append(f"{where}.id is missing or empty")
-    elif not ID_PATTERN.match(building_id):
-        problems.append(
-            f"{where}.id = {building_id!r} must be lowercase letters, digits, "
-            f"hyphens or underscores (it becomes part of a URL)"
-        )
-    elif building_id in seen_ids:
-        problems.append(f"{where}.id = {building_id!r} is used by more than one building")
-    else:
-        seen_ids.add(building_id)
+    building_id = _require_text(where, building, "id", problems)
+    if building_id is not None:
+        if not ID_PATTERN.match(building_id):
+            problems.append(
+                f"{where}.id = {building_id!r} must be lowercase letters, digits, "
+                f"hyphens or underscores (it becomes part of a URL)"
+            )
+        elif building_id in seen_ids:
+            problems.append(f"{where}.id = {building_id!r} is used by more than one building")
+        else:
+            seen_ids.add(building_id)
 
     for field, (low, high) in (("lat", BERKELEY_BOX["lat"]), ("lng", BERKELEY_BOX["lng"])):
         value = building.get(field)
@@ -196,6 +193,8 @@ def _check_building(i: int, building: object, seen_ids: set[str], problems: list
     # no hours, where the useful fact is that someone looked.
     source = building.get("hours_source")
     if not isinstance(source, str) or not source.strip():
+        # Spelled out rather than using _require_text, because this one needs
+        # to say what a good answer looks like.
         problems.append(
             f"{where}.hours_source is missing. Record where the hours came "
             f"from: a URL, 'Google Maps', or 'Google Maps — no hours listed'"
@@ -238,6 +237,19 @@ def load_buildings() -> list[dict]:
         _fail("buildings.json", problems)
 
     return buildings
+
+
+def _require_text(where: str, obj: dict, field: str, problems: list[str]) -> str | None:
+    """Check a field is a non-empty string. Returns it, or None if it is not.
+
+    This same check was written out five times; one place is easier to keep
+    consistent than five.
+    """
+    value = obj.get(field)
+    if not isinstance(value, str) or not value.strip():
+        problems.append(f"{where}.{field} is missing or empty")
+        return None
+    return value
 
 
 def _check_photo(where: str, field: str, value: object, problems: list[str]) -> None:
@@ -296,10 +308,8 @@ def _check_bathroom(i, bathroom, building_ids, seen_ids, problems):
         problems.append(f"{where} must be an object, got {type(bathroom).__name__}")
         return
 
-    bathroom_id = bathroom.get("id")
-    if not isinstance(bathroom_id, str) or not bathroom_id:
-        problems.append(f"{where}.id is missing or empty")
-    else:
+    bathroom_id = _require_text(where, bathroom, "id", problems)
+    if bathroom_id is not None:
         where = f"bathrooms[{i}] ({bathroom_id})"
         if not ID_PATTERN.match(bathroom_id):
             problems.append(
@@ -313,19 +323,15 @@ def _check_bathroom(i, bathroom, building_ids, seen_ids, problems):
 
     # The important cross-check: a typo here would silently attach the
     # bathroom to no building at all, so it would vanish with no error.
-    building_id = bathroom.get("building_id")
-    if not isinstance(building_id, str) or not building_id:
-        problems.append(f"{where}.building_id is missing or empty")
-    elif building_id not in building_ids:
+    building_id = _require_text(where, bathroom, "building_id", problems)
+    if building_id is not None and building_id not in building_ids:
         problems.append(
             f"{where}.building_id = {building_id!r} does not match any building "
             f"in buildings.json"
         )
 
     for field in ("floor", "directions", "review"):
-        value = bathroom.get(field)
-        if not isinstance(value, str) or not value.strip():
-            problems.append(f"{where}.{field} is missing or empty")
+        _require_text(where, bathroom, field, problems)
 
     if not isinstance(bathroom.get("single_restroom"), bool):
         problems.append(f"{where}.single_restroom must be true or false")

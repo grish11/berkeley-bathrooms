@@ -19,6 +19,8 @@ Phase 6 adds current_access() here -- working out whether a building is open
 
 from __future__ import annotations
 
+import itertools
+
 import data
 
 # Shown after the times when getting in needs more than walking through a door.
@@ -110,26 +112,26 @@ def format_schedule(access_schedule: dict) -> list[str]:
 
     by_day = _periods_by_day(access_schedule)
 
-    lines: list[str] = []
-    run_start: str | None = None
-    run_text: str | None = None
+    # One line of text per day, in Mon..Sun order. A day with no periods gets
+    # an empty string, which is how it gets skipped below.
+    day_texts = [
+        (day, ", ".join(_format_period(p) for p in by_day[day]))
+        for day in data.WEEKDAYS
+    ]
 
-    def flush(run_end: str) -> None:
-        if run_text:  # skip runs of days with no periods at all
-            days = DAY_LABELS[run_start]
-            if run_start != run_end:
-                days += f"-{DAY_LABELS[run_end]}"
-            lines.append(f"{days}  {run_text}")
+    # groupby walks the list and gathers *consecutive* days that share the
+    # same text, which is exactly the collapsing we want: Mon/Tue/Wed/Thu with
+    # identical hours become one group, and Friday starts a new one.
+    lines = []
+    for text, group in itertools.groupby(day_texts, key=lambda pair: pair[1]):
+        if not text:
+            continue  # days the building publishes no hours for
 
-    previous_day = None
-    for day in data.WEEKDAYS:
-        text = ", ".join(_format_period(p) for p in by_day[day])
+        days = [day for day, _ in group]
+        label = DAY_LABELS[days[0]]
+        if len(days) > 1:
+            label += f"-{DAY_LABELS[days[-1]]}"
 
-        if text != run_text:
-            if previous_day is not None:
-                flush(previous_day)
-            run_start, run_text = day, text
-        previous_day = day
+        lines.append(f"{label}  {text}")
 
-    flush(data.WEEKDAYS[-1])
     return lines

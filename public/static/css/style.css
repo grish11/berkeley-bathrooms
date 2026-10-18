@@ -7,23 +7,22 @@
  * requires.
  *
  * Only the three faces the page uses are included -- the full family is
- * sixteen woff2 files and about 1.2 MB -- and each is subset to the Latin
+ * sixteen files and about 1.2 MB -- and each is subset to the Latin
  * characters this site can actually render. The stock faces carry Cyrillic,
  * Greek and a large symbol set none of which appear here; dropping them took
- * the three files from 275 KB to 48 KB.
+ * the three files from 800 KB to about 120 KB.
  *
  * Regenerate after adding text in a new script, or glyphs will show as empty
  * boxes:
- *   uv run --no-project --with "fonttools[woff]" --with brotli pyftsubset \
- *     JetBrainsMono-Regular.woff2 --output-file=out.woff2 --flavor=woff2 \
+ *   uv run --no-project --with fonttools pyftsubset \
+ *     JetBrainsMono-Regular.ttf --output-file=out.ttf \
  *     --layout-features='' \
  *     --unicodes="U+0020-007E,U+00A0-00FF,U+0100-017F,U+2010-2015,U+2018-201D,U+2022,U+2026,U+20AC,U+2122"
  *
- * Each face lists woff2 first and a truetype copy second. The browser
- * downloads only the first format it supports, so woff2 is what virtually
- * every visitor gets (it is ~60% smaller); the ttf is there as a fallback for
- * anything that cannot take woff2, and for debugging when a font appears not
- * to load.
+ * truetype rather than woff2. woff2 is roughly 60% smaller and every current
+ * browser supports it, so it is the usual choice -- these are ttf because
+ * that is what was asked for. If the size ever matters, converting back is
+ * the same pyftsubset command with --flavor=woff2.
  *
  * font-display: swap means text is readable in a fallback font immediately
  * and re-renders when the webfont arrives, rather than being invisible while
@@ -32,7 +31,6 @@
 @font-face {
   font-family: "JetBrains Mono";
   src:
-    url("/static/fonts/JetBrainsMono-Regular.woff2") format("woff2"),
     url("/static/fonts/JetBrainsMono-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -42,7 +40,6 @@
 @font-face {
   font-family: "JetBrains Mono";
   src:
-    url("/static/fonts/JetBrainsMono-Italic.woff2") format("woff2"),
     url("/static/fonts/JetBrainsMono-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
@@ -52,7 +49,6 @@
 @font-face {
   font-family: "JetBrains Mono";
   src:
-    url("/static/fonts/JetBrainsMono-Bold.woff2") format("woff2"),
     url("/static/fonts/JetBrainsMono-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
@@ -305,6 +301,21 @@ body {
   #map {
     width: 94%;
   }
+}
+
+/* ---- undo MapLibre's font ----
+ *
+ * maplibre-gl.css opens with:
+ *     .maplibregl-map { font: 12px/20px Helvetica Neue, Arial, ... }
+ *
+ * That sets the font directly on the map container, so everything inside it
+ * -- popups, attribution, zoom buttons -- inherits Helvetica rather than the
+ * page font. Setting it back here is not enough on its own: base.html also
+ * loads MapLibre's stylesheet BEFORE this one, so that when both set the same
+ * property on the same selector, ours is the one that applies.
+ */
+.maplibregl-map {
+  font-family: var(--font);
 }
 
 /* ---- building popup ----
