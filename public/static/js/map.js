@@ -29,9 +29,10 @@
 // keeps the familiar `maplibregl.Thing` spelling used throughout the docs.
 import * as maplibregl from "https://unpkg.com/maplibre-gl@6.14.0/dist/maplibre-gl.mjs";
 
-// Roughly the middle of campus. Note the order: MapLibre takes coordinates as
-// [longitude, latitude] -- the opposite of Leaflet and of most of what you
-// read elsewhere. Getting it backwards puts your map in Antarctica.
+// Fallback view, used only if there are no buildings to fit the map around.
+// Note the order: MapLibre takes coordinates as [longitude, latitude] -- the
+// opposite of Leaflet and of most of what you read elsewhere. Getting it
+// backwards puts your map in Antarctica.
 const CAMPUS_CENTER = [-122.2585, 37.8719];
 const INITIAL_ZOOM = 15.5;
 
@@ -54,10 +55,8 @@ const ATTRIBUTION =
   '&copy; <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> ' +
   'Data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
 
-// Pin color. Phase 5 replaces this with a per-building tier color.
-// Berkeley Blue rather than the site's gold: gold is nearly invisible against
-// the pale positron basemap, while the dark blue reads clearly.
-const PIN_COLOR = "#003262"; // Berkeley Blue
+// Dot color lives in style.css (.building-dot). Phase 5 will vary it per
+// building by its tier, at which point it moves back in here.
 
 // --- 1. Read the data Flask put in the page -------------------------------
 //
@@ -94,16 +93,30 @@ map.addControl(
 // Phase 3 replaces this basic popup with the real one (access state, bathroom
 // count, hero photos) and Phase 5 colors each pin by its building's tier.
 for (const building of buildings) {
+  // A plain dot rather than MapLibre's default teardrop pin. With ~170
+  // buildings on screen, big pins overlap into an unreadable pile; small
+  // dots stay distinct. Passing `element` replaces MapLibre's default marker
+  // graphic entirely, and the styling lives in .building-dot in style.css.
+  const dot = document.createElement("div");
+  dot.className = "building-dot";
+
   // Build the popup as a DOM element and set .textContent rather than pasting
   // a string of HTML. textContent treats the name as plain text, so a stray
   // "<" in a building name can never be interpreted as markup.
   const label = document.createElement("strong");
   label.textContent = building.name;
 
-  const popup = new maplibregl.Popup({ offset: 24 }).setDOMContent(label);
-
-  new maplibregl.Marker({ color: PIN_COLOR })
+  new maplibregl.Marker({ element: dot, anchor: "center" })
     .setLngLat([building.lng, building.lat]) // again: lng first
-    .setPopup(popup)
+    .setPopup(new maplibregl.Popup({ offset: 10 }).setDOMContent(label))
     .addTo(map);
+}
+
+// Zoom the map so every building is visible, rather than trusting a
+// hardcoded zoom that would go stale as buildings are added.
+// LngLatBounds grows to contain each coordinate it is given.
+if (buildings.length > 0) {
+  const bounds = new maplibregl.LngLatBounds();
+  for (const b of buildings) bounds.extend([b.lng, b.lat]);
+  map.fitBounds(bounds, { padding: 40, duration: 0 });
 }

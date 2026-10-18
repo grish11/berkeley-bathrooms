@@ -71,7 +71,7 @@ body {
 
 .brand {
   color: var(--berkeley-blue);
-  font-size: 1.15rem;
+  font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   text-decoration: none;
@@ -81,7 +81,7 @@ body {
 .tagline {
   margin: 0;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   font-style: italic;
 }
 
@@ -94,7 +94,7 @@ body {
 
 .site-nav a {
   color: var(--ink);
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   text-decoration: none;
 }
 
@@ -129,7 +129,7 @@ body {
  * to scroll.
  */
 #map {
-  width: 80%;
+  width: 90%;
   height: 80vh;
   height: 80dvh;
   max-height: 100%;
@@ -139,6 +139,50 @@ body {
   /* A faint shadow so the rectangle reads as floating above the page rather
      than cut into it. */
   box-shadow: 0 2px 14px rgba(0, 50, 98, 0.15);
+}
+
+/* ---- building dots ----
+ *
+ * Replaces MapLibre's default teardrop pin (see map.js). With ~170 buildings
+ * on screen, teardrops overlap into an unreadable pile; a small dot stays
+ * legible at any density. The white ring keeps dots separable where buildings
+ * sit close together.
+ *
+ * Phase 5 will color these by the building's tier.
+ */
+.building-dot {
+  /* The clickable element is 28px square but completely transparent -- only
+     the ::after circle inside it is visible. This separates "how big the dot
+     looks" from "how big an area responds to a click", so you can be roughly
+     on a building rather than pixel-accurate on an 11px dot.
+     28px rather than the 44px usually recommended for touch targets: campus
+     buildings sit close together, and targets that large would overlap so
+     much you would keep hitting the wrong building. */
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  /* Tells the browser not to wait ~300ms for a possible double-tap. */
+  touch-action: manipulation;
+}
+
+/* The dot you actually see. */
+.building-dot::after {
+  content: "";
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--berkeley-blue);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 50, 98, 0.35);
+  transition: transform 0.1s ease;
+}
+
+/* Growing the dot on hover confirms which building you are about to click --
+   useful now that the hit area is bigger than the dot. */
+.building-dot:hover::after {
+  transform: scale(1.5);
 }
 
 /* MapLibre's default popup is white with dark text. Square off its corners to
@@ -167,7 +211,7 @@ body {
   flex: none;
   padding: 0.7rem 1.4rem;
   color: var(--muted);
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   text-align: center;
 }
 
