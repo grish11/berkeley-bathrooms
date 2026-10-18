@@ -527,6 +527,22 @@
     "hours_source": "Google Maps — no hours listed"
   },
   {
+    "id": "gerson-bakar-faculty-building",
+    "name": "Gerson Bakar Faculty Building",
+    "lat": 37.8719536,
+    "lng": -122.2535712,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "07:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://haas.berkeley.edu/facilities/building-hours/"
+  },
+  {
     "id": "giannini-hall",
     "name": "Giannini Hall",
     "lat": 37.8735038,
@@ -1440,6 +1456,22 @@
       ]
     },
     "hours_source": "Google Maps"
+  },
+  {
+    "id": "the-gateway",
+    "name": "The Gateway",
+    "lat": 37.8741377,
+    "lng": -122.2634793,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "07:30",
+          "end": "21:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps — corroborated by https://statistics.berkeley.edu/resources/evans-hall-access-and-policies"
   },
   {
     "id": "the-law-building",

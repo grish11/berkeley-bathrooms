@@ -1,6 +1,6 @@
 # Building hours — status
 
-**51 with hours · 69 no hours published** (120 buildings)
+**53 with hours · 69 no hours published** (122 buildings)
 
 There is no campus-wide hours policy — most buildings never publish hours.
 "No hours published" is a permanent answer, not a gap. Those buildings stay on
@@ -12,7 +12,7 @@ traced to where it came from, and a checked building is never researched twice.
 
 ---
 
-## With hours (51)
+## With hours (53)
 
 - **Administration & Academic Center** — Google Maps
 - **Alumni House** — Google Maps
@@ -36,6 +36,7 @@ traced to where it came from, and a checked building is never researched twice.
 - **Davis Hall** — Google Maps
 - **Doe Memorial Library** — <https://www.lib.berkeley.edu/visit/doe>
 - **Eshleman Hall** — Google Maps
+- **Gerson Bakar Faculty Building** — <https://haas.berkeley.edu/facilities/building-hours/>
 - **Golden Bear Building** — Google Maps
 - **Golden Bear Gymnastics** — Google Maps
 - **Grimes Engineering Center** — <https://engineering.berkeley.edu/about/facilities/grimes-engineering-center/grimes-engineering-center-building-hours/>
@@ -63,6 +64,7 @@ traced to where it came from, and a checked building is never researched twice.
 - **Student Services Building** — <https://haas.berkeley.edu/facilities/building-hours/>
 - **Sutardja Dai Hall (CITRIS)** — Google Maps
 - **Tang Center** — Google Maps
+- **The Gateway** — Google Maps — corroborated by https://statistics.berkeley.edu/resources/evans-hall-access-and-policies
 - **Undergraduate Academic Building** — Google Maps
 - **Valley Life Sciences Building** — Google Maps
 
