@@ -37,7 +37,15 @@ const INITIAL_ZOOM = 15.5;
 
 // The basemap. OpenFreeMap serves OpenStreetMap-derived vector tiles for free
 // with no API key or account. https://openfreemap.org/
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
+//
+// "positron" is the pale, low-contrast style. A muted basemap is the right
+// choice here because from Phase 5 the pin color carries real information
+// (the building's tier) -- a busy, colorful map would fight those pins for
+// attention. Swap the last path segment to try the alternatives:
+//   positron  pale grey, minimal labels  (current)
+//   bright    full color, OSM-like
+//   liberty   full color, closest to a typical street map
+const MAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
 
 // OpenFreeMap requires this credit, and its style JSON does not carry an
 // attribution string, so MapLibre cannot add one on its own -- we must.
@@ -47,7 +55,9 @@ const ATTRIBUTION =
   'Data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
 
 // Pin color. Phase 5 replaces this with a per-building tier color.
-const PIN_COLOR = "#fdb515"; // California Gold
+// Berkeley Blue rather than the site's gold: gold is nearly invisible against
+// the pale positron basemap, while the dark blue reads clearly.
+const PIN_COLOR = "#003262"; // Berkeley Blue
 
 // --- 1. Read the data Flask put in the page -------------------------------
 //

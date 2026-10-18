@@ -14,9 +14,9 @@
   --ink: #f4f4f4;
   --muted: #9fb3c8;
 
-  /* The dark basemap's own background, used behind the map while tiles load
-     so there is no white flash. */
-  --map-backdrop: #11171f;
+  /* Matches the positron basemap's own background, so there is no flash of a
+     different color while the tiles load. */
+  --map-backdrop: #e7e4e0;
 }
 
 * {
@@ -67,7 +67,6 @@ body {
   gap: 0.25rem 0.9rem;
   flex: none;
   padding: 0.7rem 1.1rem;
-  border-bottom: 2px solid var(--california-gold);
 }
 
 .brand {
@@ -113,6 +112,7 @@ body {
   min-height: 0; /* lets a flex child shrink instead of overflowing */
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 /* ---- the map ----
@@ -126,8 +126,14 @@ body {
  * what makes the map the dominant element on the page.
  */
 #map {
-  flex: 1;
-  min-height: 0;
+  /* 80% of the viewport height. dvh is the mobile-safe unit -- it accounts
+     for the browser's address bar sliding in and out, which vh does not.
+     max-height caps it at whatever space is actually left over after the
+     header and footer, so a short window never forces the page to scroll. */
+  height: 80vh;
+  height: 80dvh;
+  max-height: 100%;
+  flex: none;
   background: var(--map-backdrop);
 }
 

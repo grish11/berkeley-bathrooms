@@ -186,9 +186,14 @@ then costs $5 per 1,000. MapLibre has no account, no token, and no billing
 relationship to manage — one less credential to keep out of a public repo.
 
 **OpenFreeMap for the tiles.** It serves OpenStreetMap-derived vector tiles
-with no API key and no registration. The `dark` style is used because the site
-is dark, and because from Phase 5 the pin color carries real information (the
-building's tier) — a muted basemap keeps those colors readable.
+with no API key and no registration. The `positron` style is used: pale, with
+restrained labels. The reason is that from Phase 5 the pin color carries real
+information (the building's tier), and a busy, colorful basemap would fight
+those pins for attention. The alternatives are `bright` and `liberty`, both
+full color; switching is a one-line change to `MAP_STYLE` in `map.js`.
+
+Because the basemap is pale, pins are Berkeley Blue rather than the site's
+California Gold — gold is close to invisible against positron.
 
 Two consequences worth knowing:
 

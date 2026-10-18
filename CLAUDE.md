@@ -96,7 +96,7 @@ added later without a rewrite:
 <tech_stack>
 
 - Python as much as possible. Backend: Flask with Jinja templates.
-- Map: MapLibre GL JS with OpenFreeMap vector tiles, dark style. (Changed from
+- Map: MapLibre GL JS with OpenFreeMap vector tiles, positron (pale) style. (Changed from
   Leaflet + OSM raster tiles, which looked dated; MapLibre is the open-source
   fork of Mapbox GL JS and needs no account or access token.) Keep JavaScript
   minimal, in its own commented file, and explain what it does. Note MapLibre
