@@ -43,6 +43,26 @@ app = Flask(__name__, static_folder="public/static", static_url_path="/static")
 BUILDINGS = data.load_buildings()
 
 
+def get_buildings():
+    """Return the buildings, re-reading the JSON while developing.
+
+    Flask's --debug reloader only watches *Python* files. Without this, editing
+    data/buildings.json would change nothing until you stopped and restarted
+    the server by hand -- the old list stays in memory and it looks like your
+    edit was ignored.
+
+    So in debug mode we re-read the file on every request: edit the JSON, hit
+    refresh, see the change. A typo still raises data.DataError, which the
+    debugger shows in the browser with the same clear message.
+
+    In production the file cannot change while the app is running, so the list
+    loaded at import is reused and nothing is re-parsed per request.
+    """
+    if app.debug:
+        return data.load_buildings()
+    return BUILDINGS
+
+
 @app.route("/")
 def index():
     """The map page.
@@ -50,4 +70,4 @@ def index():
     Passes the buildings to the template, which embeds them in the page for
     the MapLibre code in public/static/js/map.js to read.
     """
-    return render_template("index.html", buildings=BUILDINGS)
+    return render_template("index.html", buildings=get_buildings())
