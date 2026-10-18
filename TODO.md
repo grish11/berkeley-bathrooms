@@ -25,11 +25,18 @@ High-level only. Details live in the phase discussions.
 
 ## Data to fix
 
-- [ ] **Verify the access hours in `data/buildings.json`.** The schedules for
-      Doe, Moffitt and Dwinelle are *plausible placeholders I did not look up*.
-      Replace them with real hours before launch — publishing wrong hours is
-      worse than publishing none. Coordinates are fine: they came from
-      OpenStreetMap building outlines.
+- [ ] **Fill in access hours for all 169 buildings.** Every building was
+      imported from OpenStreetMap with an empty `access_schedule: {}`, meaning
+      "not researched yet". Work through
+      [docs/HOURS_CHECKLIST.md](docs/HOURS_CHECKLIST.md). Coordinates are
+      already correct and need no attention.
+- [ ] **Phase 6 needs an "hours unknown" state.** An empty schedule currently
+      evaluates as Closed, which would show a confident red dot for buildings
+      nobody has looked up. That is a lie to visitors — it needs its own grey
+      state.
+- [ ] **Prune the building list.** 169 is everything plausible on campus,
+      including dorms and buildings you may never rate. Delete rows from
+      `data/buildings.json` that do not belong.
 - [ ] Decide the `bathrooms.json` schema (Phase 3), then finish the second half
       of `docs/DATA_FORMAT.md`.
 

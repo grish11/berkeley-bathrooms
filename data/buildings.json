@@ -1,38 +1,1572 @@
 [
   {
-    "id": "doe-library",
+    "id": "administration-and-academic-center",
+    "name": "Administration & Academic Center",
+    "lat": 37.8642854,
+    "lng": -122.2490263,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "18:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "alumni-house",
+    "name": "Alumni House",
+    "lat": 37.8697326,
+    "lng": -122.2612935,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "anna-head-school-building",
+    "name": "Anna Head School Building",
+    "lat": 37.8666505,
+    "lng": -122.2568323,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ],
+      "sat": [
+        {
+          "start": "10:00",
+          "end": "18:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "anthony-hall",
+    "name": "Anthony Hall",
+    "lat": 37.8706944,
+    "lng": -122.258215,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "anthropology-and-art-practice-building",
+    "name": "Anthropology and Art Practice Building",
+    "lat": 37.8698194,
+    "lng": -122.2554495,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "07:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ],
+      "sat-sun": [
+        {
+          "start": "12:30",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://art.berkeley.edu/spaces"
+  },
+  {
+    "id": "architects-and-engineers",
+    "name": "Architects & Engineers",
+    "lat": 37.8701662,
+    "lng": -122.2588054,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "bakar-bioenginuity-hub",
+    "name": "Bakar BioEnginuity Hub (Woo Hon Fai Hall)",
+    "lat": 37.8686771,
+    "lng": -122.2559132,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:30",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "bancroft-dance-studio",
+    "name": "Bancroft Dance Studio",
+    "lat": 37.8686761,
+    "lng": -122.2611804,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "20:30",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://tdps.berkeley.edu/callboard#space — student space availability, assumed to match building hours"
+  },
+  {
+    "id": "bancroft-library",
+    "name": "Bancroft Library",
+    "lat": 37.872245,
+    "lng": -122.2588813,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "10:00",
+          "end": "16:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://www.lib.berkeley.edu/visit/bancroft"
+  },
+  {
+    "id": "banway-building",
+    "name": "Banway Building",
+    "lat": 37.8679036,
+    "lng": -122.2668944,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed; building appears to be under construction"
+  },
+  {
+    "id": "barker-hall",
+    "name": "Barker Hall",
+    "lat": 37.8739636,
+    "lng": -122.2654802,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "bauer-wurster-hall",
+    "name": "Bauer Wurster Hall",
+    "lat": 37.8705741,
+    "lng": -122.2547948,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "08:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://ced.berkeley.edu/about-ced/contact-us"
+  },
+  {
+    "id": "berkeley-art-museum-pacific-film-archive",
+    "name": "Berkeley Art Museum - Pacific Film Archive",
+    "lat": 37.8709547,
+    "lng": -122.2664344,
+    "access_schedule": {
+      "wed-sun": [
+        {
+          "start": "11:00",
+          "end": "19:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "berkeley-haas-entrepreneurship-hub",
+    "name": "Berkeley Haas Entrepreneurship Hub",
+    "lat": 37.8707684,
+    "lng": -122.2530378,
+    "access_schedule": {
+      "mon-thu": [
+        {
+          "start": "10:00",
+          "end": "20:30",
+          "access": "open"
+        }
+      ],
+      "fri": [
+        {
+          "start": "10:00",
+          "end": "18:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "berkeley-way-west",
+    "name": "Berkeley Way West",
+    "lat": 37.8735407,
+    "lng": -122.2679391,
+    "access_schedule": {
+      "mon-sat": [
+        {
+          "start": "07:00",
+          "end": "19:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "birge-hall",
+    "name": "Birge Hall",
+    "lat": 37.872209,
+    "lng": -122.2572514,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "blum-hall",
+    "name": "Blum Hall",
+    "lat": 37.8750208,
+    "lng": -122.2588322,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "c-v-starr-east-asian-library",
+    "name": "C.V. Starr East Asian Library",
+    "lat": 37.8735394,
+    "lng": -122.2603434,
+    "access_schedule": {
+      "mon-thu": [
+        {
+          "start": "09:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ],
+      "fri": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ],
+      "sat": [
+        {
+          "start": "10:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://www.lib.berkeley.edu/visit/east-asian"
+  },
+  {
+    "id": "california-hall",
+    "name": "California Hall",
+    "lat": 37.8718839,
+    "lng": -122.2603673,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "campbell-hall",
+    "name": "Campbell Hall",
+    "lat": 37.8729808,
+    "lng": -122.2570871,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "cheit-hall",
+    "name": "Cheit Hall",
+    "lat": 37.8718392,
+    "lng": -122.254272,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "07:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://haas.berkeley.edu/facilities/building-hours/"
+  },
+  {
+    "id": "chou-hall-north-academic-building",
+    "name": "Chou Hall (North Academic Building)",
+    "lat": 37.8723879,
+    "lng": -122.2543624,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "07:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://haas.berkeley.edu/facilities/building-hours/"
+  },
+  {
+    "id": "chu-hall",
+    "name": "Chu Hall",
+    "lat": 37.8765312,
+    "lng": -122.2470698,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "conference-center",
+    "name": "Conference Center",
+    "lat": 37.8739866,
+    "lng": -122.2380352,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "cory-hall",
+    "name": "Cory Hall",
+    "lat": 37.8750476,
+    "lng": -122.2575738,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "16:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "creekside-center",
+    "name": "Creekside Center",
+    "lat": 37.870336,
+    "lng": -122.2612682,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "12:00",
+          "access": "open"
+        },
+        {
+          "start": "13:00",
+          "end": "16:30",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://dsp.berkeley.edu/contact-us"
+  },
+  {
+    "id": "cupola-of-the-old-chemistry-building",
+    "name": "Cupola of the Old Chemistry Building",
+    "lat": 37.8727082,
+    "lng": -122.2561139,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed; building under construction"
+  },
+  {
+    "id": "cesar-e-chavez-student-center",
+    "name": "César E. Chavez Student Center",
+    "lat": 37.8697471,
+    "lng": -122.260162,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "21:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "davis-hall",
+    "name": "Davis Hall",
+    "lat": 37.8745157,
+    "lng": -122.2582771,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "06:30",
+          "end": "19:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "doc-hudson-field-house",
+    "name": "Doc Hudson Field House",
+    "lat": 37.8706107,
+    "lng": -122.2491867,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "doe-memorial-library",
     "name": "Doe Memorial Library",
     "lat": 37.8721871,
     "lng": -122.2595133,
     "access_schedule": {
-      "mon-thu": [{ "start": "08:00", "end": "22:00", "access": "open" }],
-      "fri": [{ "start": "08:00", "end": "17:00", "access": "open" }],
-      "sat-sun": [{ "start": "13:00", "end": "17:00", "access": "open" }]
-    }
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "21:00",
+          "access": "open"
+        }
+      ],
+      "sun": [
+        {
+          "start": "13:00",
+          "end": "21:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://www.lib.berkeley.edu/visit/doe"
   },
   {
-    "id": "moffitt-library",
-    "name": "Moffitt Undergraduate Library",
-    "lat": 37.8725515,
-    "lng": -122.2608552,
-    "access_schedule": {
-      "mon-fri": [
-        { "start": "08:00", "end": "20:00", "access": "open" },
-        { "start": "20:00", "end": "24:00", "access": "cal_id" }
-      ],
-      "sat-sun": [{ "start": "10:00", "end": "20:00", "access": "cal_id" }]
-    }
+    "id": "durant-hall",
+    "name": "Durant Hall",
+    "lat": 37.871258,
+    "lng": -122.2601352,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed; building appears to be under construction"
   },
   {
     "id": "dwinelle-hall",
     "name": "Dwinelle Hall",
     "lat": 37.8707152,
     "lng": -122.2606301,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "eshleman-hall",
+    "name": "Eshleman Hall",
+    "lat": 37.8687618,
+    "lng": -122.2604033,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "08:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "etcheverry-hall",
+    "name": "Etcheverry Hall",
+    "lat": 37.8756856,
+    "lng": -122.2592774,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "evans-hall",
+    "name": "Evans Hall",
+    "lat": 37.873622,
+    "lng": -122.2578432,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "faculty-club",
+    "name": "Faculty Club",
+    "lat": 37.8718205,
+    "lng": -122.2558571,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "genetics-and-plant-biology-bldg",
+    "name": "Genetics and Plant Biology Bldg.",
+    "lat": 37.8734363,
+    "lng": -122.2647489,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "giannini-hall",
+    "name": "Giannini Hall",
+    "lat": 37.8735038,
+    "lng": -122.2624168,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "giauque-hall",
+    "name": "Giauque Hall",
+    "lat": 37.8726138,
+    "lng": -122.2560788,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "gilman-hall",
+    "name": "Gilman Hall",
+    "lat": 37.8726408,
+    "lng": -122.2563239,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "golden-bear-building",
+    "name": "Golden Bear Building",
+    "lat": 37.8720722,
+    "lng": -122.2712758,
+    "access_schedule": {
+      "mon-sat": [
+        {
+          "start": "07:00",
+          "end": "20:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "golden-bear-gymnastics",
+    "name": "Golden Bear Gymnastics",
+    "lat": 37.8654104,
+    "lng": -122.2472064,
     "access_schedule": {
       "mon-fri": [
-        { "start": "07:00", "end": "18:00", "access": "open" },
-        { "start": "18:00", "end": "22:00", "access": "card_key" }
+        {
+          "start": "07:00",
+          "end": "09:00",
+          "access": "open"
+        },
+        {
+          "start": "17:00",
+          "end": "19:00",
+          "access": "open"
+        }
+      ],
+      "sat": [
+        {
+          "start": "12:00",
+          "end": "16:00",
+          "access": "open"
+        }
+      ],
+      "sun": [
+        {
+          "start": "14:00",
+          "end": "18:00",
+          "access": "open"
+        }
       ]
-    }
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "goldman-school-of-public-policy",
+    "name": "Goldman School of Public Policy",
+    "lat": 37.8757146,
+    "lng": -122.2578797,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "grimes-engineering-center",
+    "name": "Grimes Engineering Center",
+    "lat": 37.8742194,
+    "lng": -122.2581896,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "07:00",
+          "end": "23:00",
+          "access": "open"
+        }
+      ],
+      "sun": [
+        {
+          "start": "13:00",
+          "end": "23:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://engineering.berkeley.edu/about/facilities/grimes-engineering-center/grimes-engineering-center-building-hours/"
+  },
+  {
+    "id": "haas-pavilion",
+    "name": "Haas Pavilion",
+    "lat": 37.8693622,
+    "lng": -122.2621853,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://www.loc8nearme.com/california/berkeley/haas-pavilion/8321469/ — third-party aggregator, not an official source"
+  },
+  {
+    "id": "haas-school-of-business",
+    "name": "Haas School of Business",
+    "lat": 37.871937,
+    "lng": -122.25384,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "07:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://haas.berkeley.edu/facilities/building-hours/"
+  },
+  {
+    "id": "hargrove-music-library",
+    "name": "Hargrove Music Library",
+    "lat": 37.8704496,
+    "lng": -122.2561392,
+    "access_schedule": {
+      "mon-thu": [
+        {
+          "start": "09:00",
+          "end": "20:00",
+          "access": "open"
+        }
+      ],
+      "fri": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ],
+      "sat": [
+        {
+          "start": "13:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ],
+      "sun": [
+        {
+          "start": "13:00",
+          "end": "20:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://www.lib.berkeley.edu/visit/music"
+  },
+  {
+    "id": "haviland-hall",
+    "name": "Haviland Hall",
+    "lat": 37.873735,
+    "lng": -122.2610827,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "16:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "hearst-field-annex",
+    "name": "Hearst Field Annex",
+    "lat": 37.8694309,
+    "lng": -122.2581781,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "hearst-greek-theatre",
+    "name": "Hearst Greek Theatre",
+    "lat": 37.8736919,
+    "lng": -122.254251,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "hearst-memorial-gymnasium",
+    "name": "Hearst Memorial Gymnasium",
+    "lat": 37.8695911,
+    "lng": -122.2569197,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "12:00",
+          "access": "open"
+        },
+        {
+          "start": "13:00",
+          "end": "15:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://pe.berkeley.edu/hearst-memorial-gymnasium-reservations — reservation hours, may differ from building access"
+  },
+  {
+    "id": "hearst-memorial-mining-building",
+    "name": "Hearst Memorial Mining Building",
+    "lat": 37.8744545,
+    "lng": -122.2572648,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "hearst-museum-of-anthropology",
+    "name": "Hearst Museum of Anthropology",
+    "lat": 37.869534,
+    "lng": -122.255263,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "henry-h-wheeler-jr-brain-imaging-center",
+    "name": "Henry H. Wheeler Jr. Brain Imaging Center",
+    "lat": 37.873727,
+    "lng": -122.26298,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "hertz-hall",
+    "name": "Hertz Hall",
+    "lat": 37.8710945,
+    "lng": -122.2557627,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "hesse-hall",
+    "name": "Hesse Hall",
+    "lat": 37.8743123,
+    "lng": -122.2593762,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "hildebrand-hall",
+    "name": "Hildebrand Hall",
+    "lat": 37.8725915,
+    "lng": -122.2557194,
+    "access_schedule": {
+      "mon-thu": [
+        {
+          "start": "09:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ],
+      "fri": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ],
+      "sun": [
+        {
+          "start": "13:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "hilgard-hall",
+    "name": "Hilgard Hall",
+    "lat": 37.8733135,
+    "lng": -122.2633556,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "innovative-genomics-institute-building",
+    "name": "Innovative Genomics Institute Building",
+    "lat": 37.8738221,
+    "lng": -122.2669335,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "jacobs-hall",
+    "name": "Jacobs Hall",
+    "lat": 37.8760321,
+    "lng": -122.2588133,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:30",
+          "end": "20:30",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "julia-morgan-hall",
+    "name": "Julia Morgan Hall",
+    "lat": 37.8747546,
+    "lng": -122.2383245,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "10:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "kleeberger-field-house",
+    "name": "Kleeberger Field House",
+    "lat": 37.8686832,
+    "lng": -122.2635934,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "17:00",
+          "end": "19:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "koshland-hall",
+    "name": "Koshland Hall",
+    "lat": 37.8739323,
+    "lng": -122.2648908,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "latimer-hall",
+    "name": "Latimer Hall",
+    "lat": 37.8731169,
+    "lng": -122.2559175,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "lawrence-hall-of-science",
+    "name": "Lawrence Hall of Science",
+    "lat": 37.8792009,
+    "lng": -122.2466936,
+    "access_schedule": {
+      "wed-sun": [
+        {
+          "start": "10:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "lewis-hall",
+    "name": "Lewis Hall",
+    "lat": 37.8730047,
+    "lng": -122.2551951,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "li-ka-shing-center",
+    "name": "Li Ka Shing Center",
+    "lat": 37.8729941,
+    "lng": -122.2654292,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "main-stacks",
+    "name": "Main Stacks",
+    "lat": 37.87269,
+    "lng": -122.2589567,
+    "access_schedule": {
+      "mon-thu": [
+        {
+          "start": "09:00",
+          "end": "24:00",
+          "access": "open"
+        }
+      ],
+      "tue-fri": [
+        {
+          "start": "00:00",
+          "end": "02:00",
+          "access": "open"
+        }
+      ],
+      "fri": [
+        {
+          "start": "09:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ],
+      "sat": [
+        {
+          "start": "09:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ],
+      "sun": [
+        {
+          "start": "13:00",
+          "end": "24:00",
+          "access": "open"
+        }
+      ],
+      "mon": [
+        {
+          "start": "00:00",
+          "end": "02:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://www.lib.berkeley.edu/visit/main-stacks"
+  },
+  {
+    "id": "martin-luther-king-jr-student-union",
+    "name": "Martin Luther King Jr. Student Union",
+    "lat": 37.8691085,
+    "lng": -122.2596872,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "08:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "mccone-hall",
+    "name": "McCone Hall",
+    "lat": 37.8741266,
+    "lng": -122.259687,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "mcenerney-hall",
+    "name": "McEnerney Hall",
+    "lat": 37.8766548,
+    "lng": -122.2645742,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "mclaughlin-hall",
+    "name": "McLaughlin Hall",
+    "lat": 37.8738328,
+    "lng": -122.25905,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "minor-hall",
+    "name": "Minor Hall",
+    "lat": 37.8714729,
+    "lng": -122.2547342,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "minor-hall-addition",
+    "name": "Minor Hall Addition",
+    "lat": 37.8714225,
+    "lng": -122.2551301,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:30",
+          "end": "17:30",
+          "access": "open"
+        }
+      ],
+      "sat-sun": [
+        {
+          "start": "08:30",
+          "end": "15:30",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "moffitt-undergraduate-library",
+    "name": "Moffitt Undergraduate Library",
+    "lat": 37.8725515,
+    "lng": -122.2608552,
+    "access_schedule": {
+      "sun": [
+        {
+          "start": "13:00",
+          "end": "24:00",
+          "access": "open"
+        }
+      ],
+      "mon-thu": [
+        {
+          "start": "00:00",
+          "end": "24:00",
+          "access": "open"
+        }
+      ],
+      "fri": [
+        {
+          "start": "00:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ],
+      "sat": [
+        {
+          "start": "09:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://www.lib.berkeley.edu/visit/moffitt"
+  },
+  {
+    "id": "morgan-hall",
+    "name": "Morgan Hall",
+    "lat": 37.8733149,
+    "lng": -122.2641809,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "morrison-hall",
+    "name": "Morrison Hall",
+    "lat": 37.8708637,
+    "lng": -122.2564698,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "mulford-hall",
+    "name": "Mulford Hall",
+    "lat": 37.8726748,
+    "lng": -122.2644934,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "national-energy-research-scientific-computing-center-nersc",
+    "name": "National Energy Research Scientific Computing Center (NERSC)",
+    "lat": 37.8757339,
+    "lng": -122.2526953,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "00:00",
+          "end": "24:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "north-gate-hall",
+    "name": "North Gate Hall",
+    "lat": 37.8748801,
+    "lng": -122.2596126,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "o-brien-breezeway",
+    "name": "O'Brien Breezeway",
+    "lat": 37.8740716,
+    "lng": -122.2589588,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "o-brien-hall",
+    "name": "O'Brien Hall",
+    "lat": 37.8743832,
+    "lng": -122.259089,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "old-art-gallery",
+    "name": "Old Art Gallery",
+    "lat": 37.8705781,
+    "lng": -122.258703,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "philosophy-hall",
+    "name": "Philosophy Hall",
+    "lat": 37.8709534,
+    "lng": -122.2581589,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "physics-north-and-physics-south",
+    "name": "Physics North & Physics South",
+    "lat": 37.8725961,
+    "lng": -122.2571311,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "pimentel-hall",
+    "name": "Pimentel Hall",
+    "lat": 37.8734198,
+    "lng": -122.2560319,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "recreational-sports-facility",
+    "name": "Recreational Sports Facility",
+    "lat": 37.8686555,
+    "lng": -122.2627656,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "07:00",
+          "end": "23:00",
+          "access": "open"
+        }
+      ],
+      "sat-sun": [
+        {
+          "start": "08:00",
+          "end": "18:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "residential-and-student-services-building",
+    "name": "Residential & Student Services Building",
+    "lat": 37.8668633,
+    "lng": -122.2559045,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "senior-hall",
+    "name": "Senior Hall",
+    "lat": 37.8718698,
+    "lng": -122.255409,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "silver-space-sciences-laboratory",
+    "name": "Silver Space Sciences Laboratory",
+    "lat": 37.8805939,
+    "lng": -122.2446142,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "simon-hall",
+    "name": "Simon Hall",
+    "lat": 37.869876,
+    "lng": -122.2527683,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "simons-laufer-mathematical-sciences-institute",
+    "name": "Simons Laufer Mathematical Sciences Institute",
+    "lat": 37.8798327,
+    "lng": -122.2442373,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:30",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "social-sciences-building",
+    "name": "Social Sciences Building",
+    "lat": 37.8701157,
+    "lng": -122.2579571,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "soda-hall",
+    "name": "Soda Hall",
+    "lat": 37.8756741,
+    "lng": -122.258724,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "south-hall",
+    "name": "South Hall",
+    "lat": 37.8713412,
+    "lng": -122.2585327,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "space-sciences-laboratory-addition",
+    "name": "Space Sciences Laboratory Addition",
+    "lat": 37.880752,
+    "lng": -122.2438959,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "spieker-aquatics-complex",
+    "name": "Spieker Aquatics Complex",
+    "lat": 37.8687289,
+    "lng": -122.2620091,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "10:00",
+          "end": "13:15",
+          "access": "open"
+        },
+        {
+          "start": "18:00",
+          "end": "21:00",
+          "access": "open"
+        }
+      ],
+      "sat": [
+        {
+          "start": "12:00",
+          "end": "20:00",
+          "access": "open"
+        }
+      ],
+      "sun": [
+        {
+          "start": "10:00",
+          "end": "20:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "sproul-hall",
+    "name": "Sproul Hall",
+    "lat": 37.8695922,
+    "lng": -122.258821,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "stanley-hall",
+    "name": "Stanley Hall",
+    "lat": 37.8739834,
+    "lng": -122.2561129,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "stephens-hall",
+    "name": "Stephens Hall",
+    "lat": 37.8713342,
+    "lng": -122.25758,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "strawberry-canyon-center",
+    "name": "Strawberry Canyon Center",
+    "lat": 37.8730337,
+    "lng": -122.2442775,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "student-services-building",
+    "name": "Student Services Building",
+    "lat": 37.8714597,
+    "lng": -122.2535097,
+    "access_schedule": {
+      "mon-sun": [
+        {
+          "start": "07:00",
+          "end": "22:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "https://haas.berkeley.edu/facilities/building-hours/"
+  },
+  {
+    "id": "sutardja-dai-hall-citris",
+    "name": "Sutardja Dai Hall (CITRIS)",
+    "lat": 37.8748975,
+    "lng": -122.2584,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "07:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "tan-hall",
+    "name": "Tan Hall",
+    "lat": 37.8731139,
+    "lng": -122.2564511,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "tang-center",
+    "name": "Tang Center",
+    "lat": 37.8676128,
+    "lng": -122.2643977,
+    "access_schedule": {
+      "mon-sat": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "the-law-building",
+    "name": "The Law Building",
+    "lat": 37.869938,
+    "lng": -122.2534604,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "the-law-building-south",
+    "name": "The Law Building South",
+    "lat": 37.869665,
+    "lng": -122.2534867,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "undergraduate-academic-building",
+    "name": "Undergraduate Academic Building",
+    "lat": 37.8708188,
+    "lng": -122.2616606,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "08:00",
+          "end": "18:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "university-hall",
+    "name": "University Hall",
+    "lat": 37.871899,
+    "lng": -122.266524,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed; building under construction"
+  },
+  {
+    "id": "university-house",
+    "name": "University House",
+    "lat": 37.8745,
+    "lng": -122.2622473,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "valley-life-sciences-building",
+    "name": "Valley Life Sciences Building",
+    "lat": 37.8714763,
+    "lng": -122.262135,
+    "access_schedule": {
+      "mon-fri": [
+        {
+          "start": "09:00",
+          "end": "17:00",
+          "access": "open"
+        }
+      ]
+    },
+    "hours_source": "Google Maps"
+  },
+  {
+    "id": "visitors-center-and-gift-shop",
+    "name": "Visitors' Center & Gift Shop",
+    "lat": 37.875131,
+    "lng": -122.238282,
+    "access_schedule": {},
+    "hours_source": "not yet checked"
+  },
+  {
+    "id": "warren-hall",
+    "name": "Warren Hall",
+    "lat": 37.8743893,
+    "lng": -122.266978,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "weill-hall",
+    "name": "Weill Hall",
+    "lat": 37.871407,
+    "lng": -122.2632664,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "wellman-hall",
+    "name": "Wellman Hall",
+    "lat": 37.8731253,
+    "lng": -122.2627805,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "wheeler-hall",
+    "name": "Wheeler Hall",
+    "lat": 37.8713075,
+    "lng": -122.259168,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "women-s-faculty-club",
+    "name": "Women's Faculty Club",
+    "lat": 37.8720719,
+    "lng": -122.2549131,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "zellerbach-hall",
+    "name": "Zellerbach Hall",
+    "lat": 37.8691024,
+    "lng": -122.2607982,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
+  },
+  {
+    "id": "zellerbach-playhouse",
+    "name": "Zellerbach Playhouse",
+    "lat": 37.8690936,
+    "lng": -122.2613047,
+    "access_schedule": {},
+    "hours_source": "Google Maps — no hours listed"
   }
 ]

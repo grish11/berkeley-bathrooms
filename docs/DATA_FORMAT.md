@@ -20,6 +20,17 @@ the map.
 | `lat` | number | yes | Latitude, decimal degrees. Must be between 37.84 and 37.90 (Berkeley). |
 | `lng` | number | yes | Longitude, decimal degrees. **Negative** here. Must be between -122.30 and -122.22. |
 | `access_schedule` | object | yes | Weekly opening schedule. See below. |
+| `hours_source` | string | **yes** | Where the hours came from: a URL, `"Google Maps"`, or `"Google Maps — no hours listed"`. |
+
+`hours_source` matters because this site publishes hours to other people. When
+one turns out to be wrong, the first question is where it came from. It is
+**required**, including for buildings with no hours — there the useful fact is
+that someone checked, and where. That stops the same building being researched
+twice, and stops an unsourced time being published.
+
+Where a source is weaker than an official campus page, say so in the string —
+e.g. a third-party aggregator, or a reservations page whose hours may differ
+from building access.
 
 The `lat`/`lng` bounds exist to catch the most common mistake: swapping the two
 values. If you do, you get a clear error instead of a pin in the Indian Ocean.
@@ -97,6 +108,18 @@ how you say "shut all weekend":
 
 Use an explicit `closed` period only when you want to punch a hole in a day
 that is otherwise open.
+
+### An empty schedule means "not researched yet"
+
+`"access_schedule": {}` is valid and is what every imported building starts
+with. It currently evaluates the same as closed, because nothing is covered.
+
+This is a placeholder, not a fact — it does **not** mean the building is
+actually shut. [HOURS_CHECKLIST.md](HOURS_CHECKLIST.md) tracks which buildings
+still need real hours. Worth keeping in mind for Phase 6: showing a confident
+red "Closed" dot for a building nobody has looked up yet would be telling
+visitors something untrue, so unresearched buildings probably need their own
+state (grey "hours unknown") rather than being lumped in with Closed.
 
 ### Current time
 

@@ -175,6 +175,19 @@ def _check_building(i: int, building: object, seen_ids: set[str], problems: list
     else:
         _check_access_schedule(where, building["access_schedule"], problems)
 
+    # Required. Records where the hours came from -- a URL, "Google Maps", or a
+    # note that Google Maps lists none. This site publishes hours to other
+    # people, so when one turns out to be wrong the first question is where it
+    # came from. Required rather than optional so a building cannot be added
+    # without saying where its hours were checked -- including buildings with
+    # no hours, where the useful fact is that someone looked.
+    source = building.get("hours_source")
+    if not isinstance(source, str) or not source.strip():
+        problems.append(
+            f"{where}.hours_source is missing. Record where the hours came "
+            f"from: a URL, 'Google Maps', or 'Google Maps — no hours listed'"
+        )
+
 
 def load_buildings() -> list[dict]:
     """Read and validate data/buildings.json.
