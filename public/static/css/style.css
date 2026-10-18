@@ -3,8 +3,8 @@
  * This file lives in public/static/ because that is the directory Vercel's CDN
  * serves. It is reachable at /static/css/style.css both locally and deployed.
  *
- * Phase 1 keeps this deliberately small. The strong colors exist so that a
- * glance at the page tells you whether the static file actually loaded.
+ * Layout goal: the map is the site. The header and footer are kept to single
+ * slim strips and the map takes every remaining pixel of the viewport.
  */
 
 :root {
@@ -13,121 +13,162 @@
   --california-gold: #fdb515;
   --ink: #f4f4f4;
   --muted: #9fb3c8;
+
+  /* The dark basemap's own background, used behind the map while tiles load
+     so there is no white flash. */
+  --map-backdrop: #11171f;
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* ---- page shell ----
+ *
+ * The whole page is one vertical flex column exactly as tall as the viewport:
+ *
+ *   header    <- natural height
+ *   main      <- flex: 1, soaks up everything left over
+ *   footer    <- natural height
+ *
+ * Because main grows and the map inside it also grows, the map ends up as
+ * tall as the window allows without ever causing the page to scroll.
+ *
+ * 100dvh ("dynamic viewport height") is the mobile-safe version of 100vh: it
+ * accounts for the browser's address bar sliding in and out, which 100vh does
+ * not. The 100vh line above it is a fallback for older browsers.
+ */
+html,
 body {
   margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
   background: var(--berkeley-blue);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
+  /* Square corners throughout -- no rounding anywhere on the site. */
 }
 
-/* ---- header / footer ---- */
-
+/* ---- header ----
+ *
+ * The title and tagline live here rather than in a separate banner above the
+ * map, so they cost one slim strip instead of a whole block of the screen.
+ */
 .site-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  flex: none;
+  padding: 0.7rem 1.1rem;
   border-bottom: 2px solid var(--california-gold);
 }
 
 .brand {
   color: var(--california-gold);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   text-decoration: none;
-}
-
-.site-main {
-  max-width: 48rem;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-}
-
-.site-footer {
-  padding: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--muted);
-  font-size: 0.85rem;
-  text-align: center;
-}
-
-/* ---- hero ---- */
-
-.hero h1 {
-  margin: 0 0 0.25rem;
-  font-size: 2.25rem;
-  line-height: 1.1;
+  white-space: nowrap;
 }
 
 .tagline {
   margin: 0;
-  color: var(--california-gold);
-  font-size: 1.15rem;
+  color: var(--muted);
+  font-size: 0.85rem;
   font-style: italic;
 }
 
-/* ---- the Phase 1 proof-of-life box ---- */
-
-.placeholder {
-  margin-top: 2rem;
-  padding: 1.25rem 1.5rem;
-  border: 2px solid var(--california-gold);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.04);
+.site-nav {
+  /* Pushes future nav links (Phase 7's Hall of Fame) to the right. */
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
 }
 
-.placeholder p {
-  margin: 0.4rem 0;
+.site-nav a {
+  color: var(--ink);
+  font-size: 0.9rem;
+  text-decoration: none;
 }
 
-code {
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.35);
-  font-size: 0.9em;
+.site-nav a:hover {
+  color: var(--california-gold);
+}
+
+/* ---- main ----
+ *
+ * No max-width and no padding: the map should run edge to edge. Pages that
+ * want readable text columns (Phase 7's Hall of Fame) add their own wrapper.
+ */
+.site-main {
+  flex: 1;
+  min-height: 0; /* lets a flex child shrink instead of overflowing */
+  display: flex;
+  flex-direction: column;
 }
 
 /* ---- the map ----
  *
- * MapLibre draws into #map but does not give it a size. If this height rule is
- * missing the element collapses to zero pixels and the map is invisible --
- * that is the single most common mistake with any JS map library, and it looks
- * like a bug in the JavaScript when it is really just CSS.
+ * MapLibre draws into #map but does not give it a size. If it has no height
+ * the element collapses to zero pixels and the map is invisible -- the single
+ * most common mistake with any JS map library, and it looks like a bug in the
+ * JavaScript when it is really just CSS.
  *
- * min() keeps the map tall on a laptop but never taller than most of the
- * viewport on a phone.
+ * Here it grows to fill .site-main rather than using a fixed height, which is
+ * what makes the map the dominant element on the page.
  */
 #map {
-  height: min(65vh, 36rem);
-  margin-top: 1.5rem;
-  border: 2px solid var(--california-gold);
-  border-radius: 10px;
-  /* MapLibre's canvas is square; this keeps it inside the rounded corners. */
-  overflow: hidden;
-  /* Shown while the vector tiles load, so there is no white flash against the
-     dark basemap. */
-  background: #11171f;
+  flex: 1;
+  min-height: 0;
+  background: var(--map-backdrop);
 }
 
 /* MapLibre's default popup is white with dark text, which reads fine against
-   the dark basemap. These rules only soften the corners to match the site. */
+   the dark basemap. Square off its corners to match the rest of the site. */
 .maplibregl-popup-content {
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0.6rem 0.9rem;
   color: #16202b;
+}
+
+/* Square corners on MapLibre's zoom/compass buttons too. */
+.maplibregl-ctrl-group,
+.maplibregl-ctrl-group button {
+  border-radius: 0 !important;
 }
 
 /* Keep the attribution legible but unobtrusive. Required by OpenFreeMap, so
    it must stay visible -- do not hide this. */
 .maplibregl-ctrl-attrib {
   font-size: 0.7rem;
+}
+
+/* ---- footer ---- */
+
+.site-footer {
+  flex: none;
+  padding: 0.55rem 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* ---- small screens ----
+ *
+ * On a phone the tagline is the first thing worth sacrificing: the map needs
+ * the vertical space more than the joke does.
+ */
+@media (max-width: 30rem) {
+  .tagline {
+    display: none;
+  }
 }

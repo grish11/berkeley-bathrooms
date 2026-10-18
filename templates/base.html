@@ -19,10 +19,11 @@
   </head>
 
   <body>
+    {# The title and tagline sit in this one slim strip rather than a banner
+       above the map, so the map gets the rest of the window. #}
     <header class="site-header">
-      <a class="brand" href="{{ url_for('index') }}">
-        Berkeley Bathrooms
-      </a>
+      <a class="brand" href="{{ url_for('index') }}">Berkeley Bathrooms</a>
+      <p class="tagline">Because you deserve to poop in peace.</p>
       <nav class="site-nav">
         {# Phase 7 adds the Hall of Fame link here. #}
       </nav>

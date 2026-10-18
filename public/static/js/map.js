@@ -21,7 +21,13 @@
 // MapLibre v6 ships as an ES module only -- there is no UMD build, so unlike
 // Leaflet's global `L` it has to be imported. That is why index.html loads
 // this file with <script type="module">.
-import maplibregl from "https://unpkg.com/maplibre-gl@6.14.0/dist/maplibre-gl.mjs";
+//
+// Note the `* as` form. MapLibre's module has no *default* export, only named
+// ones (Map, Marker, Popup, ...), so `import maplibregl from "..."` silently
+// gives you undefined and the first `maplibregl.Map(...)` throws. Importing
+// the whole namespace gives an object holding all the named exports, which
+// keeps the familiar `maplibregl.Thing` spelling used throughout the docs.
+import * as maplibregl from "https://unpkg.com/maplibre-gl@6.14.0/dist/maplibre-gl.mjs";
 
 // Roughly the middle of campus. Note the order: MapLibre takes coordinates as
 // [longitude, latitude] -- the opposite of Leaflet and of most of what you

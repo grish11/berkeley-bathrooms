@@ -13,13 +13,12 @@
 {% endblock %}
 
 {% block content %}
-  <section class="hero">
-    <h1>Berkeley Bathrooms</h1>
-    <p class="tagline">Because you deserve to poop in peace.</p>
-  </section>
+  {# No banner here on purpose: the title and tagline are in the header strip
+     so this page is almost entirely map.
 
-  {# MapLibre needs a container element to draw into. It must have a height in
-     CSS -- see style.css. An empty box means the height is missing. #}
+     MapLibre needs a container element to draw into. It gets its size from
+     CSS -- #map grows to fill .site-main. An empty box means that rule is
+     missing. #}
   <div id="map" role="region" aria-label="Map of campus bathrooms"></div>
 
   {# How the Python data reaches the JavaScript.
