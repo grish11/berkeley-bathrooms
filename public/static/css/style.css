@@ -3,20 +3,24 @@
  * This file lives in public/static/ because that is the directory Vercel's CDN
  * serves. It is reachable at /static/css/style.css both locally and deployed.
  *
- * Layout goal: the map is the site. The header and footer are kept to single
- * slim strips and the map takes every remaining pixel of the viewport.
+ * Layout goal: a white page with the map floating in the middle of it as a
+ * bordered rectangle, 80% of the viewport, never touching the edges.
  */
 
 :root {
   /* Berkeley's official colors, for the obvious reason. */
   --berkeley-blue: #003262;
   --california-gold: #fdb515;
-  --ink: #f4f4f4;
-  --muted: #9fb3c8;
+
+  --page-bg: #ffffff;
+  --ink: #16202b; /* body text -- dark, for a light background */
+  --muted: #5a6b7c; /* secondary text */
 
   /* Matches the positron basemap's own background, so there is no flash of a
      different color while the tiles load. */
   --map-backdrop: #e7e4e0;
+
+  --map-border-width: 3px;
 }
 
 * {
@@ -25,14 +29,11 @@
 
 /* ---- page shell ----
  *
- * The whole page is one vertical flex column exactly as tall as the viewport:
+ * The page is one vertical flex column exactly as tall as the viewport:
  *
  *   header    <- natural height
- *   main      <- flex: 1, soaks up everything left over
+ *   main      <- flex: 1, soaks up everything left over, centers the map in it
  *   footer    <- natural height
- *
- * Because main grows and the map inside it also grows, the map ends up as
- * tall as the window allows without ever causing the page to scroll.
  *
  * 100dvh ("dynamic viewport height") is the mobile-safe version of 100vh: it
  * accounts for the browser's address bar sliding in and out, which 100vh does
@@ -48,17 +49,16 @@ body {
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
-  background: var(--berkeley-blue);
+  background: var(--page-bg);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
-  /* Square corners throughout -- no rounding anywhere on the site. */
 }
 
 /* ---- header ----
  *
- * The title and tagline live here rather than in a separate banner above the
- * map, so they cost one slim strip instead of a whole block of the screen.
+ * No bottom border: the white space and the map's own border provide enough
+ * separation, and another rule would clutter a deliberately plain page.
  */
 .site-header {
   display: flex;
@@ -66,12 +66,12 @@ body {
   align-items: baseline;
   gap: 0.25rem 0.9rem;
   flex: none;
-  padding: 0.7rem 1.1rem;
+  padding: 0.85rem 1.4rem;
 }
 
 .brand {
-  color: var(--california-gold);
-  font-size: 1.1rem;
+  color: var(--berkeley-blue);
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   text-decoration: none;
@@ -99,20 +99,21 @@ body {
 }
 
 .site-nav a:hover {
-  color: var(--california-gold);
+  color: var(--berkeley-blue);
 }
 
 /* ---- main ----
  *
- * No max-width and no padding: the map should run edge to edge. Pages that
- * want readable text columns (Phase 7's Hall of Fame) add their own wrapper.
+ * Centers the map on both axes so the leftover white space is even all the
+ * way around it.
  */
 .site-main {
   flex: 1;
   min-height: 0; /* lets a flex child shrink instead of overflowing */
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  padding: 0 1rem;
 }
 
 /* ---- the map ----
@@ -122,27 +123,30 @@ body {
  * most common mistake with any JS map library, and it looks like a bug in the
  * JavaScript when it is really just CSS.
  *
- * Here it grows to fill .site-main rather than using a fixed height, which is
- * what makes the map the dominant element on the page.
+ * 80% of the viewport on both axes, centered by .site-main, with square
+ * corners and a Berkeley Blue frame. max-height caps it at the space actually
+ * left after the header and footer, so a short window never forces the page
+ * to scroll.
  */
 #map {
-  /* 80% of the viewport height. dvh is the mobile-safe unit -- it accounts
-     for the browser's address bar sliding in and out, which vh does not.
-     max-height caps it at whatever space is actually left over after the
-     header and footer, so a short window never forces the page to scroll. */
+  width: 80%;
   height: 80vh;
   height: 80dvh;
   max-height: 100%;
   flex: none;
+  border: var(--map-border-width) solid var(--berkeley-blue);
   background: var(--map-backdrop);
+  /* A faint shadow so the rectangle reads as floating above the page rather
+     than cut into it. */
+  box-shadow: 0 2px 14px rgba(0, 50, 98, 0.15);
 }
 
-/* MapLibre's default popup is white with dark text, which reads fine against
-   the dark basemap. Square off its corners to match the rest of the site. */
+/* MapLibre's default popup is white with dark text. Square off its corners to
+   match the rest of the site. */
 .maplibregl-popup-content {
   border-radius: 0;
   padding: 0.6rem 0.9rem;
-  color: #16202b;
+  color: var(--ink);
 }
 
 /* Square corners on MapLibre's zoom/compass buttons too. */
@@ -161,8 +165,7 @@ body {
 
 .site-footer {
   flex: none;
-  padding: 0.55rem 1.1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.7rem 1.4rem;
   color: var(--muted);
   font-size: 0.75rem;
   text-align: center;
@@ -170,11 +173,15 @@ body {
 
 /* ---- small screens ----
  *
- * On a phone the tagline is the first thing worth sacrificing: the map needs
- * the vertical space more than the joke does.
+ * On a phone the margins and the tagline are the first things worth
+ * sacrificing: the map needs the space more than they do.
  */
 @media (max-width: 30rem) {
   .tagline {
     display: none;
+  }
+
+  #map {
+    width: 94%;
   }
 }
