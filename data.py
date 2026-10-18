@@ -15,6 +15,7 @@ Docs:
 
 from __future__ import annotations
 
+import datetime
 import json
 import re
 from pathlib import Path
@@ -24,10 +25,22 @@ from pathlib import Path
 # project root, which would also work -- but __file__ is correct either way.
 DATA_DIR = Path(__file__).parent / "data"
 
+# Where committed, compressed photos live. Referenced from bathrooms.json by
+# filename only; validation checks each one is actually here.
+PHOTO_DIR = Path(__file__).parent / "public" / "static" / "photos"
+
 # The four access states from the spec. Anything else is a typo.
 ACCESS_STATES = ("open", "cal_id", "card_key", "closed")
 
 WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
+
+# The nine rating categories. 10 is ALWAYS best: 10 echo = silent, 10 busyness
+# = empty. Whether it is a single restroom is a yes/no attribute, not a
+# rating, so it is not here.
+RATING_CATEGORIES = (
+    "peace", "cleanliness", "privacy", "echo", "stall_gaps",
+    "toilet_paper", "smell", "temperature", "busyness",
+)
 
 # ids end up in URLs (Phase 4), so keep them to URL-safe characters.
 ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
@@ -225,3 +238,160 @@ def load_buildings() -> list[dict]:
         _fail("buildings.json", problems)
 
     return buildings
+
+
+def _check_photo(where: str, field: str, value: object, problems: list[str]) -> None:
+    """A photo filename must be a string naming a file that actually exists.
+
+    Checking the file is present at startup turns a silently broken image in
+    the browser into a named error before the server will even run.
+    """
+    if not isinstance(value, str) or not value.strip():
+        problems.append(f"{where}.{field} is missing or empty")
+        return
+
+    if "/" in value or "\\" in value:
+        problems.append(
+            f"{where}.{field} = {value!r} should be a bare filename, "
+            f"not a path -- photos all live in public/static/photos/"
+        )
+        return
+
+    if not (PHOTO_DIR / value).is_file():
+        problems.append(
+            f"{where}.{field} = {value!r} does not exist in public/static/photos/"
+        )
+
+
+def _check_ratings(where: str, ratings: object, problems: list[str]) -> None:
+    """All nine categories, each a whole number from 1 to 10."""
+    if not isinstance(ratings, dict):
+        problems.append(f"{where}.ratings must be an object with the nine categories")
+        return
+
+    for category in RATING_CATEGORIES:
+        if category not in ratings:
+            problems.append(f"{where}.ratings.{category} is missing")
+            continue
+
+        value = ratings[category]
+        if isinstance(value, bool) or not isinstance(value, int):
+            problems.append(f"{where}.ratings.{category} = {value!r} must be a whole number 1-10")
+        elif not 1 <= value <= 10:
+            problems.append(f"{where}.ratings.{category} = {value} must be between 1 and 10")
+
+    for key in ratings:
+        if key not in RATING_CATEGORIES:
+            problems.append(
+                f"{where}.ratings.{key!r} is not a rating category. "
+                f"Valid: {', '.join(RATING_CATEGORIES)}"
+            )
+
+
+def _check_bathroom(i, bathroom, building_ids, seen_ids, problems):
+    """Validate one entry from bathrooms.json."""
+    where = f"bathrooms[{i}]"
+
+    if not isinstance(bathroom, dict):
+        problems.append(f"{where} must be an object, got {type(bathroom).__name__}")
+        return
+
+    bathroom_id = bathroom.get("id")
+    if not isinstance(bathroom_id, str) or not bathroom_id:
+        problems.append(f"{where}.id is missing or empty")
+    else:
+        where = f"bathrooms[{i}] ({bathroom_id})"
+        if not ID_PATTERN.match(bathroom_id):
+            problems.append(
+                f"{where}.id must be lowercase letters, digits, hyphens or "
+                f"underscores (it becomes part of a URL)"
+            )
+        elif bathroom_id in seen_ids:
+            problems.append(f"{where}.id is used by more than one bathroom")
+        else:
+            seen_ids.add(bathroom_id)
+
+    # The important cross-check: a typo here would silently attach the
+    # bathroom to no building at all, so it would vanish with no error.
+    building_id = bathroom.get("building_id")
+    if not isinstance(building_id, str) or not building_id:
+        problems.append(f"{where}.building_id is missing or empty")
+    elif building_id not in building_ids:
+        problems.append(
+            f"{where}.building_id = {building_id!r} does not match any building "
+            f"in buildings.json"
+        )
+
+    for field in ("floor", "directions", "review"):
+        value = bathroom.get(field)
+        if not isinstance(value, str) or not value.strip():
+            problems.append(f"{where}.{field} is missing or empty")
+
+    if not isinstance(bathroom.get("single_restroom"), bool):
+        problems.append(f"{where}.single_restroom must be true or false")
+
+    _check_photo(where, "hero_photo", bathroom.get("hero_photo"), problems)
+
+    extra = bathroom.get("extra_photos")
+    if not isinstance(extra, list):
+        problems.append(f"{where}.extra_photos must be a list (use [] if there are none)")
+    else:
+        for j, photo in enumerate(extra):
+            _check_photo(where, f"extra_photos[{j}]", photo, problems)
+
+    if "ratings" not in bathroom:
+        problems.append(f"{where}.ratings is missing")
+    else:
+        _check_ratings(where, bathroom["ratings"], problems)
+
+    date_rated = bathroom.get("date_rated")
+    if not isinstance(date_rated, str):
+        problems.append(f"{where}.date_rated is missing")
+    else:
+        try:
+            datetime.date.fromisoformat(date_rated)
+        except ValueError:
+            problems.append(
+                f"{where}.date_rated = {date_rated!r} must be a date written "
+                f"YYYY-MM-DD, e.g. 2026-10-17"
+            )
+
+
+def load_bathrooms(buildings: list[dict]) -> list[dict]:
+    """Read and validate data/bathrooms.json.
+
+    Takes the already-loaded buildings so every building_id can be checked
+    against a real building. Returns [] if the file does not exist yet, which
+    is a legitimate state -- the map simply has no bathrooms on it.
+    """
+    path = DATA_DIR / "bathrooms.json"
+
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return []
+
+    try:
+        bathrooms = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise DataError(
+            f"\n\ndata/bathrooms.json is not valid JSON:\n"
+            f"  - {exc.msg} at line {exc.lineno}, column {exc.colno}\n"
+        ) from None
+
+    problems: list[str] = []
+
+    if not isinstance(bathrooms, list):
+        _fail("bathrooms.json", [
+            f"the file must contain a list of bathrooms, got {type(bathrooms).__name__}"
+        ])
+
+    building_ids = {b["id"] for b in buildings}
+    seen_ids: set[str] = set()
+    for i, bathroom in enumerate(bathrooms):
+        _check_bathroom(i, bathroom, building_ids, seen_ids, problems)
+
+    if problems:
+        _fail("bathrooms.json", problems)
+
+    return bathrooms

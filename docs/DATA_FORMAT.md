@@ -131,23 +131,72 @@ whether the bathroom is open *in Berkeley*. (Implemented in Phase 6.)
 
 ## `data/bathrooms.json`
 
-**Not yet created — Phase 3.** The planned shape, from the project spec:
+A **list** of bathroom objects. Optional — if the file is missing, the map
+simply has no bathrooms on it.
 
 | Field | Type | Notes |
 |---|---|---|
-| `id` | string | Unique, URL-safe, same rules as a building `id` |
-| `building_id` | string | Must match an `id` in `buildings.json` |
-| `floor` | ? | To be decided |
-| `directions` | string | How to actually find it |
-| `single_stall` | boolean | A yes/no attribute, **not** a rating |
-| `hero_photo` | string | Filename in `public/static/photos/` |
-| `extra_photos` | list of strings | Entrance, hallway — shots that help you find it |
-| `ratings` | object | Nine categories, each 1–10 |
-| `review` | string | The roast |
-| `date_rated` | string | Date format to be decided |
+| `id` | string | Unique. Same rules as a building `id`. Becomes the link `/#<id>`. |
+| `building_id` | string | **Must match an `id` in `buildings.json`.** |
+| `floor` | string | Free text: `"1"`, `"4"`, `"Basement"`, `"Mezzanine"`. |
+| `directions` | string | How to find it once you are inside. |
+| `single_restroom` | boolean | The whole room is yours, with a door that locks — not one stall among several. A yes/no attribute, **not** a rating. |
+| `hero_photo` | string | Bare filename in `public/static/photos/`. Not a path. |
+| `extra_photos` | list of strings | May be `[]`. Entrance and hallway shots that help you find it. |
+| `ratings` | object | All nine categories, each a whole number 1–10. |
+| `review` | string | The roast. |
+| `date_rated` | string | ISO `YYYY-MM-DD`. |
 
-The nine rating categories, where **10 is always best**: Peace, Cleanliness,
-Privacy, Echo (10 = silent), Stall Gaps, Toilet Paper, Smell, Temperature,
-Busyness (10 = empty).
+### Ratings
 
-This table gets filled in properly when the file is created.
+Nine categories, all required. **10 is always best** — 10 echo means silent,
+10 busyness means empty:
+
+`peace`, `cleanliness`, `privacy`, `echo`, `stall_gaps`, `toilet_paper`,
+`smell`, `temperature`, `busyness`
+
+`single_restroom` is deliberately not here: it is an attribute, not a judgement.
+
+### Example
+
+```json
+{
+  "id": "wheeler-hall-150-4th-floor",
+  "building_id": "wheeler-hall",
+  "floor": "4",
+  "directions": "North stairwell to the top, then left at the end of the hall.",
+  "single_restroom": true,
+  "hero_photo": "wheeler_floor4.jpg",
+  "extra_photos": [],
+  "ratings": {
+    "peace": 9, "cleanliness": 8, "privacy": 10, "echo": 7, "stall_gaps": 10,
+    "toilet_paper": 6, "smell": 8, "temperature": 7, "busyness": 9
+  },
+  "review": "Marble walls and nobody around. Worth the four flights.",
+  "date_rated": "2026-10-17"
+}
+```
+
+### What is checked at startup
+
+Beyond types, validation catches the mistakes that would otherwise fail
+silently:
+
+- **`building_id` must match a real building.** A typo here would attach the
+  bathroom to nothing, so it would vanish from the map with no error at all.
+- **Every photo file must exist** in `public/static/photos/`. A misspelled
+  filename becomes a named error instead of a broken image in the browser.
+- **Every rating category present, each 1–10.** A misspelled category is
+  reported by name, with the valid list.
+- **`date_rated` must parse** as `YYYY-MM-DD`.
+
+### Photos
+
+Store a bare filename, not a path — everything lives in
+`public/static/photos/`. Two rules:
+
+1. **No people in any photo.** Not in the background, not reflected in a
+   mirror, not feet under a stall door.
+2. **Strip metadata before committing.** Phone photos embed GPS coordinates,
+   timestamps and device info, and this repo is public. This is done by hand —
+   there is no script for it.

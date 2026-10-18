@@ -7,9 +7,9 @@ __pycache__/
 *.py[cod]
 
 # Original, full-resolution photos straight off the phone.
-# These stay on your laptop ONLY. They are large and they carry EXIF metadata
-# including GPS coordinates and timestamps. The Phase 8 Pillow script reads
-# from here and writes stripped, resized copies into public/static/photos/,
+# Full-size originals stay on your laptop ONLY. They are large, and phone
+# photos carry metadata including GPS coordinates and timestamps. You strip
+# and resize these yourself before putting a copy in public/static/photos/,
 # which IS committed. Never commit this folder -- the repo is public.
 photos_raw/
 

@@ -48,13 +48,6 @@ const INITIAL_ZOOM = 15.5;
 //   liberty   full color, closest to a typical street map
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
 
-// OpenFreeMap requires this credit, and its style JSON does not carry an
-// attribution string, so MapLibre cannot add one on its own -- we must.
-const ATTRIBUTION =
-  '<a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> ' +
-  '&copy; <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> ' +
-  'Data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
-
 // Dot color lives in style.css (.building-dot). Phase 5 will vary it per
 // building by its tier, at which point it moves back in here.
 
@@ -82,33 +75,165 @@ const map = new maplibregl.Map({
 // rotated (right-click drag, or two-finger twist on a phone).
 map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-// compact: true shows an (i) button on narrow screens instead of a long line
-// of text, which keeps the credit visible without covering the map.
-map.addControl(
-  new maplibregl.AttributionControl({ compact: true, customAttribution: ATTRIBUTION }),
-);
-
-// --- 3. One pin per building ----------------------------------------------
+// OpenFreeMap requires visible credit, and it supplies the text itself: the
+// style's source points at a TileJSON which carries the attribution string,
+// and MapLibre reads it from there. So no custom text is passed here --
+// adding one would print the same credit twice, joined by a "|".
 //
-// Phase 3 replaces this basic popup with the real one (access state, bathroom
-// count, hero photos) and Phase 5 colors each pin by its building's tier.
+// The only reason this control is created by hand (with attributionControl
+// false on the map above) is compact: true, which collapses the credit to an
+// (i) button on narrow screens instead of a long line across the map.
+map.addControl(new maplibregl.AttributionControl({ compact: true }));
+
+// --- 3. Helpers for building the popup and the dialog ---------------------
+//
+// Everything below builds DOM nodes and sets .textContent rather than pasting
+// strings of HTML. textContent treats its input as plain text, so a stray "<"
+// in a building name or a review can never be interpreted as markup.
+
+/** A <p> (or any tag) carrying plain text. */
+function textEl(tag, className, text) {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  el.textContent = text;
+  return el;
+}
+
+/** The hours source: a clickable link when it is a URL, plain text otherwise. */
+function sourceEl(source) {
+  const wrap = document.createElement("p");
+  wrap.className = "popup-source";
+  wrap.append("Source: ");
+
+  if (source.startsWith("http")) {
+    const a = document.createElement("a");
+    // Only the host, so a long library URL does not blow out the popup width.
+    a.textContent = new URL(source).hostname.replace(/^www\./, "");
+    a.href = source;
+    a.target = "_blank";
+    a.rel = "noopener";
+    wrap.append(a);
+  } else {
+    wrap.append(source);
+  }
+  return wrap;
+}
+
+/** Fill the dialog with one bathroom's details and show it. */
+function openBathroom(bathroom, building) {
+  const body = document.getElementById("bathroom-dialog-body");
+  body.replaceChildren();
+
+  body.append(textEl("h2", "dialog-title", building.name));
+
+  const where = [`Floor ${bathroom.floor}`];
+  if (bathroom.single_restroom) where.push("single restroom");
+  body.append(textEl("p", "dialog-where", where.join(" · ")));
+
+  body.append(textEl("p", "dialog-directions", bathroom.directions));
+  body.append(textEl("p", "dialog-review", bathroom.review));
+
+  // Hero photo first, then any extras that help you find the place.
+  const gallery = document.createElement("div");
+  gallery.className = "dialog-gallery";
+  for (const file of [bathroom.hero_photo, ...bathroom.extra_photos]) {
+    const img = document.createElement("img");
+    img.src = `/static/photos/${file}`;
+    img.alt = `${building.name}, floor ${bathroom.floor}`;
+    img.loading = "lazy";
+    gallery.append(img);
+  }
+  body.append(gallery);
+
+  body.append(textEl("p", "dialog-date", `Rated ${bathroom.date_rated}`));
+
+  // Putting the id in the URL makes a single bathroom linkable and shareable,
+  // and makes the browser's back button close the dialog. Phase 7's rankings
+  // will link to these same addresses.
+  if (location.hash !== `#${bathroom.id}`) {
+    history.pushState(null, "", `#${bathroom.id}`);
+  }
+
+  const dialog = document.getElementById("bathroom-dialog");
+  if (!dialog.open) dialog.showModal();
+}
+
+/** Close the dialog and drop the bathroom id from the URL. */
+function closeBathroom() {
+  const dialog = document.getElementById("bathroom-dialog");
+  if (dialog.open) dialog.close();
+  if (location.hash) history.pushState(null, "", location.pathname);
+}
+
+/** Build the popup shown when a building dot is clicked. */
+function buildingPopupContent(building) {
+  const root = document.createElement("div");
+  root.className = "popup";
+
+  root.append(textEl("h3", "popup-name", building.name));
+
+  // hours_display is [] when no hours are published, which is true for most
+  // campus buildings. Saying so is honest; showing "Closed" would not be.
+  if (building.hours_display.length > 0) {
+    const list = document.createElement("ul");
+    list.className = "popup-hours";
+    for (const line of building.hours_display) {
+      list.append(textEl("li", null, line));
+    }
+    root.append(list);
+  } else {
+    root.append(textEl("p", "popup-no-hours", "Hours not posted"));
+  }
+
+  root.append(sourceEl(building.hours_source));
+
+  if (building.bathrooms.length === 0) {
+    root.append(textEl("p", "popup-none", "No bathrooms rated here yet"));
+    return root;
+  }
+
+  const count = building.bathrooms.length;
+  root.append(textEl("p", "popup-count",
+    `${count} bathroom${count === 1 ? "" : "s"} · tap a photo for details`));
+
+  const strip = document.createElement("div");
+  strip.className = "popup-photos";
+  for (const bathroom of building.bathrooms) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "popup-photo";
+    button.title = `Floor ${bathroom.floor}`;
+
+    const img = document.createElement("img");
+    img.src = `/static/photos/${bathroom.hero_photo}`;
+    img.alt = `${building.name}, floor ${bathroom.floor}`;
+    img.loading = "lazy";
+
+    button.append(img, textEl("span", "popup-photo-floor", `Floor ${bathroom.floor}`));
+    button.addEventListener("click", () => openBathroom(bathroom, building));
+    strip.append(button);
+  }
+  root.append(strip);
+
+  return root;
+}
+
+// --- 4. One dot per building ----------------------------------------------
+
 for (const building of buildings) {
-  // A plain dot rather than MapLibre's default teardrop pin. With ~170
-  // buildings on screen, big pins overlap into an unreadable pile; small
-  // dots stay distinct. Passing `element` replaces MapLibre's default marker
+  // A plain dot rather than MapLibre's default teardrop pin. With 120
+  // buildings on screen, big pins overlap into an unreadable pile; small dots
+  // stay distinct. Passing `element` replaces MapLibre's default marker
   // graphic entirely, and the styling lives in .building-dot in style.css.
   const dot = document.createElement("div");
   dot.className = "building-dot";
 
-  // Build the popup as a DOM element and set .textContent rather than pasting
-  // a string of HTML. textContent treats the name as plain text, so a stray
-  // "<" in a building name can never be interpreted as markup.
-  const label = document.createElement("strong");
-  label.textContent = building.name;
+  const popup = new maplibregl.Popup({ offset: 12, maxWidth: "300px" })
+    .setDOMContent(buildingPopupContent(building));
 
   new maplibregl.Marker({ element: dot, anchor: "center" })
     .setLngLat([building.lng, building.lat]) // again: lng first
-    .setPopup(new maplibregl.Popup({ offset: 10 }).setDOMContent(label))
+    .setPopup(popup)
     .addTo(map);
 }
 
@@ -120,3 +245,40 @@ if (buildings.length > 0) {
   for (const b of buildings) bounds.extend([b.lng, b.lat]);
   map.fitBounds(bounds, { padding: 40, duration: 0 });
 }
+
+// --- 5. Opening a bathroom straight from the URL --------------------------
+
+/** Find a bathroom by id across every building. */
+function findBathroom(id) {
+  for (const building of buildings) {
+    const match = building.bathrooms.find((b) => b.id === id);
+    if (match) return { bathroom: match, building };
+  }
+  return null;
+}
+
+/** Show whatever the current URL points at: a bathroom, or nothing. */
+function syncFromHash() {
+  const id = location.hash.slice(1);
+  const found = id ? findBathroom(id) : null;
+
+  if (found) {
+    openBathroom(found.bathroom, found.building);
+  } else {
+    const dialog = document.getElementById("bathroom-dialog");
+    if (dialog.open) dialog.close();
+  }
+}
+
+// popstate fires on back/forward, so the back button closes the dialog.
+window.addEventListener("popstate", syncFromHash);
+document.getElementById("bathroom-dialog-close")
+  .addEventListener("click", closeBathroom);
+// <dialog> fires `close` for Escape too, so the URL is tidied either way.
+document.getElementById("bathroom-dialog")
+  .addEventListener("close", () => {
+    if (location.hash) history.pushState(null, "", location.pathname);
+  });
+
+// Opening /#wheeler-hall-4th-floor directly goes straight to that bathroom.
+syncFromHash();

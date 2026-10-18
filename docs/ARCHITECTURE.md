@@ -27,10 +27,10 @@ berkeley_bathrooms/
 │   └── static/              #   -> so this is reachable at /static/...
 │       ├── css/style.css
 │       ├── js/map.js        #   MapLibre setup -- the only JavaScript here
-│       └── photos/          #   Compressed, EXIF-stripped bathroom photos
+│       └── photos/          #   Bathroom photos, committed and served
 │
 ├── scripts/
-│   └── compress_photos.py   # Pillow: photos_raw/ -> public/static/photos/ (Phase 8)
+│   └── (empty)              # room for tooling you run by hand
 │
 └── docs/
     ├── ARCHITECTURE.md      # This file
@@ -39,7 +39,7 @@ berkeley_bathrooms/
 ```
 
 Not in git: `.venv/` (uv rebuilds it from `uv.lock`) and `photos_raw/` (the
-full-resolution originals, which carry EXIF GPS data).
+full-resolution originals, which carry camera metadata).
 
 ## Why this layout
 

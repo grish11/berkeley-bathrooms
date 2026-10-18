@@ -89,18 +89,54 @@ map at <http://127.0.0.1:5000/>.
 
 ## Adding a bathroom
 
-**Phase 3.** Will cover: linking it to a `building_id`, floor and directions,
-the nine ratings, and writing the review.
+### 1. Take the photos
 
----
+A hero shot of the room, plus any extra shots that help someone find it — the
+entrance, the hallway, the door.
 
-## Adding photos
+**No people. Ever.** Not in the background, not reflected in a mirror, not feet
+under a stall door. Check every shot before it goes anywhere near the repo.
 
-**Phase 8**, when the Pillow script exists. Two rules that already apply:
+### 2. Strip the metadata and shrink it
 
-1. **No people in any photo.** Not in the background, not reflected in a
-   mirror, not feet under a stall door. Check before you commit.
-2. **Originals never get committed.** Put them in `photos_raw/` (already
-   gitignored). Phone photos embed GPS coordinates and timestamps, and this
-   repo is public — the Phase 8 script strips that metadata and writes clean,
-   resized copies into `public/static/photos/`, which is what ships.
+Phone photos embed **GPS coordinates, timestamps and device info**, and this
+repo is public — committing one straight off a phone publishes where you were
+and when. Strip it yourself before copying the photo in. There is no script in
+this repo that does it for you.
+
+While you are there, shrink it. An 8 MB phone photo makes the page slow; around
+1600px on the long edge is plenty.
+
+Keep the original in `photos_raw/` (gitignored) and put the cleaned copy in
+`public/static/photos/`.
+
+### 3. Add the entry
+
+Append an object to the list in `data/bathrooms.json`. See
+[DATA_FORMAT.md](DATA_FORMAT.md) for every field and a full example.
+
+The two fields worth care:
+
+- **`building_id`** must exactly match an `id` in `buildings.json`. Look it up;
+  do not guess.
+- **`hero_photo`** is a bare filename, not a path.
+
+### 4. Check it
+
+```bash
+uv run flask run --debug
+```
+
+The server refuses to start if anything is wrong, and names it:
+
+```
+3 problem(s) found in data/bathrooms.json:
+  - bathrooms[0] (wheeler-hall-4th).building_id = 'wheler-hall' does not match any building in buildings.json
+  - bathrooms[0] (wheeler-hall-4th).hero_photo = 'wheeler.jpg' does not exist in public/static/photos/
+  - bathrooms[0] (wheeler-hall-4th).ratings.privacy is missing
+```
+
+Then click that building's dot on the map: the popup should show its hours and
+your photo. Click the photo for the full detail.
+
+You can also go straight there with `http://127.0.0.1:5000/#<bathroom-id>`.

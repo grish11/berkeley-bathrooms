@@ -1,3 +1,52 @@
+/* ---- JetBrains Mono ----
+ *
+ * Self-hosted rather than pulled from Google Fonts: one less third-party
+ * request, nothing to break if that service is slow, and the files ship from
+ * the same CDN as the rest of public/. The font is SIL Open Font License 1.1,
+ * which permits bundling -- OFL.txt sits beside the files as the licence
+ * requires.
+ *
+ * Only the three faces the page uses are included -- the full family is
+ * sixteen woff2 files and about 1.2 MB -- and each is subset to the Latin
+ * characters this site can actually render. The stock faces carry Cyrillic,
+ * Greek and a large symbol set none of which appear here; dropping them took
+ * the three files from 275 KB to 48 KB.
+ *
+ * Regenerate after adding text in a new script, or glyphs will show as empty
+ * boxes:
+ *   uv run --no-project --with "fonttools[woff]" --with brotli pyftsubset \
+ *     JetBrainsMono-Regular.woff2 --output-file=out.woff2 --flavor=woff2 \
+ *     --layout-features='' \
+ *     --unicodes="U+0020-007E,U+00A0-00FF,U+0100-017F,U+2010-2015,U+2018-201D,U+2022,U+2026,U+20AC,U+2122"
+ *
+ * font-display: swap means text is readable in a fallback font immediately
+ * and re-renders when the webfont arrives, rather than being invisible while
+ * it downloads.
+ */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/static/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/static/fonts/JetBrainsMono-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/static/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Berkeley Bathrooms — stylesheet.
  *
  * This file lives in public/static/ because that is the directory Vercel's CDN
@@ -21,10 +70,26 @@
   --map-backdrop: #e7e4e0;
 
   --map-border-width: 3px;
+
+  /* One stack, set once and inherited. The fallbacks are the platform
+     monospace faces, so a reader sees monospace even before the webfont
+     lands -- no jump from proportional to monospace on load. */
+  --font: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Buttons and inputs do not inherit font-family by default -- without this
+   the close button and the photo buttons would fall back to the browser's
+   own UI font. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 /* ---- page shell ----
@@ -51,7 +116,7 @@ body {
   height: 100dvh;
   background: var(--page-bg);
   color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font);
   line-height: 1.5;
 }
 
@@ -228,4 +293,179 @@ body {
   #map {
     width: 94%;
   }
+}
+
+/* ---- building popup ----
+ *
+ * Shown when a dot is clicked: the building's name, its hours, where those
+ * hours came from, and a hero photo per rated bathroom.
+ */
+.popup {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.popup-name {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+  color: var(--berkeley-blue);
+}
+
+.popup-hours {
+  margin: 0 0 0.35rem;
+  padding: 0;
+  list-style: none;
+}
+
+.popup-hours li {
+  /* Tabular figures keep the times in a tidy column across rows. */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Most campus buildings publish no hours at all. Saying so plainly is the
+   honest option -- rendering it as "Closed" would be a claim we cannot make. */
+.popup-no-hours,
+.popup-none {
+  margin: 0 0 0.35rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.popup-source {
+  margin: 0 0 0.45rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.popup-count {
+  margin: 0 0 0.35rem;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.popup-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* A button rather than a bare image: it is a real control, so it is
+   keyboard-focusable and announced as clickable without extra work. */
+.popup-photo {
+  display: block;
+  padding: 0;
+  border: 2px solid var(--berkeley-blue);
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+}
+
+.popup-photo img {
+  display: block;
+  width: 116px;
+  height: 84px;
+  object-fit: cover;
+}
+
+.popup-photo-floor {
+  display: block;
+  padding: 0.12rem 0.3rem;
+  background: var(--berkeley-blue);
+  color: #fff;
+  font-size: 0.64rem;
+}
+
+.popup-photo:hover img,
+.popup-photo:focus-visible img {
+  opacity: 0.85;
+}
+
+/* ---- bathroom dialog ----
+ *
+ * <dialog> handles Escape, focus trapping and making the page behind inert.
+ * These rules only cover appearance.
+ */
+#bathroom-dialog {
+  /* Set here rather than on each child, so the whole dialog scales
+     together if this is ever adjusted again. */
+  font-size: 0.85rem;
+  line-height: 1.45;
+  width: min(40rem, 92vw);
+  max-height: 88vh;
+  padding: 1.5rem;
+  border: 3px solid var(--berkeley-blue);
+  border-radius: 0;
+  background: var(--page-bg);
+  color: var(--ink);
+  overflow-y: auto;
+}
+
+#bathroom-dialog::backdrop {
+  background: rgba(0, 32, 62, 0.55);
+}
+
+.dialog-close {
+  float: right;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dialog-close:hover {
+  color: var(--berkeley-blue);
+}
+
+.dialog-title {
+  margin: 0 0 0.15rem;
+  color: var(--berkeley-blue);
+  font-size: 1.1rem;
+}
+
+.dialog-where {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.dialog-directions {
+  margin: 0 0 0.9rem;
+}
+
+.dialog-review {
+  margin: 0 0 1.1rem;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--california-gold);
+  font-style: italic;
+}
+
+.dialog-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.6rem;
+}
+
+.dialog-gallery img {
+  width: 100%;
+  /* aspect-ratio reserves the space before the photo has downloaded. Without
+     it the image is 0px tall until it decodes, so the dialog opens short and
+     then jumps as each photo arrives.
+     object-fit: contain rather than cover because this is the view where you
+     are trying to SEE the bathroom -- cropping to fill the box could hide the
+     very detail that helps you find it. */
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: #f0eeec;
+  border: 1px solid rgba(0, 50, 98, 0.25);
+}
+
+.dialog-date {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.68rem;
 }

@@ -31,6 +31,21 @@
   <script type="application/json" id="buildings-data">
     {{ buildings|tojson }}
   </script>
+
+  {# The bathroom detail dialog. Empty until map.js fills it when a hero photo
+     is clicked. <dialog> is a real HTML element with built-in modal behaviour:
+     Escape closes it and the rest of the page is made inert for free, so none
+     of that has to be written by hand.
+     https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog #}
+  <dialog id="bathroom-dialog" aria-label="Bathroom details">
+    <button
+      type="button"
+      id="bathroom-dialog-close"
+      class="dialog-close"
+      aria-label="Close"
+    >&times;</button>
+    <div id="bathroom-dialog-body"></div>
+  </dialog>
 {% endblock %}
 
 {% block scripts %}

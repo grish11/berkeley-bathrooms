@@ -14,6 +14,7 @@ Docs:
 from flask import Flask, render_template
 
 import data
+import hours
 
 # Why static files are configured this way:
 #
@@ -41,33 +42,61 @@ app = Flask(__name__, static_folder="public/static", static_url_path="/static")
 # function instance starts, so the files are read once and reused across
 # requests rather than re-parsed each time.
 BUILDINGS = data.load_buildings()
+BATHROOMS = data.load_bathrooms(BUILDINGS)
 
 
-def get_buildings():
-    """Return the buildings, re-reading the JSON while developing.
+def load_everything():
+    """Read and validate both JSON files, returning (buildings, bathrooms).
 
-    Flask's --debug reloader only watches *Python* files. Without this, editing
-    data/buildings.json would change nothing until you stopped and restarted
-    the server by hand -- the old list stays in memory and it looks like your
-    edit was ignored.
+    Flask's --debug reloader only watches *Python* files. Without re-reading
+    here, editing data/buildings.json or data/bathrooms.json would change
+    nothing until you stopped and restarted the server by hand -- the old data
+    stays in memory and it looks like your edit was ignored.
 
-    So in debug mode we re-read the file on every request: edit the JSON, hit
-    refresh, see the change. A typo still raises data.DataError, which the
-    debugger shows in the browser with the same clear message.
+    So in debug mode we re-read on every request: edit the JSON, hit refresh,
+    see the change. A typo still raises data.DataError, which the debugger
+    shows in the browser with the same clear message.
 
-    In production the file cannot change while the app is running, so the list
-    loaded at import is reused and nothing is re-parsed per request.
+    In production the files cannot change while the app is running, so the
+    data loaded at import is reused and nothing is re-parsed per request.
     """
     if app.debug:
-        return data.load_buildings()
-    return BUILDINGS
+        buildings = data.load_buildings()
+        return buildings, data.load_bathrooms(buildings)
+    return BUILDINGS, BATHROOMS
+
+
+def build_map_data():
+    """Buildings, each with its readable hours and its bathrooms attached.
+
+    The template embeds this for map.js to read. Doing the joining and the
+    hours formatting here rather than in JavaScript keeps to the rule in
+    docs/ARCHITECTURE.md that all the rules live in Python -- the browser only
+    draws what it is given.
+    """
+    buildings, bathrooms = load_everything()
+
+    by_building = {}
+    for bathroom in bathrooms:
+        by_building.setdefault(bathroom["building_id"], []).append(bathroom)
+
+    result = []
+    for building in buildings:
+        result.append({
+            **building,
+            # [] means no hours are published, which is true for most campus
+            # buildings. The popup says so rather than implying "closed".
+            "hours_display": hours.format_schedule(building["access_schedule"]),
+            "bathrooms": by_building.get(building["id"], []),
+        })
+    return result
 
 
 @app.route("/")
 def index():
     """The map page.
 
-    Passes the buildings to the template, which embeds them in the page for
-    the MapLibre code in public/static/js/map.js to read.
+    Passes the buildings -- with hours and bathrooms attached -- to the
+    template, which embeds them in the page for public/static/js/map.js.
     """
-    return render_template("index.html", buildings=get_buildings())
+    return render_template("index.html", buildings=build_map_data())

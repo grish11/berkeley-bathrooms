@@ -52,14 +52,14 @@ An interactive map of UC Berkeley campus (plus a few spots very close to campus)
    - All photos, including extra photos that help people find it (entrance,
      hallway)
    - Location: floor, wing, and directions
-   - Whether it is single-stall
+   - Whether it is a single restroom (whole room to yourself, door locks)
    - Every category rating
    - Overall score and tier name
    - A short review or roast written by me
 
 4. RATINGS: 1-10 per category, where 10 is ALWAYS best (10 Echo = silent, 10
    Busyness = empty). Categories: Peace, Cleanliness, Privacy, Echo, Stall Gaps,
-   Toilet Paper, Smell, Temperature, Busyness. Single-stall is a yes/no
+   Toilet Paper, Smell, Temperature, Busyness. single_restroom is a yes/no
    attribute, not a rating. Overall score = average of the category ratings,
    rounded to the nearest whole number. Put the formula in one function so it is
    easy to change.
@@ -85,7 +85,7 @@ An interactive map of UC Berkeley campus (plus a few spots very close to campus)
 <not_in_v1> Do not build these yet, but keep the code organized so they can be
 added later without a rewrite:
 
-- Filters (single-stall only, open now, minimum tier).
+- Filters (single restroom only, open now, minimum tier).
 - "Find me peace NOW" button using the user's location.
 - Checking access for a chosen day and time instead of now.
 - Community ratings with Berkeley CalNet login. Ratings appear anonymous to the
@@ -119,7 +119,7 @@ buildings.json: id, name, lat, lng, access_schedule access_schedule example: {
 "22:00", "end": "24:00", "access": "cal_id"} ], "sat-sun": [ {"start": "08:00",
 "end": "20:00", "access": "card_key"} ] }
 
-bathrooms.json: id, building_id, floor, directions, single_stall (bool),
+bathrooms.json: id, building_id, floor, directions, single_restroom (bool),
 hero_photo, extra_photos (list), ratings (category -> 1-10), review, date_rated
 </data_model>
 

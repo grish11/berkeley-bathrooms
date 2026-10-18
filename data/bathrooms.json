@@ -1,0 +1,24 @@
+[
+  {
+    "id": "wheeler-hall-150-4th-floor",
+    "building_id": "wheeler-hall",
+    "floor": "4",
+    "directions": " Wheeler 150, 4th floor. Located Across from the Female Bathroom.",
+    "single_restroom": true,
+    "hero_photo": "wheeler_floor4.jpg",
+    "extra_photos": [],
+    "ratings": {
+      "peace": 5,
+      "cleanliness": 5,
+      "privacy": 5,
+      "echo": 5,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 5,
+      "temperature": 5,
+      "busyness": 5
+    },
+    "review": "Very peaceful and clean!",
+    "date_rated": "2026-10-17"
+  }
+]
