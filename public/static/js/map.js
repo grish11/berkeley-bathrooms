@@ -48,6 +48,14 @@ const INITIAL_ZOOM = 15.5;
 //   liberty   full color, closest to a typical street map
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
 
+// How each gender value is written out. The outline colour is a quick cue,
+// but the word is what makes it unambiguous -- see style.css.
+const GENDER_LABELS = {
+  men: "Men's",
+  women: "Women's",
+  all_gender: "All-gender",
+};
+
 // Dot color lives in style.css (.building-dot). Phase 5 will vary it per
 // building by its tier, at which point it moves back in here.
 
@@ -126,12 +134,17 @@ function openBathroom(bathroom, building) {
 
   body.append(textEl("h2", "dialog-title", building.name));
 
-  const where = [`Floor ${bathroom.floor}`];
+  const where = [GENDER_LABELS[bathroom.gender] ?? bathroom.gender];
+  where.push(`Floor ${bathroom.floor}`);
   if (bathroom.single_restroom) where.push("single restroom");
   body.append(textEl("p", "dialog-where", where.join(" · ")));
 
   body.append(textEl("p", "dialog-directions", bathroom.directions));
-  body.append(textEl("p", "dialog-review", bathroom.review));
+
+  // review is optional: a bathroom can be photographed before it is rated.
+  if (bathroom.review) {
+    body.append(textEl("p", "dialog-review", bathroom.review));
+  }
 
   // Hero photo first, then any extras that help you find the place.
   const gallery = document.createElement("div");
@@ -145,7 +158,9 @@ function openBathroom(bathroom, building) {
   }
   body.append(gallery);
 
-  body.append(textEl("p", "dialog-date", `Rated ${bathroom.date_rated}`));
+  if (bathroom.date_rated) {
+    body.append(textEl("p", "dialog-date", `Rated ${bathroom.date_rated}`));
+  }
 
   // Putting the id in the URL makes a single bathroom linkable and shareable,
   // and makes the browser's back button close the dialog. Phase 7's rankings
@@ -201,8 +216,9 @@ function buildingPopupContent(building) {
   for (const bathroom of building.bathrooms) {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "popup-photo";
-    button.title = `Floor ${bathroom.floor}`;
+    // The gender class is what colours the outline -- see style.css.
+    button.className = `popup-photo gender-${bathroom.gender}`;
+    button.title = `${GENDER_LABELS[bathroom.gender] ?? ""} · Floor ${bathroom.floor}`;
 
     const img = document.createElement("img");
     img.src = `/static/photos/${bathroom.hero_photo}`;
@@ -226,7 +242,12 @@ for (const building of buildings) {
   // stay distinct. Passing `element` replaces MapLibre's default marker
   // graphic entirely, and the styling lives in .building-dot in style.css.
   const dot = document.createElement("div");
-  dot.className = "building-dot";
+  // Blue when there is at least one bathroom here, grey when there is not --
+  // so the map shows at a glance where there is something to look at. The
+  // colours live in style.css.
+  dot.className = building.bathrooms.length > 0
+    ? "building-dot"
+    : "building-dot is-unrated";
 
   const popup = new maplibregl.Popup({ offset: 12, maxWidth: "300px" })
     .setDOMContent(buildingPopupContent(building));

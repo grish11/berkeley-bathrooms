@@ -8,6 +8,9 @@ How the files fit together and what happens when someone loads a page.
 berkeley_bathrooms/
 ├── app.py                   # The Flask app + all routes. Vercel's entrypoint.
 ├── data.py                  # Loads + validates data/*.json at startup
+├── hours.py                 # Turns an access_schedule into readable lines
+├── admin.py                 # The /add form. LOCAL ONLY -- see below
+├── photos.py                # Resizes + strips metadata from uploads
 ├── pyproject.toml           # Project metadata + dependencies (managed by uv)
 ├── uv.lock                  # Exact pinned versions. Committed on purpose.
 ├── .python-version          # "3.14" — pins the interpreter locally AND on Vercel
@@ -26,7 +29,8 @@ berkeley_bathrooms/
 ├── public/                  # Served directly by Vercel's CDN at the URL root.
 │   └── static/              #   -> so this is reachable at /static/...
 │       ├── css/style.css
-│       ├── js/map.js        #   MapLibre setup -- the only JavaScript here
+│       ├── js/map.js        #   MapLibre setup -- the map page's JavaScript
+│       ├── js/add.js        #   /add form only: the extra-photos picker
 │       └── photos/          #   Bathroom photos, committed and served
 │
 ├── scripts/
@@ -213,6 +217,18 @@ OpenFreeMap requires visible attribution, and its style JSON does **not**
 carry an attribution string — so MapLibre cannot add one automatically. The
 credit is set explicitly in `map.js` via `AttributionControl`. Do not remove
 it.
+
+### The /add form is local only
+
+`app.py` registers `admin.py`'s routes **only when `app.debug` is true**, so
+`/add` does not exist on the deployed site. Two reasons:
+
+1. It writes files. A form that saves uploads and edits JSON, reachable by
+   anyone, is a way to fill a server with whatever a stranger uploads.
+2. It could not work deployed anyway, for the reason below.
+
+Not registering the route at all is a stronger guarantee than checking a flag
+inside the handler.
 
 ### The read-only constraint
 

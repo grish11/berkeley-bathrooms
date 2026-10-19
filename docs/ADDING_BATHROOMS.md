@@ -89,6 +89,25 @@ map at <http://127.0.0.1:5000/>.
 
 ## Adding a bathroom
 
+**The quick way: use the form.** Run the server and open
+<http://127.0.0.1:5000/add>. Pick the building, type the floor and directions,
+choose which room it is, attach the photos, submit. It saves the photos and
+writes the entry for you.
+
+That page only exists while running locally. It writes files, which a deployed
+site must not let strangers do — and could not do anyway, since a Vercel
+Function's filesystem is read-only. So the workflow is: add bathrooms locally,
+then commit the JSON and photos it produced.
+
+Photos sent through the form are resized to 1600px and saved with **all
+metadata removed**, so no GPS coordinates or timestamps reach the repo. You
+still have to check there are no people in the shot.
+
+Ratings and the review are not in the form yet; add those by editing
+`data/bathrooms.json` afterwards.
+
+### Doing it by hand instead
+
 ### 1. Take the photos
 
 A hero shot of the room, plus any extra shots that help someone find it — the

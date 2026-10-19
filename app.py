@@ -32,6 +32,11 @@ import hours
 # rule that doesn't start with one.
 app = Flask(__name__, static_folder="public/static", static_url_path="/static")
 
+# Only used to sign the flash messages the local /add form shows. Nothing
+# secret is stored in a session, and the form does not exist in production,
+# so a fixed development value is fine here.
+app.secret_key = "berkeley-bathrooms-local-dev"
+
 
 # Load and validate the JSON once, at startup, rather than on every request.
 # If there is a typo in data/buildings.json this raises data.DataError here --
@@ -90,6 +95,17 @@ def build_map_data():
             "bathrooms": by_building.get(building["id"], []),
         })
     return result
+
+
+# The /add form is a LOCAL tool for adding bathrooms, and is only attached
+# while developing. It writes photos and edits JSON, which a deployed site
+# must not let strangers do -- and could not do anyway, since a Vercel
+# Function's filesystem is read-only. Not registering the route at all is a
+# stronger guarantee than checking a flag inside it.
+if app.debug:
+    import admin
+
+    admin.register(app)
 
 
 @app.route("/")

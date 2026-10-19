@@ -30,6 +30,10 @@
       <p class="tagline">Because you deserve to poop in peace.</p>
       <nav class="site-nav">
         {# Phase 7 adds the Hall of Fame link here. #}
+        {% if config.DEBUG %}
+          {# Only while developing -- the /add route does not exist otherwise. #}
+          <a href="{{ url_for('add_form') }}">Add</a>
+        {% endif %}
       </nav>
     </header>
 

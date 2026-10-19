@@ -37,6 +37,11 @@ WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 # The nine rating categories. 10 is ALWAYS best: 10 echo = silent, 10 busyness
 # = empty. Whether it is a single restroom is a yes/no attribute, not a
 # rating, so it is not here.
+# How the room is signed. Drives the outline colour on the hero photo, and is
+# also shown as a word -- red and green are the pair colourblind viewers most
+# often confuse, and two of these three are exactly that.
+GENDERS = ("men", "women", "all_gender")
+
 RATING_CATEGORIES = (
     "peace", "cleanliness", "privacy", "echo", "stall_gaps",
     "toilet_paper", "smell", "temperature", "busyness",
@@ -330,11 +335,21 @@ def _check_bathroom(i, bathroom, building_ids, seen_ids, problems):
             f"in buildings.json"
         )
 
-    for field in ("floor", "directions", "review"):
+    for field in ("floor", "directions"):
         _require_text(where, bathroom, field, problems)
+
+    review = bathroom.get("review")
+    if review is not None and not isinstance(review, str):
+        problems.append(f"{where}.review must be a string if present")
 
     if not isinstance(bathroom.get("single_restroom"), bool):
         problems.append(f"{where}.single_restroom must be true or false")
+
+    if bathroom.get("gender") not in GENDERS:
+        problems.append(
+            f"{where}.gender = {bathroom.get('gender')!r} must be one of "
+            f"{', '.join(GENDERS)}"
+        )
 
     _check_photo(where, "hero_photo", bathroom.get("hero_photo"), problems)
 
@@ -345,15 +360,17 @@ def _check_bathroom(i, bathroom, building_ids, seen_ids, problems):
         for j, photo in enumerate(extra):
             _check_photo(where, f"extra_photos[{j}]", photo, problems)
 
-    if "ratings" not in bathroom:
-        problems.append(f"{where}.ratings is missing")
-    else:
+    # ratings, review and date_rated are optional. A bathroom can be
+    # photographed and placed on the map before it has been rated -- that is
+    # the normal state right after adding one through the /add form. They are
+    # still validated when present.
+    if bathroom.get("ratings") is not None:
         _check_ratings(where, bathroom["ratings"], problems)
 
     date_rated = bathroom.get("date_rated")
-    if not isinstance(date_rated, str):
-        problems.append(f"{where}.date_rated is missing")
-    else:
+    if date_rated is not None and not isinstance(date_rated, str):
+        problems.append(f"{where}.date_rated must be a string if present")
+    elif isinstance(date_rated, str):
         try:
             datetime.date.fromisoformat(date_rated)
         except ValueError:

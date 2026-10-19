@@ -74,6 +74,19 @@
 
   --map-border-width: 3px;
 
+  /* A building with no bathroom rated yet. Grey rather than a faded blue, so
+     it reads as a different KIND of dot rather than a blue one that is far
+     away or still loading. */
+  --dot-unrated: #6d616f;
+
+  /* How a bathroom is signed. These outline the hero photo -- but the gender
+     is also written out in words, because red and green are the pair that
+     colourblind viewers most often cannot tell apart, and two of these three
+     are exactly that. */
+  --gender-men: #1565c0;
+  --gender-women: #c62828;
+  --gender-all: #2e7d32;
+
   /* One stack, set once and inherited. The fallbacks are the platform
      monospace faces, so a reader sees monospace even before the webfont
      lands -- no jump from proportional to monospace on load. */
@@ -216,9 +229,14 @@ body {
  * legible at any density. The white ring keeps dots separable where buildings
  * sit close together.
  *
- * Phase 5 will color these by the building's tier.
+ * Colour says whether there is anything to see: Berkeley Blue where at least
+ * one bathroom has been added, grey where none has. map.js decides which.
+ * Phase 5 will colour the blue ones by the building's tier.
  */
 .building-dot {
+  --dot: var(--berkeley-blue);
+  --dot-ring: rgba(0, 50, 98, 0.35);
+
   /* The clickable element is 28px square but completely transparent -- only
      the ::after circle inside it is visible. This separates "how big the dot
      looks" from "how big an area responds to a click", so you can be roughly
@@ -241,10 +259,18 @@ body {
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: var(--berkeley-blue);
+  background: var(--dot);
   border: 2px solid #fff;
-  box-shadow: 0 0 0 1px rgba(0, 50, 98, 0.35);
+  box-shadow: 0 0 0 1px var(--dot-ring);
   transition: transform 0.1s ease;
+}
+
+/* No bathrooms here yet. Only the two colour variables change -- size, ring
+   and hover behaviour stay identical, so it is still obviously a dot you can
+   click to see the building's hours. */
+.building-dot.is-unrated {
+  --dot: var(--dot-unrated);
+  --dot-ring: rgba(109, 97, 111, 0.4);
 }
 
 /* Growing the dot on hover confirms which building you are about to click --
@@ -372,7 +398,8 @@ body {
 .popup-photo {
   display: block;
   padding: 0;
-  border: 2px solid var(--berkeley-blue);
+  /* Overridden per bathroom by .gender-* below. */
+  border: 3px solid var(--berkeley-blue);
   background: none;
   cursor: pointer;
   font: inherit;
@@ -409,7 +436,7 @@ body {
      together if this is ever adjusted again. */
   font-size: 0.85rem;
   line-height: 1.45;
-  width: min(40rem, 92vw);
+  width: min(60rem, 94vw);
   max-height: 88vh;
   padding: 1.5rem;
   border: 3px solid var(--berkeley-blue);
@@ -462,23 +489,25 @@ body {
   font-style: italic;
 }
 
+/* One photo per row. This is the view where you are trying to SEE the
+   bathroom, so a photo gets the full width of the dialog rather than sharing
+   a row with its neighbour. */
 .dialog-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: 1fr;
+  justify-items: center;
   gap: 0.6rem;
 }
 
+/* No fixed box and no object-fit: each photo is drawn at its own shape, only
+   capped by the dialog's width and by 72vh so a tall phone photo still leaves
+   the next one in view. A fixed box was what put the grey bars down the sides
+   of portrait shots -- the box was 4/3 and the photo was not. */
 .dialog-gallery img {
-  width: 100%;
-  /* aspect-ratio reserves the space before the photo has downloaded. Without
-     it the image is 0px tall until it decodes, so the dialog opens short and
-     then jumps as each photo arrives.
-     object-fit: contain rather than cover because this is the view where you
-     are trying to SEE the bathroom -- cropping to fill the box could hide the
-     very detail that helps you find it. */
-  aspect-ratio: 4 / 3;
-  object-fit: contain;
-  background: #f0eeec;
+  max-width: 100%;
+  max-height: 72vh;
+  width: auto;
+  height: auto;
   border: 1px solid rgba(0, 50, 98, 0.25);
 }
 
@@ -486,4 +515,203 @@ body {
   margin: 0.8rem 0 0;
   color: var(--muted);
   font-size: 0.68rem;
+}
+
+
+/* ---- gender ----
+ *
+ * One colour per kind of room, used for the hero photo's outline only.
+ * map.js puts these classes on from the data; the gender is also shown as a
+ * word in the detail dialog, so the colour is a fast cue rather than the only
+ * way to tell.
+ */
+/* Only the border carries the colour. The caption strip stays Berkeley Blue
+   so the colour reads as an outline around the photo rather than recolouring
+   the whole tile. */
+.gender-men {
+  border-color: var(--gender-men) !important;
+}
+
+.gender-women {
+  border-color: var(--gender-women) !important;
+}
+
+.gender-all_gender {
+  border-color: var(--gender-all) !important;
+}
+
+/* ---- the /add form (local tool only) ---- */
+
+.form-page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.2rem 3rem;
+  overflow-y: auto;
+}
+
+.form-page h1 {
+  margin: 0 0 0.4rem;
+  color: var(--berkeley-blue);
+  font-size: 1.4rem;
+}
+
+.form-note {
+  margin: 0 0 1.2rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.form-page label {
+  display: block;
+  margin: 1rem 0 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.form-page .hint {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.form-page input[type="text"],
+.form-page input:not([type]),
+.form-page textarea,
+.form-page select,
+.form-page input[type="file"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid rgba(0, 50, 98, 0.35);
+  border-radius: 0;
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+.form-page input:focus,
+.form-page textarea:focus,
+.form-page select:focus {
+  outline: 2px solid var(--berkeley-blue);
+  outline-offset: 1px;
+}
+
+.gender-choice {
+  margin: 1.2rem 0 0;
+  padding: 0.7rem 0.9rem 0.9rem;
+  border: 2px solid rgba(0, 50, 98, 0.35);
+}
+
+.gender-choice legend {
+  padding: 0 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.gender-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.2rem 0.9rem 0.2rem 0 !important;
+  font-weight: 400 !important;
+}
+
+/* The swatch beside each choice is the same colour the photo will be
+   outlined in, so the mapping is visible while filling the form in. */
+.gender-option span::before {
+  content: "";
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.35rem;
+  vertical-align: -1px;
+}
+.gender-option.gender-men span::before { background: var(--gender-men); }
+.gender-option.gender-women span::before { background: var(--gender-women); }
+.gender-option.gender-all_gender span::before { background: var(--gender-all); }
+
+/* The running list of extra photos add.js has collected. */
+.chosen-photos {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chosen-photos li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid rgba(0, 50, 98, 0.25);
+  margin-bottom: 0.2rem;
+  font-size: 0.75rem;
+}
+
+.chosen-name {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.chosen-size {
+  color: var(--muted);
+}
+
+.chosen-remove {
+  border: none;
+  background: none;
+  padding: 0.1rem 0.2rem;
+  color: var(--gender-women);
+  font-size: 0.72rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.form-page label.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  font-weight: 400;
+}
+
+.form-page label.checkbox input {
+  margin-top: 0.2rem;
+}
+
+.submit {
+  margin-top: 1.4rem;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  background: var(--berkeley-blue);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: #00213f;
+}
+
+.flashes {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* Same rule as the hero photos: the colour is the outline and nothing else.
+   A tinted fill behind the text would recolour the whole strip, so the box
+   stays white and only its border says whether this went well or badly. */
+.flash {
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  border: 2px solid;
+}
+
+.flash-error {
+  border-color: var(--gender-women);
+}
+
+.flash-ok {
+  border-color: var(--gender-all);
 }

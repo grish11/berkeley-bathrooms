@@ -141,11 +141,12 @@ simply has no bathrooms on it.
 | `floor` | string | Free text: `"1"`, `"4"`, `"Basement"`, `"Mezzanine"`. |
 | `directions` | string | How to find it once you are inside. |
 | `single_restroom` | boolean | The whole room is yours, with a door that locks — not one stall among several. A yes/no attribute, **not** a rating. |
+| `gender` | string | `men`, `women` or `all_gender`. Colours the hero photo's outline blue / red / green, and is shown as a word. |
 | `hero_photo` | string | Bare filename in `public/static/photos/`. Not a path. |
 | `extra_photos` | list of strings | May be `[]`. Entrance and hallway shots that help you find it. |
-| `ratings` | object | All nine categories, each a whole number 1–10. |
-| `review` | string | The roast. |
-| `date_rated` | string | ISO `YYYY-MM-DD`. |
+| `ratings` | object | *Optional.* All nine categories, each a whole number 1–10. Absent until you rate it. |
+| `review` | string | *Optional.* The roast. |
+| `date_rated` | string | *Optional.* ISO `YYYY-MM-DD`. |
 
 ### Ratings
 
@@ -166,6 +167,7 @@ Nine categories, all required. **10 is always best** — 10 echo means silent,
   "floor": "4",
   "directions": "North stairwell to the top, then left at the end of the hall.",
   "single_restroom": true,
+  "gender": "all_gender",
   "hero_photo": "wheeler_floor4.jpg",
   "extra_photos": [],
   "ratings": {
@@ -176,6 +178,13 @@ Nine categories, all required. **10 is always best** — 10 echo means silent,
   "date_rated": "2026-10-17"
 }
 ```
+
+### Rated later, not now
+
+`ratings`, `review` and `date_rated` are **optional**. A bathroom can be
+photographed and placed on the map before it has been rated — which is exactly
+what the `/add` form produces. The detail view simply omits the review and the
+date until they exist. They are still validated when present.
 
 ### What is checked at startup
 

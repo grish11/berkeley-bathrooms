@@ -13,6 +13,9 @@ High-level only. Details live in the phase discussions.
       tier and the access dot are deferred to Phases 5 and 6.
 - [ ] **Phase 4 — Bathroom detail view.** All photos, location, directions,
       single-restroom flag, every rating, overall score, tier, review.
+- [x] **/add form.** Local-only page for adding a bathroom: building, floor,
+      directions, gender, photos. Resizes and strips metadata on upload.
+      Ratings and review still added by editing the JSON.
 - [ ] **Phase 5 — Tiers.** Score→tier in one function. Iron → Challenger, each
       with a color, used for pins and tier text. Building tier = best bathroom.
 - [ ] **Phase 6 — Access by day/time.** Weekly per-building schedule in
