@@ -19,6 +19,167 @@
       "busyness": 5
     },
     "review": "Very peaceful and clean!",
-    "date_rated": "2026-10-17"
+    "date_rated": "2026-10-17",
+    "gender": "all_gender"
+  },
+  {
+    "id": "grimes-engineering-center-basement",
+    "building_id": "grimes-engineering-center",
+    "floor": "Basement",
+    "directions": "Across from the Engineering Library.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "grimes-engineering-center-basement-hero.jpg",
+    "extra_photos": [
+      "grimes-engineering-center-basement-1.jpg"
+    ]
+  },
+  {
+    "id": "grimes-engineering-center-2",
+    "building_id": "grimes-engineering-center",
+    "floor": "2",
+    "directions": "Follow signs to find bathroom.",
+    "single_restroom": false,
+    "gender": "all_gender",
+    "hero_photo": "grimes-engineering-center-2-hero.jpg",
+    "extra_photos": [
+      "grimes-engineering-center-2-1.jpg",
+      "grimes-engineering-center-2-2.jpg",
+      "grimes-engineering-center-2-3.jpg"
+    ]
+  },
+  {
+    "id": "grimes-engineering-center-3",
+    "building_id": "grimes-engineering-center",
+    "floor": "3",
+    "directions": "Follow signs to find bathroom.",
+    "single_restroom": false,
+    "gender": "all_gender",
+    "hero_photo": "grimes-engineering-center-2-hero.jpg",
+    "extra_photos": [
+      "grimes-engineering-center-2-1.jpg",
+      "grimes-engineering-center-2-2.jpg",
+      "grimes-engineering-center-2-3.jpg"
+    ]
+  },
+  {
+    "id": "doe-memorial-library-1",
+    "building_id": "doe-memorial-library",
+    "floor": "1",
+    "directions": "Across from the Information Desk. Not at the Circulation Desk.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "doe-memorial-library-1-hero.jpg",
+    "extra_photos": [
+      "doe-memorial-library-1-1.jpg"
+    ]
+  },
+  {
+    "id": "doe-memorial-library-2",
+    "building_id": "doe-memorial-library",
+    "floor": "2",
+    "directions": "Follow signs to find bathroom.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "doe-memorial-library-2-hero.jpg",
+    "extra_photos": []
+  },
+  {
+    "id": "doe-memorial-library-3",
+    "building_id": "doe-memorial-library",
+    "floor": "3",
+    "directions": "Take the stairs to Floor 3. Then the bathroom should be to the right of the Art History/Classics Library",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "doe-memorial-library-3-hero.jpg",
+    "extra_photos": [
+      "doe-memorial-library-3-1.jpg",
+      "doe-memorial-library-3-2.jpg",
+      "doe-memorial-library-3-3.jpg"
+    ]
+  },
+  {
+    "id": "main-stacks-b",
+    "building_id": "main-stacks",
+    "floor": "B",
+    "directions": "Take the stairs or elevator down to floor B, then follow the signs. The other images is a single stall that has a sink, mirror and toilet.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "main-stacks-d-hero.jpg",
+    "extra_photos": [
+      "main-stacks-d-1.jpg",
+      "main-stacks-d-2.jpg",
+      "main-stacks-d-3.jpg"
+    ]
+  },
+  {
+    "id": "main-stacks-c",
+    "building_id": "main-stacks",
+    "floor": "C",
+    "directions": "Take the stairs or elevator down to floor C, then follow the signs. The other images is a single stall that has a sink, mirror and toilet.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "main-stacks-d-hero.jpg",
+    "extra_photos": [
+      "main-stacks-d-1.jpg",
+      "main-stacks-d-2.jpg",
+      "main-stacks-d-3.jpg"
+    ]
+  },
+  {
+    "id": "main-stacks-d",
+    "building_id": "main-stacks",
+    "floor": "D",
+    "directions": "Take the stairs or elevator down to the lowest floor (D) then follow the signs. The other images is a single stall that has a sink, mirror and toilet.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "main-stacks-d-hero.jpg",
+    "extra_photos": [
+      "main-stacks-d-1.jpg",
+      "main-stacks-d-2.jpg",
+      "main-stacks-d-3.jpg"
+    ]
+  },
+  {
+    "id": "moffitt-undergraduate-library-3",
+    "building_id": "moffitt-undergraduate-library",
+    "floor": "3",
+    "directions": "Follow signs to find the bathroom.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "moffitt-undergraduate-library-3-hero.jpg",
+    "extra_photos": [
+      "moffitt-undergraduate-library-3-1.jpg"
+    ]
+  },
+  {
+    "id": "moffitt-undergraduate-library-2",
+    "building_id": "moffitt-undergraduate-library",
+    "floor": "2",
+    "directions": "Located to the right of the exit to from the elevator area.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "moffitt-undergraduate-library-2-hero.jpg",
+    "extra_photos": []
+  },
+  {
+    "id": "martin-luther-king-jr-student-union-1",
+    "building_id": "martin-luther-king-jr-student-union",
+    "floor": "1",
+    "directions": "Follow signs to find the bathroom.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "martin-luther-king-jr-student-union-1-hero.jpg",
+    "extra_photos": []
+  },
+  {
+    "id": "martin-luther-king-jr-student-union-3",
+    "building_id": "martin-luther-king-jr-student-union",
+    "floor": "3",
+    "directions": "Located to the right of the main entrance.",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "martin-luther-king-jr-student-union-3-hero.jpg",
+    "extra_photos": []
   }
 ]
