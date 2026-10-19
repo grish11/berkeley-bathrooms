@@ -181,5 +181,15 @@
     "gender": "men",
     "hero_photo": "martin-luther-king-jr-student-union-3-hero.jpg",
     "extra_photos": []
+  },
+  {
+    "id": "the-gateway-basement",
+    "building_id": "the-gateway",
+    "floor": "Basement",
+    "directions": "Take the stairs down, and take a left to find the bathrooms. Follow the signs too.",
+    "single_restroom": true,
+    "gender": "all_gender",
+    "hero_photo": "the-gateway-basement-hero.jpg",
+    "extra_photos": []
   }
 ]

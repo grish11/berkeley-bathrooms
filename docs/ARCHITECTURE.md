@@ -36,14 +36,19 @@ berkeley_bathrooms/
 ├── scripts/
 │   └── (empty)              # room for tooling you run by hand
 │
+├── media/                   # Screenshots used by README.md -- not served
+│   ├── current_preview.png
+│   └── specific_bathroom_preview.png
+│
 └── docs/
     ├── ARCHITECTURE.md      # This file
     ├── DATA_FORMAT.md       # Every JSON field, its type, an example
     └── ADDING_BATHROOMS.md  # Step-by-step: add a building, bathroom, photos
 ```
 
-Not in git: `.venv/` (uv rebuilds it from `uv.lock`) and `photos_raw/` (the
-full-resolution originals, which carry camera metadata).
+Not in git: `.venv/` (uv rebuilds it from `uv.lock`). Full-resolution
+originals, which carry camera metadata, are not in the repo at all -- they stay
+in a folder on your laptop outside this directory.
 
 ## Why this layout
 

@@ -50,7 +50,7 @@ High-level only. Details live in the phase discussions.
       Phone photos embed GPS coordinates, exact timestamps and device info, and
       this repo is public -- committing a raw photo publishes where I was and
       when. There is no script for this; it is on me every time.
-- [ ] Keep originals in `photos_raw/` only — already gitignored, never commit.
+- [ ] Keep originals outside the repo entirely — never commit them.
 - [ ] Spot-check each photo with `exiftool` and confirm it returns nothing
       before committing it.
 - [ ] Re-check every photo for people before committing: background, mirror

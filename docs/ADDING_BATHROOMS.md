@@ -126,8 +126,8 @@ this repo that does it for you.
 While you are there, shrink it. An 8 MB phone photo makes the page slow; around
 1600px on the long edge is plenty.
 
-Keep the original in `photos_raw/` (gitignored) and put the cleaned copy in
-`public/static/photos/`.
+Keep the original somewhere on your laptop outside this repo, and put the
+cleaned copy in `public/static/photos/`.
 
 ### 3. Add the entry
 

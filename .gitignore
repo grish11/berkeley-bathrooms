@@ -7,11 +7,14 @@ __pycache__/
 *.py[cod]
 
 # Original, full-resolution photos straight off the phone.
-# Full-size originals stay on your laptop ONLY. They are large, and phone
-# photos carry metadata including GPS coordinates and timestamps. You strip
-# and resize these yourself before putting a copy in public/static/photos/,
-# which IS committed. Never commit this folder -- the repo is public.
-photos_raw/
+# These stay on your laptop OUTSIDE this repo. They are large, and phone photos
+# carry metadata including GPS coordinates and timestamps, and this repo is
+# public. Only the stripped, resized copies in public/static/photos/ are
+# committed. These patterns are a safety net in case one lands here anyway.
+*.heic
+*.HEIC
+*.dng
+*.DNG
 
 # Secrets / local config
 .env
