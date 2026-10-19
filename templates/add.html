@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Add a bathroom{% endblock %}
+
+{% block content %}
+  <div class="form-page">
+    <h1>Add a bathroom</h1>
+    <p class="form-note">
+      Local tool. It saves the photos and writes
+      <code>data/bathrooms.json</code> &mdash; commit both when you are done.
+      Ratings and the review come later; this is just placing it on the map.
+    </p>
+
+    {# Flask's flash messages: whatever the previous submit wanted to tell us. #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="flash flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {# enctype is required for file uploads -- without it the browser sends
+       only the filenames, and every photo arrives empty. #}
+    <form method="post" action="{{ url_for('add_submit') }}" enctype="multipart/form-data">
+
+      <label for="building_id">Building</label>
+      {# A real <select> rather than a text box: you can only submit a building
+         that exists, so the "pick a building from the list" error is now
+         unreachable from this form. The option shows the NAME and submits the
+         id, so you never have to know what the ids look like. Click it and
+         type the first letters -- the browser jumps to that building. #}
+      <select id="building_id" name="building_id" required>
+        <option value="" selected disabled>Choose a building...</option>
+        {% for b in buildings %}
+          <option value="{{ b.id }}">{{ b.name }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="floor">Floor</label>
+      <input id="floor" name="floor" placeholder="1, 4, Basement, Mezzanine" required />
+
+      <label for="directions">How to find it</label>
+      <textarea
+        id="directions" name="directions" rows="3" required
+        placeholder="North stairwell to the top, then left at the end of the hall."
+      ></textarea>
+
+      <fieldset class="gender-choice">
+        <legend>Which room is it?</legend>
+        {% for g in genders %}
+          <label class="gender-option gender-{{ g }}">
+            <input type="radio" name="gender" value="{{ g }}" required />
+            <span>{{ {'men': "Men's", 'women': "Women's", 'all_gender': 'All-gender'}[g] }}</span>
+          </label>
+        {% endfor %}
+      </fieldset>
+
+      <label class="checkbox">
+        <input type="checkbox" name="single_restroom" />
+        Single restroom &mdash; the whole room is yours and the door locks
+      </label>
+
+      <label for="hero_photo">Hero photo <span class="hint">shown on the map</span></label>
+      <input id="hero_photo" name="hero_photo" type="file" accept="image/*" required />
+
+      <label for="extra_photos">
+        Extra photos <span class="hint">optional &mdash; entrance, hallway, the door</span>
+      </label>
+      <input id="extra_photos" name="extra_photos" type="file" accept="image/*" multiple />
+      {# add.js fills this in. Pick as many times as you like, from as many
+         folders as you like -- each pick adds to the list rather than
+         replacing it. #}
+      <ul id="extra-photos-list" class="chosen-photos"></ul>
+
+      <p class="form-note">
+        Photos are resized to 1600px and saved with all metadata removed, so no
+        GPS coordinates or timestamps reach the repo.
+        <strong>Check there are no people in any shot</strong> &mdash; including
+        reflections in mirrors.
+      </p>
+
+      <button type="submit" class="submit">Add it</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/add.js') }}"></script>
+{% endblock %}
