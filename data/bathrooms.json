@@ -191,5 +191,30 @@
     "gender": "all_gender",
     "hero_photo": "the-gateway-basement-hero.jpg",
     "extra_photos": []
+  },
+  {
+    "id": "etcheverry-hall-3",
+    "building_id": "etcheverry-hall",
+    "floor": "3",
+    "directions": "Near the entrance (not the entrance near the cafe).",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "etcheverry-hall-3-hero.jpg",
+    "extra_photos": [
+      "etcheverry-hall-3-1.jpg",
+      "etcheverry-hall-3-2.jpg"
+    ]
+  },
+  {
+    "id": "etcheverry-hall-2",
+    "building_id": "etcheverry-hall",
+    "floor": "2",
+    "directions": "To the right of the stairs coming down from the main entrance (cafe entrance).",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "etcheverry-hall-2-hero.jpg",
+    "extra_photos": [
+      "etcheverry-hall-2-1.jpg"
+    ]
   }
 ]

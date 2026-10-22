@@ -43,8 +43,15 @@ WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 GENDERS = ("men", "women", "all_gender")
 
 RATING_CATEGORIES = (
-    "peace", "cleanliness", "privacy", "echo", "stall_gaps",
-    "toilet_paper", "smell", "temperature", "busyness",
+    "peace",
+    "cleanliness",
+    "privacy",
+    "echo",
+    "stall_gaps",
+    "toilet_paper",
+    "smell",
+    "temperature",
+    "busyness",
 )
 
 # ids end up in URLs (Phase 4), so keep them to URL-safe characters.
@@ -79,10 +86,10 @@ def expand_day_key(key: str) -> tuple[str, ...]:
     write one entry for a stretch of identical days and a separate entry for a
     day that differs. Ranges may wrap around the end of the week ("sat-mon").
 
-        >>> expand_day_key("fri")
-        ('fri',)
-        >>> expand_day_key("mon-wed")
-        ('mon', 'tue', 'wed')
+    >>> expand_day_key("fri")
+    ('fri',)
+    >>> expand_day_key("mon-wed")
+    ('mon', 'tue', 'wed')
 
     Raises ValueError on an unrecognised key.
     """
@@ -113,7 +120,9 @@ def _check_access_schedule(where: str, schedule: object, problems: list[str]) ->
     it to work out whether a building is open right now.
     """
     if not isinstance(schedule, dict):
-        problems.append(f"{where}.access_schedule must be an object, got {type(schedule).__name__}")
+        problems.append(
+            f"{where}.access_schedule must be an object, got {type(schedule).__name__}"
+        )
         return
 
     for key, periods in schedule.items():
@@ -125,7 +134,9 @@ def _check_access_schedule(where: str, schedule: object, problems: list[str]) ->
             # reports every problem instead of one layer at a time.
 
         if not isinstance(periods, list):
-            problems.append(f"{where}.access_schedule['{key}'] must be a list of periods")
+            problems.append(
+                f"{where}.access_schedule['{key}'] must be a list of periods"
+            )
             continue
 
         for i, period in enumerate(periods):
@@ -140,8 +151,12 @@ def _check_access_schedule(where: str, schedule: object, problems: list[str]) ->
                 if not isinstance(value, str):
                     problems.append(f"{at}.{field} is missing")
                 # "24:00" is allowed as an end time, meaning midnight.
-                elif not TIME_PATTERN.match(value) and not (field == "end" and value == "24:00"):
-                    problems.append(f"{at}.{field} = {value!r} is not a 24-hour HH:MM time")
+                elif not TIME_PATTERN.match(value) and not (
+                    field == "end" and value == "24:00"
+                ):
+                    problems.append(
+                        f"{at}.{field} = {value!r} is not a 24-hour HH:MM time"
+                    )
 
             access = period.get("access")
             if access not in ACCESS_STATES:
@@ -150,7 +165,9 @@ def _check_access_schedule(where: str, schedule: object, problems: list[str]) ->
                 )
 
 
-def _check_building(i: int, building: object, seen_ids: set[str], problems: list[str]) -> None:
+def _check_building(
+    i: int, building: object, seen_ids: set[str], problems: list[str]
+) -> None:
     """Validate one entry from buildings.json."""
     where = f"buildings[{i}]"
 
@@ -171,11 +188,16 @@ def _check_building(i: int, building: object, seen_ids: set[str], problems: list
                 f"hyphens or underscores (it becomes part of a URL)"
             )
         elif building_id in seen_ids:
-            problems.append(f"{where}.id = {building_id!r} is used by more than one building")
+            problems.append(
+                f"{where}.id = {building_id!r} is used by more than one building"
+            )
         else:
             seen_ids.add(building_id)
 
-    for field, (low, high) in (("lat", BERKELEY_BOX["lat"]), ("lng", BERKELEY_BOX["lng"])):
+    for field, (low, high) in (
+        ("lat", BERKELEY_BOX["lat"]),
+        ("lng", BERKELEY_BOX["lng"]),
+    ):
         value = building.get(field)
         if isinstance(value, bool) or not isinstance(value, (int, float)):
             problems.append(f"{where}.{field} is missing or not a number")
@@ -232,7 +254,12 @@ def load_buildings() -> list[dict]:
     problems: list[str] = []
 
     if not isinstance(buildings, list):
-        _fail("buildings.json", [f"the file must contain a list of buildings, got {type(buildings).__name__}"])
+        _fail(
+            "buildings.json",
+            [
+                f"the file must contain a list of buildings, got {type(buildings).__name__}"
+            ],
+        )
 
     seen_ids: set[str] = set()
     for i, building in enumerate(buildings):
@@ -293,9 +320,13 @@ def _check_ratings(where: str, ratings: object, problems: list[str]) -> None:
 
         value = ratings[category]
         if isinstance(value, bool) or not isinstance(value, int):
-            problems.append(f"{where}.ratings.{category} = {value!r} must be a whole number 1-10")
+            problems.append(
+                f"{where}.ratings.{category} = {value!r} must be a whole number 1-10"
+            )
         elif not 1 <= value <= 10:
-            problems.append(f"{where}.ratings.{category} = {value} must be between 1 and 10")
+            problems.append(
+                f"{where}.ratings.{category} = {value} must be between 1 and 10"
+            )
 
     for key in ratings:
         if key not in RATING_CATEGORIES:
@@ -355,7 +386,9 @@ def _check_bathroom(i, bathroom, building_ids, seen_ids, problems):
 
     extra = bathroom.get("extra_photos")
     if not isinstance(extra, list):
-        problems.append(f"{where}.extra_photos must be a list (use [] if there are none)")
+        problems.append(
+            f"{where}.extra_photos must be a list (use [] if there are none)"
+        )
     else:
         for j, photo in enumerate(extra):
             _check_photo(where, f"extra_photos[{j}]", photo, problems)
@@ -405,9 +438,12 @@ def load_bathrooms(buildings: list[dict]) -> list[dict]:
     problems: list[str] = []
 
     if not isinstance(bathrooms, list):
-        _fail("bathrooms.json", [
-            f"the file must contain a list of bathrooms, got {type(bathrooms).__name__}"
-        ])
+        _fail(
+            "bathrooms.json",
+            [
+                f"the file must contain a list of bathrooms, got {type(bathrooms).__name__}"
+            ],
+        )
 
     building_ids = {b["id"] for b in buildings}
     seen_ids: set[str] = set()
