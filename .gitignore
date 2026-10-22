@@ -28,3 +28,13 @@ __pycache__/
 *.swp
 .idea/
 .vscode/
+
+# Personal working files. Not secret -- just mine, and not useful to anyone
+# reading the repo. README.md and docs/ stay tracked on purpose: they are what
+# a visitor (or future me) reads to understand and run the project.
+#
+# NOTE: listing a file here does not remove one already committed. That takes
+#   git rm --cached <file>
+# which stops tracking it while leaving it on disk.
+CLAUDE.md
+TODO.md

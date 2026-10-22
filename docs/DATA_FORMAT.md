@@ -158,6 +158,26 @@ Nine categories, all required. **10 is always best** — 10 echo means silent,
 
 `single_restroom` is deliberately not here: it is an attribute, not a judgement.
 
+### Score and tier are derived, not stored
+
+Neither the overall score nor the tier appears in the JSON. Both are computed
+from `ratings` on every request by `tiers.py`:
+
+- **Overall score** = the average of the nine categories, rounded to the
+  nearest whole number (`overall_score`). A bathroom with no `ratings` has a
+  score of `None`, and is shown without one rather than being given a
+  made-up value.
+- **Tier** = that score looked up in a table of ten (`tier_for_score`): 1 Iron,
+  2 Bronze, 3 Silver, 4 Gold, 5 Platinum, 6 Emerald, 7 Diamond, 8 Master,
+  9 Grandmaster, 10 Challenger. Each carries the colour used for its name on
+  screen.
+- **A building's tier** = the tier of its **best** bathroom (`best_tier`). One
+  good bathroom is a reason to walk to a building; averaging it against a bad
+  one on another floor would hide that.
+
+Storing either would mean two sources of truth that could disagree the moment
+a rating changed. Changing the formula is an edit to `tiers.py` alone.
+
 ### Example
 
 ```json
@@ -207,5 +227,8 @@ Store a bare filename, not a path — everything lives in
 1. **No people in any photo.** Not in the background, not reflected in a
    mirror, not feet under a stall door.
 2. **Strip metadata before committing.** Phone photos embed GPS coordinates,
-   timestamps and device info, and this repo is public. This is done by hand —
-   there is no script for it.
+   timestamps and device info, and this repo is public. Photos added through
+   the `/add` form are stripped and resized automatically — `photos.py`
+   rebuilds each image from its pixels alone, so nothing else survives. A photo
+   copied in by hand is on you: `exiftool -all= -overwrite_original <file>`,
+   then `exiftool <file>` to confirm nothing is left.

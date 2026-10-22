@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Hall of Fame — Berkeley Bathrooms{% endblock %}
+
+{# One macro, used by both halls. Writing the entry markup once means the two
+   lists cannot drift apart as either is changed.
+   https://jinja.palletsprojects.com/en/stable/templates/#macros #}
+{% macro entry(bathroom, rank) %}
+  {# The link goes to the map page with the bathroom's id in the hash. map.js
+     reads that on load (syncFromHash) and opens this bathroom's dialog
+     straight away -- the same URL you get when you click a photo there. #}
+  <li class="hall-entry">
+    <a class="hall-link" href="{{ url_for('index') }}#{{ bathroom.id }}">
+      <span class="hall-rank">{{ rank }}</span>
+
+      <img
+        class="hall-photo"
+        src="{{ url_for('static', filename='photos/' ~ bathroom.hero_photo) }}"
+        alt="{{ bathroom.building_name }}, floor {{ bathroom.floor }}"
+        loading="lazy"
+      />
+
+      <span class="hall-body">
+        <span class="hall-name">{{ bathroom.building_name }}</span>
+        <span class="hall-where">
+          Floor {{ bathroom.floor }}{% if bathroom.single_restroom %} · single restroom{% endif %}
+        </span>
+        {% if bathroom.review %}
+          <span class="hall-review">{{ bathroom.review }}</span>
+        {% endif %}
+      </span>
+
+      {# The tier colour is set as a variable here and read by the CSS, the
+         same way map.js does it -- tiers.py stays the only place that decides
+         what colour a tier is. #}
+      <span class="hall-score" style="--tier: {{ bathroom.tier.gradient or bathroom.tier.color }}">
+        <span class="score-number">{{ bathroom.score }}/10</span>
+        <span class="tier-name {% if bathroom.tier.gradient %}tier-gradient{% endif %}">
+          {{ bathroom.tier.name }}
+        </span>
+      </span>
+    </a>
+  </li>
+{% endmacro %}
+
+{% block content %}
+  <div class="hall-page">
+    <h1>Hall of Fame</h1>
+    <p class="hall-intro">
+      The best {{ fame|length }} of {{ total }} bathroom{{ '' if total == 1 else 's' }}
+      visited so far, ranked by overall score. Click any one to see it on the map.
+    </p>
+
+    {% if fame %}
+      <ol class="hall-list">
+        {% for bathroom in fame %}
+          {{ entry(bathroom, loop.index) }}
+        {% endfor %}
+      </ol>
+    {% else %}
+      <p class="hall-empty">Nothing has been rated yet.</p>
+    {% endif %}
+
+    {% if shame %}
+      <h2 class="hall-shame-heading">Hall of Shame</h2>
+      <p class="hall-intro">
+        The ones to walk past. Worst first.
+      </p>
+      <ol class="hall-list hall-list-shame">
+        {% for bathroom in shame %}
+          {{ entry(bathroom, loop.index) }}
+        {% endfor %}
+      </ol>
+    {% endif %}
+  </div>
+{% endblock %}

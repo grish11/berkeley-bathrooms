@@ -167,7 +167,7 @@ body {
 }
 
 .site-nav {
-  /* Pushes future nav links (Phase 7's Hall of Fame) to the right. */
+  /* Pushes the nav links to the right end of the header strip. */
   margin-left: auto;
   display: flex;
   gap: 1rem;
@@ -181,6 +181,159 @@ body {
 
 .site-nav a:hover {
   color: var(--berkeley-blue);
+}
+
+/* The page you are already on. aria-current is set by the template, so the
+   marker and the accessible announcement are the same fact -- no extra class
+   that could get out of step with it. */
+.site-nav a[aria-current="page"] {
+  color: var(--berkeley-blue);
+  border-bottom: 2px solid var(--california-gold);
+}
+
+/* ---- hall of fame / hall of shame ----
+ *
+ * A plain vertical list rather than the map's dense layout: this page is for
+ * reading top to bottom, so it gets normal page scrolling and a column of
+ * comfortable width.
+ */
+.hall-page {
+  width: min(52rem, 92vw);
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+  /* .site-main centres its child vertically, which is right for the map and
+     wrong for a long list -- stretching instead lets this page start at the
+     top and scroll normally. */
+  align-self: stretch;
+  overflow-y: auto;
+}
+
+.hall-page h1 {
+  margin: 0 0 0.3rem;
+  color: var(--berkeley-blue);
+  font-size: 1.5rem;
+}
+
+.hall-shame-heading {
+  margin: 2.5rem 0 0.3rem;
+  color: var(--gender-women);
+  font-size: 1.2rem;
+}
+
+.hall-intro {
+  margin: 0 0 1.2rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.hall-list {
+  margin: 0;
+  padding: 0;
+  /* The rank is rendered as its own element, so the browser's automatic
+     numbering would be a second, duplicate number. */
+  list-style: none;
+}
+
+.hall-entry + .hall-entry {
+  margin-top: 0.5rem;
+}
+
+.hall-link {
+  display: grid;
+  /* rank | photo | text | score -- the text column is the only flexible one,
+     so the photos and scores stay aligned down the page. */
+  grid-template-columns: 2rem 92px 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid rgba(0, 50, 98, 0.2);
+  color: inherit;
+  text-decoration: none;
+}
+
+.hall-link:hover,
+.hall-link:focus-visible {
+  border-color: var(--berkeley-blue);
+  outline: none;
+}
+
+.hall-rank {
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.hall-photo {
+  display: block;
+  width: 92px;
+  height: 66px;
+  object-fit: cover;
+  border: 2px solid var(--berkeley-blue);
+}
+
+.hall-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0; /* lets a long review wrap instead of stretching the grid */
+}
+
+.hall-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--berkeley-blue);
+}
+
+.hall-where {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.hall-review {
+  margin-top: 0.15rem;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.hall-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.hall-score .score-number {
+  font-size: 1.1rem;
+}
+
+.hall-score .tier-name {
+  font-size: 0.78rem;
+}
+
+.hall-empty {
+  color: var(--muted);
+}
+
+/* On a narrow screen the four columns do not fit. Drop the rank and the
+   score onto their own row rather than squeezing the photo. */
+@media (max-width: 34rem) {
+  .hall-link {
+    grid-template-columns: 2rem 72px 1fr;
+  }
+
+  .hall-photo {
+    width: 72px;
+    height: 54px;
+  }
+
+  .hall-score {
+    grid-column: 2 / -1;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
 }
 
 /* ---- main ----
@@ -424,6 +577,18 @@ body {
 .popup-photo:hover img,
 .popup-photo:focus-visible img {
   opacity: 0.85;
+}
+
+/* Small and last in the popup: useful, but not competing with the photos. */
+.popup-report {
+  display: inline-block;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.66rem;
+}
+
+.popup-report:hover {
+  color: var(--berkeley-blue);
 }
 
 /* ---- bathroom dialog ----

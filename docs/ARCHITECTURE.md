@@ -25,7 +25,9 @@ berkeley_bathrooms/
 │
 ├── templates/               # Jinja (HTML) templates. Flask looks here by default.
 │   ├── base.html            #   Shared layout: <head>, header, nav, footer
-│   └── index.html           #   The map page; extends base.html
+│   ├── index.html           #   The map page; extends base.html
+│   ├── hall_of_fame.html    #   /hall-of-fame -- best and worst, ranked
+│   └── add.html             #   The local-only /add form
 │
 ├── public/                  # Served directly by Vercel's CDN at the URL root.
 │   └── static/              #   -> so this is reachable at /static/...
@@ -141,23 +143,44 @@ non-static request to it.
 ## Data flow
 
 JSON is read from disk **once at startup** and rendered into templates. There
-is no database and no write path — the site is read-only, and the ratings are
-mine alone.
+is no database, and the deployed site has no write path — it is read-only, and
+the ratings are mine alone. The one writer is the `/add` form, which exists
+only in debug mode on my own laptop (see below).
+
+Corrections from other people arrive as GitHub issues: every building popup has
+a **Report an issue** link that opens one prefilled with that building. That is
+deliberately the cheapest possible stand-in for accounts and a database —
+GitHub already provides the identity, the storage and the moderation.
 
 ```
 data/buildings.json ──→ data.load_buildings()
+data/bathrooms.json ──→ data.load_bathrooms(buildings)
                           │  validates every field; raises DataError listing
                           │  all problems if anything is wrong
                           ↓
-                        app.BUILDINGS  (module-level, loaded at import)
+                        app.BUILDINGS / app.BATHROOMS
+                          │  (module-level, loaded at import)
                           ↓
-                        render_template("index.html", buildings=...)
+                        app.build_map_data()
+                          │  joins bathrooms onto their building,
+                          │  hours.format_schedule() -> readable lines,
+                          │  tiers.overall_score() / tier_for_score() -> score + tier,
+                          │  tiers.best_tier() -> the building's tier
                           ↓
-                        {{ buildings|tojson }} embedded in a
-                        <script type="application/json"> block
-                          ↓
-                        map.js: JSON.parse → one MapLibre marker per building
+            ┌─────────────┴──────────────┐
+            ↓                            ↓
+  render_template("index.html")   render_template("hall_of_fame.html")
+            ↓                      (app.ranked_bathrooms(), sorted by score)
+  {{ buildings|tojson }} in an            ↓
+  inert <script type="application/json">  plain server-rendered HTML --
+            ↓                             no JavaScript on this page
+  map.js: JSON.parse -> one MapLibre
+  marker per building
 ```
+
+Note the asymmetry: the map page ships its data to the browser because the map
+is interactive, while `/hall-of-fame` is rendered entirely server-side. A
+ranked list does not need JavaScript, so it does not get any.
 
 Loading at import time rather than per request means a typo stops the server
 immediately with a readable error, and on Vercel the files are parsed once per

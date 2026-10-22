@@ -122,6 +122,73 @@ if app.debug:
     admin.register(app)
 
 
+# How many entries each hall shows. Small enough that both are a glance
+# rather than a scroll; raise them as the list of bathrooms grows.
+HALL_OF_FAME_SIZE = 10
+HALL_OF_SHAME_SIZE = 5
+
+# Only a score of 4 or below is shameful. Without this the hall of shame is
+# just "the bottom five", which on a short list means a perfectly decent
+# bathroom gets pilloried for being less good than nine others.
+HALL_OF_SHAME_MAX_SCORE = 4
+
+
+def ranked_bathrooms():
+    """Every rated bathroom, best first, each knowing its building.
+
+    The map groups bathrooms under buildings; the halls rank them against each
+    other regardless of building, so this flattens that back out. Bathrooms
+    with no ratings yet are left out entirely -- they have no score to rank.
+    """
+    buildings, bathrooms = load_everything()
+    names = {b["id"]: b["name"] for b in buildings}
+
+    rated = []
+    for bathroom in bathrooms:
+        score = tiers.overall_score(bathroom.get("ratings"))
+        if score is None:
+            continue
+        rated.append({
+            **bathroom,
+            "score": score,
+            "tier": tiers.tier_for_score(score),
+            "building_name": names.get(bathroom["building_id"], bathroom["building_id"]),
+        })
+
+    # Highest score first. The building name is the tie-breaker, so bathrooms
+    # on the same score come out in a stable, readable order rather than
+    # whatever order the file happened to list them in.
+    rated.sort(key=lambda b: (-b["score"], b["building_name"], b["floor"]))
+    return rated
+
+
+@app.route("/hall-of-fame")
+def hall_of_fame():
+    """The best bathrooms on campus, and the worst.
+
+    Both halls come from one sorted list: the fame list is the front of it and
+    the shame list is the back, reversed so the worst bathroom is first --
+    the hall of shame counts down to the bottom.
+    """
+    rated = ranked_bathrooms()
+
+    fame = rated[:HALL_OF_FAME_SIZE]
+    # Anything already in the fame list is excluded, so a short list cannot
+    # put the same bathroom in both halls.
+    famous = {b["id"] for b in fame}
+    shame = [
+        b for b in reversed(rated)
+        if b["id"] not in famous and b["score"] <= HALL_OF_SHAME_MAX_SCORE
+    ][:HALL_OF_SHAME_SIZE]
+
+    return render_template(
+        "hall_of_fame.html",
+        fame=fame,
+        shame=shame,
+        total=len(rated),
+    )
+
+
 @app.route("/")
 def index():
     """The map page.

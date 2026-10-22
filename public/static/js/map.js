@@ -63,6 +63,12 @@ const RATING_LABELS = {
   busyness: "Busyness",
 };
 
+// Where "Report an issue" sends people. GitHub issues are doing the job a
+// database would otherwise do here: anyone with a GitHub account can send a
+// correction, suggest a bathroom, or supply a building's real hours, and
+// moderating it means closing an issue. No accounts to build, nothing to host.
+const REPO_URL = "https://github.com/grish11/berkeley-bathrooms";
+
 // How each gender value is written out. The outline colour is a quick cue,
 // but the word is what makes it unambiguous -- see style.css.
 const GENDER_LABELS = {
@@ -274,6 +280,41 @@ function closeBathroom() {
   if (location.hash) history.pushState(null, "", location.pathname);
 }
 
+/** A "Report an issue" link, prefilled with the building it came from.
+ *
+ * GitHub reads `title` and `body` out of the query string and fills the new
+ * issue form in with them, so the reporter starts with the building already
+ * identified and a prompt for what is useful to say.
+ * https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue
+ *
+ * encodeURIComponent is what makes that safe: a building name with an "&" or
+ * a "#" in it would otherwise be read as the end of the parameter.
+ */
+function reportEl(building) {
+  const title = `${building.name}: `;
+  const body = [
+    `Building: ${building.name} (\`${building.id}\`)`,
+    "",
+    "What is wrong or missing? For example:",
+    "- The hours are wrong, or there are none listed yet",
+    "- There is a bathroom here that is not on the map",
+    "- Something about an existing bathroom is out of date",
+    "",
+    "If you are sending hours, please say where you found them.",
+  ].join("\n");
+
+  const link = document.createElement("a");
+  link.className = "popup-report";
+  link.href =
+    `${REPO_URL}/issues/new` +
+    `?title=${encodeURIComponent(title)}` +
+    `&body=${encodeURIComponent(body)}`;
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.textContent = "Report an issue";
+  return link;
+}
+
 /** Build the popup shown when a building dot is clicked. */
 function buildingPopupContent(building) {
   const root = document.createElement("div");
@@ -298,6 +339,7 @@ function buildingPopupContent(building) {
 
   if (building.bathrooms.length === 0) {
     root.append(textEl("p", "popup-none", "No bathrooms rated here yet"));
+    root.append(reportEl(building));
     return root;
   }
 
@@ -328,6 +370,7 @@ function buildingPopupContent(building) {
     strip.append(button);
   }
   root.append(strip);
+  root.append(reportEl(building));
 
   return root;
 }

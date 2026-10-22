@@ -29,7 +29,18 @@
       <a class="brand" href="{{ url_for('index') }}">Berkeley Bathrooms</a>
       <p class="tagline">Because you deserve to poop in peace.</p>
       <nav class="site-nav">
-        {# Phase 7 adds the Hall of Fame link here. #}
+        {# request.endpoint is the name of the view function handling this
+           request, so the current page's own link can be marked rather than
+           comparing URL strings.
+           https://flask.palletsprojects.com/en/stable/api/#flask.Request.endpoint #}
+        <a
+          href="{{ url_for('index') }}"
+          {% if request.endpoint == 'index' %}aria-current="page"{% endif %}
+        >Map</a>
+        <a
+          href="{{ url_for('hall_of_fame') }}"
+          {% if request.endpoint == 'hall_of_fame' %}aria-current="page"{% endif %}
+        >Hall of Fame</a>
         {% if config.DEBUG %}
           {# Only while developing -- the /add route does not exist otherwise. #}
           <a href="{{ url_for('add_form') }}">Add</a>

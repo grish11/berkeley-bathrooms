@@ -3,8 +3,24 @@
 A practical walkthrough. For the field-by-field reference see
 [DATA_FORMAT.md](DATA_FORMAT.md).
 
-Right now only **buildings** exist. Bathrooms arrive in Phase 3 and this guide
-grows to cover them.
+## The quick way: the `/add` form
+
+Most of the time you do not need this guide. Run the server locally and open
+<http://127.0.0.1:5000/add>:
+
+```bash
+uv run flask --app app run --debug
+```
+
+Pick the building from the dropdown, fill in floor, directions and which room
+it is, choose the photos, and submit. It saves the photos — **resized and with
+all metadata stripped** — and writes the entry into `data/bathrooms.json` for
+you. Then commit the JSON and the new photos.
+
+The form deliberately does not collect ratings or the review: those are
+written afterwards by editing the JSON, which is what the rest of this guide
+covers. The form only exists in debug mode (see
+[ARCHITECTURE.md](ARCHITECTURE.md) for why).
 
 ---
 
@@ -120,11 +136,21 @@ under a stall door. Check every shot before it goes anywhere near the repo.
 
 Phone photos embed **GPS coordinates, timestamps and device info**, and this
 repo is public — committing one straight off a phone publishes where you were
-and when. Strip it yourself before copying the photo in. There is no script in
-this repo that does it for you.
+and when.
 
-While you are there, shrink it. An 8 MB phone photo makes the page slow; around
-1600px on the long edge is plenty.
+If you added the bathroom through the `/add` form, this is already done:
+`photos.py` rebuilds each upload from its pixels alone, so no metadata
+survives, and resizes it to 1600px on the long edge.
+
+Copying a photo in by hand means doing both yourself:
+
+```bash
+exiftool -all= -overwrite_original photo.jpg   # strip everything
+exiftool photo.jpg                             # confirm nothing is left
+```
+
+Shrink it too. An 8 MB phone photo makes the page slow; around 1600px on the
+long edge is plenty.
 
 Keep the original somewhere on your laptop outside this repo, and put the
 cleaned copy in `public/static/photos/`.
