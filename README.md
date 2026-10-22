@@ -76,13 +76,12 @@ Diamond, Master, Grandmaster, Challenger.**
 
 ## Coming later
 
-- Open / closed right now, from each building's weekly schedule
-- Anyone can sign in with a `@berkeley.edu` address
+- Open / closed right now, from each building's weekly schedule, along with a visual representation of this
+- Anyone can sign in with a `@berkeley.edu` address, to be able to leave comments and have access
 - Community ratings that count toward the overall score, like Google Reviews
-- Comments on bathrooms, with moderation
-- Letting people add bathrooms and hours directly, instead of through issues -- WILL SEE?
+- Comments on bathrooms, with moderation, from people that have access
 - Filters: single restrooms only, open now, minimum tier
-- A "find me peace **now**" button using your location?!
+- A "find me peace **now**" button using your location?!?? maybe..
 
 ---
 
