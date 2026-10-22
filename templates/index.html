@@ -46,6 +46,13 @@
     >&times;</button>
     <div id="bathroom-dialog-body"></div>
   </dialog>
+
+  {# The full-size photo viewer. A separate <dialog> from the one above so
+     that closing the photo returns you to the bathroom's details rather than
+     all the way back to the map. Clicking anywhere on it closes it. #}
+  <dialog id="photo-dialog" aria-label="Photo">
+    <img id="photo-dialog-img" alt="" />
+  </dialog>
 {% endblock %}
 
 {% block scripts %}

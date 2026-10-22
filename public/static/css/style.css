@@ -489,26 +489,194 @@ body {
   font-style: italic;
 }
 
-/* One photo per row. This is the view where you are trying to SEE the
-   bathroom, so a photo gets the full width of the dialog rather than sharing
-   a row with its neighbour. */
+/* A sideways strip rather than a stack. Stacking meant scrolling past one
+   photo to reach the next, so you could never compare two; side by side they
+   are all in view at once, and the strip scrolls right when there are more
+   than fit. overflow-x on this element alone keeps the PAGE from scrolling
+   sideways -- only the strip does. */
 .dialog-gallery {
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
+  display: flex;
   gap: 0.6rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+  /* Each photo comes to rest at the left edge when you scroll, instead of
+     stopping half way between two. */
+  scroll-snap-type: x mandatory;
 }
 
-/* No fixed box and no object-fit: each photo is drawn at its own shape, only
-   capped by the dialog's width and by 72vh so a tall phone photo still leaves
-   the next one in view. A fixed box was what put the grey bars down the sides
-   of portrait shots -- the box was 4/3 and the photo was not. */
+.gallery-photo {
+  flex: 0 0 auto; /* keep natural width -- do not squeeze to fit the strip */
+  scroll-snap-align: start;
+  padding: 0;
+  border: 1px solid rgba(0, 50, 98, 0.25);
+  background: none;
+  cursor: zoom-in;
+  font: inherit;
+}
+
+/* One shared height, width free. Every photo lines up along the top and
+   bottom whatever its shape, and nothing is cropped or letterboxed. */
 .dialog-gallery img {
-  max-width: 100%;
-  max-height: 72vh;
+  display: block;
+  height: 30vh;
+  width: auto;
+  max-width: none;
+}
+
+.gallery-photo:hover,
+.gallery-photo:focus-visible {
+  border-color: var(--berkeley-blue);
+  outline: none;
+}
+
+/* ---- the full-size photo viewer ----
+ *
+ * A second <dialog>, so closing it returns to the bathroom rather than the
+ * map. Sized to the viewport, not the image, so a tall photo and a wide one
+ * both land in the same place.
+ */
+#photo-dialog {
+  max-width: 96vw;
+  max-height: 96vh;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  cursor: zoom-out;
+}
+
+/* Neutral, not tinted. The point of this view is the photo, and a blue wash
+   behind it shifts how every colour in the picture reads. */
+#photo-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.82);
+}
+
+#photo-dialog img {
+  display: block;
+  max-width: 96vw;
+  max-height: 96vh;
   width: auto;
   height: auto;
-  border: 1px solid rgba(0, 50, 98, 0.25);
+}
+
+/* ---- score and tier ----
+ *
+ * --tier is set from JavaScript, per bathroom, to the colour tiers.py chose.
+ * Every rule below reads that one variable, so adding or recolouring a tier
+ * is a change in Python only.
+ */
+.dialog-score {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.score-number {
+  color: var(--ink);
+}
+
+.tier-name {
+  color: var(--tier);
+}
+
+/* Challenger's blue-and-gold cannot be a text colour, so the gradient is
+   painted as a background and clipped to the glyphs. */
+.tier-gradient {
+  background: var(--tier);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.popup-score {
+  display: block;
+  margin: 0;
+  padding: 0.12rem 0.3rem;
+  background: #fff;
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* ---- the nine categories ----
+ *
+ * A <dl>: each category is a term and its score is the description, which is
+ * what a definition list is actually for.
+ */
+.dialog-ratings {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.3rem 0.8rem;
+  margin: 1.1rem 0 0;
+  font-size: 0.78rem;
+}
+
+.dialog-ratings dt {
+  color: var(--muted);
+}
+
+.dialog-ratings dd {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+/* The bar is one element: the track is its background, the fill is a
+   gradient hard-stopped at --fill percent. No second element needed. */
+.rating-bar {
+  flex: 1;
+  height: 0.5rem;
+  min-width: 4rem;
+  background: linear-gradient(
+    to right,
+    var(--berkeley-blue) 0 var(--fill),
+    rgba(0, 50, 98, 0.12) var(--fill) 100%
+  );
+}
+
+.rating-value {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- reviews ---- */
+.dialog-reviews {
+  margin: 1.3rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(0, 50, 98, 0.2);
+}
+
+.reviews-heading {
+  margin: 0 0 0.6rem;
+  color: var(--berkeley-blue);
+  font-size: 0.9rem;
+}
+
+.review {
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--california-gold);
+}
+
+.review-author {
+  margin: 0 0 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--berkeley-blue);
+}
+
+.review-text {
+  margin: 0;
+}
+
+.review-date {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.68rem;
 }
 
 .dialog-date {

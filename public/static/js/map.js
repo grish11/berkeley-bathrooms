@@ -48,6 +48,21 @@ const INITIAL_ZOOM = 15.5;
 //   liberty   full color, closest to a typical street map
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
 
+// The nine rating categories, in the order they are shown, with the wording
+// used on screen. 10 is always best, which is why two of these read oddly
+// until you know that: 10 Echo means silent, 10 Busyness means empty.
+const RATING_LABELS = {
+  peace: "Peace",
+  cleanliness: "Cleanliness",
+  privacy: "Privacy",
+  echo: "Echo",
+  stall_gaps: "Stall gaps",
+  toilet_paper: "Toilet paper",
+  smell: "Smell",
+  temperature: "Temperature",
+  busyness: "Busyness",
+};
+
 // How each gender value is written out. The outline colour is a quick cue,
 // but the word is what makes it unambiguous -- see style.css.
 const GENDER_LABELS = {
@@ -127,6 +142,36 @@ function sourceEl(source) {
   return wrap;
 }
 
+/** "8/10 · Master", coloured by the tier. Returns null when unrated.
+ *
+ * The score and the tier name both arrive from Python already worked out --
+ * tiers.py owns both rules, so nothing here has to know the cutoffs. */
+function scoreEl(bathroom, className) {
+  if (bathroom.score === null || !bathroom.tier) return null;
+
+  const el = document.createElement("p");
+  el.className = className;
+
+  const score = textEl("span", "score-number", `${bathroom.score}/10`);
+  const tier = textEl("span", "tier-name", bathroom.tier.name);
+  // Challenger is the only tier painted with a gradient; the rest are a flat
+  // colour. Both are set through the same variable so the CSS stays one rule.
+  tier.style.setProperty("--tier", bathroom.tier.gradient ?? bathroom.tier.color);
+  if (bathroom.tier.gradient) tier.classList.add("tier-gradient");
+
+  el.append(score, document.createTextNode(" · "), tier);
+  return el;
+}
+
+/** Open one photo on its own, filling the screen. */
+function openPhoto(src, alt) {
+  const dialog = document.getElementById("photo-dialog");
+  const img = document.getElementById("photo-dialog-img");
+  img.src = src;
+  img.alt = alt;
+  if (!dialog.open) dialog.showModal();
+}
+
 /** Fill the dialog with one bathroom's details and show it. */
 function openBathroom(bathroom, building) {
   const body = document.getElementById("bathroom-dialog-body");
@@ -139,27 +184,76 @@ function openBathroom(bathroom, building) {
   if (bathroom.single_restroom) where.push("single restroom");
   body.append(textEl("p", "dialog-where", where.join(" · ")));
 
+  const score = scoreEl(bathroom, "dialog-score");
+  if (score) body.append(score);
+
   body.append(textEl("p", "dialog-directions", bathroom.directions));
 
-  // review is optional: a bathroom can be photographed before it is rated.
-  if (bathroom.review) {
-    body.append(textEl("p", "dialog-review", bathroom.review));
-  }
-
-  // Hero photo first, then any extras that help you find the place.
+  // Hero photo first, then any extras that help you find the place. The strip
+  // scrolls sideways rather than stacking, so several photos are comparable at
+  // a glance instead of one screen apart; click one to see it full size.
   const gallery = document.createElement("div");
   gallery.className = "dialog-gallery";
   for (const file of [bathroom.hero_photo, ...bathroom.extra_photos]) {
+    const src = `/static/photos/${file}`;
+    const alt = `${building.name}, floor ${bathroom.floor}`;
+
+    // A button, not a bare image: keyboard-reachable and announced as a
+    // control, the same reasoning as the popup's hero photos.
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "gallery-photo";
+    button.title = "Click to enlarge";
+
     const img = document.createElement("img");
-    img.src = `/static/photos/${file}`;
-    img.alt = `${building.name}, floor ${bathroom.floor}`;
+    img.src = src;
+    img.alt = alt;
     img.loading = "lazy";
-    gallery.append(img);
+
+    button.append(img);
+    button.addEventListener("click", () => openPhoto(src, alt));
+    gallery.append(button);
   }
   body.append(gallery);
 
-  if (bathroom.date_rated) {
-    body.append(textEl("p", "dialog-date", `Rated ${bathroom.date_rated}`));
+  // Every category, so you can see WHY the overall score came out where it
+  // did. Skipped entirely for a bathroom that has not been rated yet.
+  if (bathroom.ratings) {
+    const list = document.createElement("dl");
+    list.className = "dialog-ratings";
+    for (const [key, label] of Object.entries(RATING_LABELS)) {
+      const value = bathroom.ratings[key];
+      if (value === undefined) continue;
+
+      list.append(textEl("dt", null, label));
+
+      const dd = document.createElement("dd");
+      // A bar as well as the number: nine numbers in a column are hard to
+      // compare, nine bars are not.
+      const bar = document.createElement("span");
+      bar.className = "rating-bar";
+      bar.style.setProperty("--fill", `${value * 10}%`);
+      dd.append(bar, textEl("span", "rating-value", `${value}/10`));
+      list.append(dd);
+    }
+    body.append(list);
+  }
+
+  // The review goes last, under the evidence it is explaining.
+  if (bathroom.review) {
+    const reviews = document.createElement("section");
+    reviews.className = "dialog-reviews";
+    reviews.append(textEl("h3", "reviews-heading", "Reviews"));
+
+    const entry = document.createElement("article");
+    entry.className = "review";
+    entry.append(textEl("p", "review-author", "Creator"));
+    entry.append(textEl("p", "review-text", bathroom.review));
+    if (bathroom.date_rated) {
+      entry.append(textEl("p", "review-date", bathroom.date_rated));
+    }
+    reviews.append(entry);
+    body.append(reviews);
   }
 
   // Putting the id in the URL makes a single bathroom linkable and shareable,
@@ -225,7 +319,11 @@ function buildingPopupContent(building) {
     img.alt = `${building.name}, floor ${bathroom.floor}`;
     img.loading = "lazy";
 
-    button.append(img, textEl("span", "popup-photo-floor", `Floor ${bathroom.floor}`));
+    const caption = textEl("span", "popup-photo-floor", `Floor ${bathroom.floor}`);
+    button.append(img, caption);
+
+    const score = scoreEl(bathroom, "popup-score");
+    if (score) button.append(score);
     button.addEventListener("click", () => openBathroom(bathroom, building));
     strip.append(button);
   }
@@ -242,12 +340,17 @@ for (const building of buildings) {
   // stay distinct. Passing `element` replaces MapLibre's default marker
   // graphic entirely, and the styling lives in .building-dot in style.css.
   const dot = document.createElement("div");
-  // Blue when there is at least one bathroom here, grey when there is not --
-  // so the map shows at a glance where there is something to look at. The
-  // colours live in style.css.
-  dot.className = building.bathrooms.length > 0
-    ? "building-dot"
-    : "building-dot is-unrated";
+  dot.className = "building-dot";
+
+  if (building.bathrooms.length === 0) {
+    // Nothing here yet -- grey, so the map shows at a glance where there is
+    // something to look at. Everything else stays Berkeley Blue: the tier
+    // colour belongs to a bathroom, and a dot is a whole building.
+    dot.classList.add("is-unrated");
+  } else if (building.tier) {
+    // Not painted on, but worth having on hover.
+    dot.title = `${building.name} — ${building.tier.name}`;
+  }
 
   const popup = new maplibregl.Popup({ offset: 12, maxWidth: "300px" })
     .setDOMContent(buildingPopupContent(building));
@@ -300,6 +403,16 @@ document.getElementById("bathroom-dialog")
   .addEventListener("close", () => {
     if (location.hash) history.pushState(null, "", location.pathname);
   });
+
+// Clicking the enlarged photo -- picture or backdrop -- closes it. Escape
+// already works, because <dialog> handles that itself.
+const photoDialog = document.getElementById("photo-dialog");
+photoDialog.addEventListener("click", () => photoDialog.close());
+// Dropping the src frees the decoded image rather than keeping every photo
+// you have ever enlarged in memory for the life of the page.
+photoDialog.addEventListener("close", () => {
+  document.getElementById("photo-dialog-img").removeAttribute("src");
+});
 
 // Opening /#wheeler-hall-4th-floor directly goes straight to that bathroom.
 syncFromHash();

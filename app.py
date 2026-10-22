@@ -15,6 +15,7 @@ from flask import Flask, render_template
 
 import data
 import hours
+import tiers
 
 # Why static files are configured this way:
 #
@@ -83,16 +84,29 @@ def build_map_data():
 
     by_building = {}
     for bathroom in bathrooms:
-        by_building.setdefault(bathroom["building_id"], []).append(bathroom)
+        # A copy with the score and tier worked out, rather than editing the
+        # loaded data in place: in production that list is reused for every
+        # request, so mutating it would stack these keys up over time.
+        score = tiers.overall_score(bathroom.get("ratings"))
+        rated = {
+            **bathroom,
+            "score": score,
+            "tier": tiers.tier_for_score(score),
+        }
+        by_building.setdefault(rated["building_id"], []).append(rated)
 
     result = []
     for building in buildings:
+        mine = by_building.get(building["id"], [])
         result.append({
             **building,
             # [] means no hours are published, which is true for most campus
             # buildings. The popup says so rather than implying "closed".
             "hours_display": hours.format_schedule(building["access_schedule"]),
-            "bathrooms": by_building.get(building["id"], []),
+            "bathrooms": mine,
+            # The building's tier is its BEST bathroom's tier, and is what
+            # colours its dot. None when nothing here is rated yet.
+            "tier": tiers.best_tier(mine),
         })
     return result
 

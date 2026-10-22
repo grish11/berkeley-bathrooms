@@ -9,6 +9,7 @@ berkeley_bathrooms/
 ├── app.py                   # The Flask app + all routes. Vercel's entrypoint.
 ├── data.py                  # Loads + validates data/*.json at startup
 ├── hours.py                 # Turns an access_schedule into readable lines
+├── tiers.py                 # Score formula + the ten tiers and colours
 ├── admin.py                 # The /add form. LOCAL ONLY -- see below
 ├── photos.py                # Resizes + strips metadata from uploads
 ├── pyproject.toml           # Project metadata + dependencies (managed by uv)

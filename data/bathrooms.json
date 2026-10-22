@@ -8,17 +8,17 @@
     "hero_photo": "wheeler_floor4.jpg",
     "extra_photos": [],
     "ratings": {
-      "peace": 5,
-      "cleanliness": 5,
-      "privacy": 5,
-      "echo": 5,
-      "stall_gaps": 5,
-      "toilet_paper": 5,
-      "smell": 5,
-      "temperature": 5,
-      "busyness": 5
+      "peace": 9,
+      "cleanliness": 8,
+      "privacy": 9,
+      "echo": 10,
+      "stall_gaps": 10,
+      "toilet_paper": 9,
+      "smell": 8,
+      "temperature": 8,
+      "busyness": 10
     },
-    "review": "Very peaceful and clean!",
+    "review": "Quiet, clean, and almost always empty. Four floors up is far enough that nobody arrives by accident, which is most of why it works.",
     "date_rated": "2026-10-17",
     "gender": "all_gender"
   },
@@ -32,7 +32,20 @@
     "hero_photo": "grimes-engineering-center-basement-hero.jpg",
     "extra_photos": [
       "grimes-engineering-center-basement-1.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 5,
+      "cleanliness": 4,
+      "privacy": 4,
+      "echo": 8,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 6,
+      "temperature": 5,
+      "busyness": 6
+    },
+    "review": "Perfectly adequate and nothing more. Not usually crowded, but there is little here worth going out of your way for.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "grimes-engineering-center-2",
@@ -46,7 +59,20 @@
       "grimes-engineering-center-2-1.jpg",
       "grimes-engineering-center-2-2.jpg",
       "grimes-engineering-center-2-3.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 5,
+      "cleanliness": 7,
+      "privacy": 5,
+      "echo": 5,
+      "stall_gaps": 10,
+      "toilet_paper": 7,
+      "smell": 8,
+      "temperature": 6,
+      "busyness": 4
+    },
+    "review": "A good room with one catch: it is quiet enough that every sound carries. The privacy is real, the relaxation is not.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "grimes-engineering-center-3",
@@ -60,7 +86,20 @@
       "grimes-engineering-center-2-1.jpg",
       "grimes-engineering-center-2-2.jpg",
       "grimes-engineering-center-2-3.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 5,
+      "cleanliness": 7,
+      "privacy": 5,
+      "echo": 5,
+      "stall_gaps": 10,
+      "toilet_paper": 7,
+      "smell": 8,
+      "temperature": 6,
+      "busyness": 4
+    },
+    "review": "A good room with one catch: it is quiet enough that every sound carries. The privacy is real, the relaxation is not.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "doe-memorial-library-1",
@@ -72,7 +111,20 @@
     "hero_photo": "doe-memorial-library-1-hero.jpg",
     "extra_photos": [
       "doe-memorial-library-1-1.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 4,
+      "cleanliness": 5,
+      "privacy": 5,
+      "echo": 4,
+      "stall_gaps": 6,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 8
+    },
+    "review": "Entirely unremarkable, in the way a public restroom usually is. It is seldom crowded, which is the best thing about it; nothing else stands out in either direction.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "doe-memorial-library-2",
@@ -82,7 +134,20 @@
     "single_restroom": false,
     "gender": "men",
     "hero_photo": "doe-memorial-library-2-hero.jpg",
-    "extra_photos": []
+    "extra_photos": [],
+    "ratings": {
+      "peace": 4,
+      "cleanliness": 4,
+      "privacy": 4,
+      "echo": 6,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 5
+    },
+    "review": "A thoroughly stereotypical men's room: serviceable, a little grubby, and short on privacy.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "doe-memorial-library-3",
@@ -96,7 +161,20 @@
       "doe-memorial-library-3-1.jpg",
       "doe-memorial-library-3-2.jpg",
       "doe-memorial-library-3-3.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 8,
+      "cleanliness": 8,
+      "privacy": 8,
+      "echo": 4,
+      "stall_gaps": 6,
+      "toilet_paper": 5,
+      "smell": 8,
+      "temperature": 6,
+      "busyness": 10
+    },
+    "review": "The photos make the case on their own. Tucked away where few people think to look, which is exactly why it works -- and the design and colour are a cut above the campus standard.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "main-stacks-b",
@@ -110,7 +188,20 @@
       "main-stacks-d-1.jpg",
       "main-stacks-d-2.jpg",
       "main-stacks-d-3.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 5,
+      "cleanliness": 4,
+      "privacy": 5,
+      "echo": 5,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 5
+    },
+    "review": "Average at best. It can smell, and it is not reliably clean. The saving grace is the large single stall, which has its own sink and mirror.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "main-stacks-c",
@@ -124,7 +215,20 @@
       "main-stacks-d-1.jpg",
       "main-stacks-d-2.jpg",
       "main-stacks-d-3.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 5,
+      "cleanliness": 4,
+      "privacy": 5,
+      "echo": 5,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 5
+    },
+    "review": "Average at best. It can smell, and it is not reliably clean. The saving grace is the large single stall, which has its own sink and mirror.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "main-stacks-d",
@@ -138,7 +242,20 @@
       "main-stacks-d-1.jpg",
       "main-stacks-d-2.jpg",
       "main-stacks-d-3.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 5,
+      "cleanliness": 4,
+      "privacy": 5,
+      "echo": 5,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 5
+    },
+    "review": "Average at best. It can smell, and it is not reliably clean. The saving grace is the large single stall, which has its own sink and mirror.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "moffitt-undergraduate-library-3",
@@ -150,7 +267,20 @@
     "hero_photo": "moffitt-undergraduate-library-3-hero.jpg",
     "extra_photos": [
       "moffitt-undergraduate-library-3-1.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 4,
+      "cleanliness": 8,
+      "privacy": 6,
+      "echo": 3,
+      "stall_gaps": 9,
+      "toilet_paper": 5,
+      "smell": 5,
+      "temperature": 5,
+      "busyness": 3
+    },
+    "review": "Generous stalls with small gaps, so the privacy holds up. The echo does not: every sound carries, and it is busy enough that there is always someone to hear it.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "moffitt-undergraduate-library-2",
@@ -160,7 +290,20 @@
     "single_restroom": false,
     "gender": "men",
     "hero_photo": "moffitt-undergraduate-library-2-hero.jpg",
-    "extra_photos": []
+    "extra_photos": [],
+    "ratings": {
+      "peace": 4,
+      "cleanliness": 7,
+      "privacy": 6,
+      "echo": 4,
+      "stall_gaps": 6,
+      "toilet_paper": 5,
+      "smell": 5,
+      "temperature": 5,
+      "busyness": 6
+    },
+    "review": "Quieter than most, which earns it real points. Reasonably modern and clean enough, if never quite spotless.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "martin-luther-king-jr-student-union-1",
@@ -170,7 +313,20 @@
     "single_restroom": false,
     "gender": "men",
     "hero_photo": "martin-luther-king-jr-student-union-1-hero.jpg",
-    "extra_photos": []
+    "extra_photos": [],
+    "ratings": {
+      "peace": 4,
+      "cleanliness": 4,
+      "privacy": 4,
+      "echo": 4,
+      "stall_gaps": 3,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 4
+    },
+    "review": "Middling on the two counts that matter here: busy, and generic enough to forget on the walk out.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "martin-luther-king-jr-student-union-3",
@@ -180,7 +336,20 @@
     "single_restroom": false,
     "gender": "men",
     "hero_photo": "martin-luther-king-jr-student-union-3-hero.jpg",
-    "extra_photos": []
+    "extra_photos": [],
+    "ratings": {
+      "peace": 1,
+      "cleanliness": 4,
+      "privacy": 2,
+      "echo": 8,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 3,
+      "temperature": 5,
+      "busyness": 2
+    },
+    "review": "Relentlessly busy. There is always someone here, which rules out any hope of peace.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "the-gateway-basement",
@@ -190,7 +359,20 @@
     "single_restroom": true,
     "gender": "all_gender",
     "hero_photo": "the-gateway-basement-hero.jpg",
-    "extra_photos": []
+    "extra_photos": [],
+    "ratings": {
+      "peace": 9,
+      "cleanliness": 9,
+      "privacy": 9,
+      "echo": 10,
+      "stall_gaps": 10,
+      "toilet_paper": 5,
+      "smell": 8,
+      "temperature": 5,
+      "busyness": 10
+    },
+    "review": "Modern, private, and comfortable enough to lose half an hour in. The only mark against it is that it is not hidden -- nothing is stopping anyone else from finding it, so the secret may not hold.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "etcheverry-hall-3",
@@ -203,7 +385,20 @@
     "extra_photos": [
       "etcheverry-hall-3-1.jpg",
       "etcheverry-hall-3-2.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 6,
+      "cleanliness": 4,
+      "privacy": 6,
+      "echo": 6,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 7
+    },
+    "review": "Cleanliness is not its strength, but it stays quiet. Worth remembering for a late-night stop when the usual spots are taken.",
+    "date_rated": "2026-10-22"
   },
   {
     "id": "etcheverry-hall-2",
@@ -215,6 +410,19 @@
     "hero_photo": "etcheverry-hall-2-hero.jpg",
     "extra_photos": [
       "etcheverry-hall-2-1.jpg"
-    ]
+    ],
+    "ratings": {
+      "peace": 7,
+      "cleanliness": 5,
+      "privacy": 7,
+      "echo": 5,
+      "stall_gaps": 5,
+      "toilet_paper": 5,
+      "smell": 4,
+      "temperature": 5,
+      "busyness": 7
+    },
+    "review": "Solid, and tucked on a floor nobody passes through. It does have a distinct Backrooms quality to it, which you may or may not hold against it.",
+    "date_rated": "2026-10-22"
   }
 ]
