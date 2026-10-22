@@ -29,6 +29,20 @@ DATA_DIR = Path(__file__).parent / "data"
 # filename only; validation checks each one is actually here.
 PHOTO_DIR = Path(__file__).parent / "public" / "static" / "photos"
 
+# Whether we can actually see the photos from here.
+#
+# On Vercel, public/ is served by the CDN and is not part of the function
+# bundle, so at runtime this directory does not exist -- and every "does this
+# file exist" check would fail, raising DataError at import and taking the
+# whole site down. That happened on the first deploy.
+#
+# The existence check is a DEVELOPMENT aid: it turns a typo into a named error
+# on my laptop before it becomes a broken image on the site. Where the
+# directory is missing there is nothing to check against, so the filename is
+# still validated for shape and the existence check is skipped. Checked once
+# at import rather than per photo.
+PHOTOS_VISIBLE = PHOTO_DIR.is_dir()
+
 # The four access states from the spec. Anything else is a typo.
 ACCESS_STATES = ("open", "cal_id", "card_key", "closed")
 
@@ -301,7 +315,10 @@ def _check_photo(where: str, field: str, value: object, problems: list[str]) -> 
         )
         return
 
-    if not (PHOTO_DIR / value).is_file():
+    # See PHOTOS_VISIBLE: on a deployment the photos are served by the CDN and
+    # are not on the function's filesystem at all, so there is nothing here to
+    # check the name against.
+    if PHOTOS_VISIBLE and not (PHOTO_DIR / value).is_file():
         problems.append(
             f"{where}.{field} = {value!r} does not exist in public/static/photos/"
         )
