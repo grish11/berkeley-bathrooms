@@ -1,50 +1,51 @@
-/* ---- JetBrains Mono ----
+/* ---- Comic Code ----
  *
- * Self-hosted rather than pulled from Google Fonts: one less third-party
+ * Self-hosted rather than pulled from a font service: one less third-party
  * request, nothing to break if that service is slow, and the files ship from
- * the same CDN as the rest of public/. The font is SIL Open Font License 1.1,
- * which permits bundling -- OFL.txt sits beside the files as the licence
- * requires.
+ * the same CDN as the rest of public/.
  *
- * Only the three faces the page uses are included -- the full family is
- * sixteen files and about 1.2 MB -- and each is subset to the Latin
- * characters this site can actually render. The stock faces carry Cyrillic,
- * Greek and a large symbol set none of which appear here; dropping them took
- * the three files from 275 KB to 48 KB.
+ * LICENCE: Comic Code is a commercial font from Tabular Type Foundry, not an
+ * open one. The previous font here was JetBrains Mono under the SIL Open Font
+ * Licence, which explicitly permits bundling and redistribution; this one does
+ * not come with that permission by default. Check what your licence allows
+ * before committing these files to a public repository or serving them from a
+ * public site -- a desktop licence usually covers neither.
  *
- * Regenerate after adding text in a new script, or glyphs will show as empty
- * boxes:
+ * Three faces, mapped so the page's normal / italic / bold all resolve:
+ *   Light   -> weight 400, normal   (the body text)
+ *   Italic  -> weight 400, italic   (the tagline, reviews)
+ *   Bold    -> weight 700, normal   (headings, scores)
+ *
+ * These are .otf at about 93 KB each, 280 KB for the three. Converting them to
+ * woff2 would cut that by roughly half and every browser in use supports it:
  *   uv run --no-project --with "fonttools[woff]" --with brotli pyftsubset \
- *     JetBrainsMono-Regular.ttf --output-file=out.woff2 --flavor=woff2 \
+ *     ComicCode-Light.otf --output-file=ComicCode-Light.woff2 --flavor=woff2 \
  *     --layout-features='' \
  *     --unicodes="U+0020-007E,U+00A0-00FF,U+0100-017F,U+2010-2015,U+2018-201D,U+2022,U+2026,U+20AC,U+2122"
  *
- * woff2, which every browser in use supports and which is about 60% smaller
- * than the same glyphs as truetype (48 KB against 119 KB for these three).
- *
- * font-display: swap means text is readable in a fallback font immediately
- * and re-renders when the webfont arrives, rather than being invisible while
- * it downloads.
+ * font-display: swap means text is readable in a fallback monospace face
+ * immediately and re-renders when the webfont arrives, rather than being
+ * invisible while it downloads.
  */
 @font-face {
-  font-family: "JetBrains Mono";
-  src: url("/static/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-family: "Comic Code";
+  src: url("/static/fonts/ComicCode-Light.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
-  src: url("/static/fonts/JetBrainsMono-Italic.woff2") format("woff2");
+  font-family: "Comic Code";
+  src: url("/static/fonts/ComicCode-Italic.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
-  src: url("/static/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-family: "Comic Code";
+  src: url("/static/fonts/ComicCode-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -90,7 +91,7 @@
   /* One stack, set once and inherited. The fallbacks are the platform
      monospace faces, so a reader sees monospace even before the webfont
      lands -- no jump from proportional to monospace on load. */
-  --font: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono",
+  --font: "Comic Code", ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, "Liberation Mono", monospace;
 }
 
@@ -174,6 +175,11 @@ body {
 }
 
 .site-nav a {
+  /* The transparent border is load-bearing: it reserves the same space the
+     current page's gold box occupies, so switching pages does not shift the
+     other links sideways. Padding is on every link for the same reason. */
+  padding: 0.3rem 0.65rem;
+  border: 2px solid transparent;
   color: var(--ink);
   font-size: 1.05rem;
   text-decoration: none;
@@ -183,12 +189,12 @@ body {
   color: var(--berkeley-blue);
 }
 
-/* The page you are already on. aria-current is set by the template, so the
-   marker and the accessible announcement are the same fact -- no extra class
-   that could get out of step with it. */
+/* The page you are already on: a gold box around it. aria-current is set by
+   the template, so the marker and the accessible announcement are the same
+   fact -- no extra class that could get out of step with it. */
 .site-nav a[aria-current="page"] {
   color: var(--berkeley-blue);
-  border-bottom: 2px solid var(--california-gold);
+  border-color: var(--california-gold);
 }
 
 /* ---- hall of fame / hall of shame ----
