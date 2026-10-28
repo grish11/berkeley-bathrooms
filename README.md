@@ -1,4 +1,4 @@
-# Berkeley Bathrooms
+# Berkeley Bathrooms (still in progress :/)
 
 **Because you deserve to poop in peace.**
 
