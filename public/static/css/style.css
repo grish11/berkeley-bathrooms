@@ -1004,6 +1004,59 @@ body {
   cursor: pointer;
 }
 
+/* ---- the ratings block on /add ---- */
+.ratings-choice {
+  margin: 1.2rem 0 0;
+  padding: 0.7rem 0.9rem 0.9rem;
+  border: 2px solid rgba(0, 50, 98, 0.35);
+}
+
+.ratings-choice legend {
+  padding: 0 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ratings-note {
+  margin: 0 0 0.8rem !important;
+}
+
+/* Label and box in pairs, two pairs per row on a wide form and one on a
+   narrow one, so nine categories stay a block rather than a long column. */
+.ratings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.4rem 1rem;
+}
+
+/* One row per category: name on the left, box on the right. */
+.rating-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.rating-row label {
+  margin: 0 !important;
+  font-size: 0.8rem;
+  font-weight: 400 !important;
+}
+
+.rating-row input {
+  width: 4rem !important;
+  flex: 0 0 auto;
+  padding: 0.3rem 0.4rem !important;
+  text-align: center;
+}
+
+.ratings-score {
+  margin: 0.9rem 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--tier);
+}
+
 .form-page label.checkbox {
   display: flex;
   align-items: flex-start;

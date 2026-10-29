@@ -73,3 +73,46 @@ function render() {
     list.append(item);
   }
 }
+
+
+/* ---- the running overall score ----
+ *
+ * Shows what the nine numbers add up to as you type them, so a bathroom can
+ * be judged against the scale rather than in the dark. The formula below
+ * mirrors tiers.overall_score(): the average, rounded half UP.
+ *
+ * Math.round would be wrong in the other direction here -- it rounds .5 away
+ * from zero, which matches Python's int(x + 0.5) but NOT Python's round(),
+ * and it is the Python side that is authoritative. Keeping the arithmetic
+ * identical means the number shown here is the number that gets saved.
+ */
+
+const TIERS = JSON.parse(document.getElementById("tiers-data").textContent);
+const scoreOut = document.getElementById("ratings-score");
+const ratingInputs = [...document.querySelectorAll('input[name^="rating_"]')];
+
+function updateScore() {
+  const values = ratingInputs
+    .map((input) => Number(input.value))
+    .filter((n) => Number.isFinite(n) && n >= 1 && n <= 10);
+
+  // Only once every category has a usable number -- a partial average would
+  // be a misleading score rather than a preview of one.
+  if (values.length !== ratingInputs.length) {
+    scoreOut.hidden = true;
+    return;
+  }
+
+  const average = values.reduce((a, b) => a + b, 0) / values.length;
+  const score = Math.floor(average + 0.5);
+  const tier = TIERS[Math.min(Math.max(score, 1), 10) - 1];
+
+  scoreOut.textContent = `${score}/10 · ${tier.name}`;
+  scoreOut.style.setProperty("--tier", tier.gradient ?? tier.color);
+  scoreOut.classList.toggle("tier-gradient", Boolean(tier.gradient));
+  scoreOut.hidden = false;
+}
+
+for (const input of ratingInputs) {
+  input.addEventListener("input", updateScore);
+}

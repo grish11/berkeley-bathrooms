@@ -424,5 +424,30 @@
     },
     "review": "Solid, and tucked on a floor nobody passes through. It does have a distinct Backrooms quality to it, which you may or may not hold against it.",
     "date_rated": "2026-10-22"
+  },
+  {
+    "id": "pimentel-hall-basement",
+    "building_id": "pimentel-hall",
+    "floor": "Basement",
+    "directions": "Go down the stairs to the underground floor.",
+    "single_restroom": false,
+    "gender": "women",
+    "hero_photo": "pimentel-hall-basement-hero.jpg",
+    "extra_photos": [
+      "pimentel-hall-basement-1.jpg"
+    ],
+    "ratings": {
+      "peace": 8,
+      "cleanliness": 6,
+      "privacy": 9,
+      "echo": 7,
+      "stall_gaps": 3,
+      "toilet_paper": 8,
+      "smell": 6,
+      "temperature": 8,
+      "busyness": 10
+    },
+    "review": "Photos taken and reviewed by a friend of mine (female identifying).",
+    "date_rated": "2026-10-28"
   }
 ]

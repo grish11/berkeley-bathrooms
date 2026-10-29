@@ -75,6 +75,41 @@
          replacing it. #}
       <ul id="extra-photos-list" class="chosen-photos"></ul>
 
+      <fieldset class="ratings-choice">
+        <legend>Ratings <span class="hint">1&ndash;10, where 10 is always best</span></legend>
+        <p class="form-note ratings-note">
+          Leave these empty to add the bathroom now and judge it later.
+          Otherwise fill in all nine &mdash; <strong>10 Echo means silent</strong>
+          and <strong>10 Busyness means empty</strong>.
+        </p>
+
+        <div class="ratings-grid">
+          {# The categories come from data.RATING_CATEGORIES, so this list
+             cannot drift out of step with what validation expects. #}
+          {% for category in categories %}
+            <div class="rating-row">
+              <label for="rating_{{ category }}">{{ category.replace('_', ' ')|capitalize }}</label>
+              <input
+                id="rating_{{ category }}" name="rating_{{ category }}"
+                type="number" min="1" max="10" step="1"
+                inputmode="numeric" placeholder="&ndash;"
+              />
+            </div>
+          {% endfor %}
+        </div>
+
+        {# Filled in by add.js as you type -- it is the same formula Python
+           uses, handed to the page rather than reimplemented. #}
+        <p class="ratings-score" id="ratings-score" hidden></p>
+      </fieldset>
+
+      <label for="review">Review <span class="hint">optional &mdash; the roast</span></label>
+      <textarea id="review" name="review" rows="3"
+        placeholder="Quiet, clean, and almost always empty."></textarea>
+
+      <label for="date_rated">Date rated <span class="hint">optional</span></label>
+      <input id="date_rated" name="date_rated" type="date" value="{{ today }}" />
+
       <p class="form-note">
         Photos are resized to 1600px and saved with all metadata removed, so no
         GPS coordinates or timestamps reach the repo.
@@ -88,5 +123,10 @@
 {% endblock %}
 
 {% block scripts %}
+  {# The ten tiers, so add.js can name the one your ratings land in. Inert
+     JSON read by the script, not executed -- the same trick index.html uses
+     for the buildings. tiers.py stays the only place the cutoffs live. #}
+  <script type="application/json" id="tiers-data">{{ tiers|tojson }}</script>
+
   <script src="{{ url_for('static', filename='js/add.js') }}"></script>
 {% endblock %}
