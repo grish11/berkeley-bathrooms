@@ -438,16 +438,41 @@
     ],
     "ratings": {
       "peace": 8,
-      "cleanliness": 6,
+      "cleanliness": 4,
       "privacy": 9,
       "echo": 7,
       "stall_gaps": 3,
-      "toilet_paper": 8,
+      "toilet_paper": 5,
       "smell": 6,
       "temperature": 8,
-      "busyness": 10
+      "busyness": 8
     },
     "review": "Photos taken and reviewed by a friend of mine (female identifying).",
     "date_rated": "2026-10-28"
+  },
+  {
+    "id": "o-brien-hall-3",
+    "building_id": "o-brien-hall",
+    "floor": "3",
+    "directions": "In front of the elevator",
+    "single_restroom": false,
+    "gender": "men",
+    "hero_photo": "o-brien-hall-3-hero.jpg",
+    "extra_photos": [
+      "o-brien-hall-3-1.jpg"
+    ],
+    "ratings": {
+      "peace": 7,
+      "cleanliness": 7,
+      "privacy": 7,
+      "echo": 7,
+      "stall_gaps": 8,
+      "toilet_paper": 5,
+      "smell": 9,
+      "temperature": 8,
+      "busyness": 7
+    },
+    "review": "Decent bathroom, smells nice and has good sunlight. Might get busy but overall a decent bathroom.",
+    "date_rated": "2026-10-30"
   }
 ]
